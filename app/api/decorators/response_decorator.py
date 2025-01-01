@@ -39,6 +39,9 @@ class ApiResponseDecorator:
         """
         if status_code in range(HTTPStatus.OK, HTTPStatus.MULTIPLE_CHOICES):
             return ResponseStatus.SUCCESS
-        if status_code in range(HTTPStatus.BAD_REQUEST, HTTPStatus.INTERNAL_SERVER_ERROR):
+        if status_code in range(
+            HTTPStatus.BAD_REQUEST,
+            HTTPStatus.INTERNAL_SERVER_ERROR
+        ):
             return ResponseStatus.FAIL
         return ResponseStatus.ERROR

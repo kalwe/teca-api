@@ -15,6 +15,7 @@ class ApiResponseHandler:
         ResponseStatus.ERROR: ErrorResponseFormatter(),
     }
 
+    # TODO: avaliar  status_code=HTTPStatus.OK para evitar falso positivo
     @staticmethod
     def create_response(data=None, message=None, status_code=HTTPStatus.OK):
         """
