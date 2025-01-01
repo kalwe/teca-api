@@ -1,0 +1,211 @@
+
+
+comportese como um desenvolvedor senior de uma grande big-tech
+
+eivte o uso de numeros magicos, evite if/else ultilize pattern avancados
+melhore o codigo seguindo os principios SOLID e clean code
+melhore o nome de variaos e funcoes para seram mais descritivos
+crie comentarios em ingles para documentar o codigo
+aplique code style de acordo com as convencoes de python
+
+considere que tenho a seguinte estrutura de pastas
+app/
+├── __init__.py
+├── auth
+│   └── __init__.py
+├── common
+│   ├── custom_exceptions.py
+│   ├── filter_utils.py
+│   └── validation_helpers.py
+├── config.py
+├── database
+│   ├── __int__.py
+│   ├── config.py
+│   └── db.py
+├── decorators
+│   └── response_handler_decorator.py
+├── docs
+├── main
+│   ├── __init__.py
+│   └── routes.py
+├── middlewares
+│   └── __init__.py
+├── models
+│   └── __init__.py
+├── repositories
+│   ├── __init__.py
+│   └── interfaces
+│       └── __init__.py
+├── routes
+│   └── __init__.py
+├── schemas
+│   └── __init__.py
+├── serializers
+│   └── __init__.py
+├── services
+│   ├── __init__.py
+│   └── interfaces
+│       └── __init__.py
+└── utils
+    ├── __init__.py
+    ├── response.py
+    ├── utils.py
+    └── validators.py
+
+
+melhore a estrutura usando o padrao de pasta common e remova a utils
+verifique se precisa alter a estrutura de pastas, adicionar algum aquivo ou alterar o nome de algum arquivo
+para melhorar e de acordo com os padroes ultilizados ou sujeridos para a camada de utils
+
+#
+# common/custom_exceptions.py
+from http import HTTPStatus
+
+class CustomValidationError(Exception):
+    def __init__(self, message, status_code=HTTPStatus.BAD_REQUEST):
+        self.message = message
+        self.status_code = status_code
+        super().__init__(self.message)
+
+#
+# common/validation_helpers.py
+from marshmallow import ValidationError
+from http import HTTPStatus
+from app.responses.response_handler import ResponseHandler
+
+def validate_schema(schema_class, data):
+    """
+    Validate input data against a Marshmallow schema.
+    """
+    schema = schema_class()
+    try:
+        validated_data = schema.load(data)
+        return validated_data, None
+    except ValidationError as error:
+        return None, ResponseHandler.create_error_response(HTTPStatus.BAD_REQUEST, str(error))
+
+async def fetch_or_404(service, item_id, not_found_message):
+    """
+    Fetch an item by ID or return a 404 response if not found.
+    """
+    item = await service.get(item_id)
+    if not item:
+        # TODO: should be fail response
+        return None, ResponseHandler.create_error_response(HTTPStatus.NOT_FOUND, not_found_message)
+    return item, None
+
+#
+# decorators/response_handler_decorator.pyfrom functools import wraps
+from app.common.custom_exceptions import CustomValidationError
+from app.common.response_handler import ResponseHandler
+from http import HTTPStatus
+
+class ResponseHandlerDecorator:
+    """Decorator class for handling standardized API responses."""
+
+    @staticmethod
+    def handle(func):
+        @wraps(func)
+        async def wrapper(*args, **kwargs):
+            try:
+                data, message, status_code = await func(*args, **kwargs)
+                response = ResponseHandler.process_response(data, message, status_code)
+                return response, status_code
+
+            except CustomValidationError as validation_error:
+                return ResponseHandler.create_error_response(
+                    HTTPStatus.BAD_REQUEST, str(validation_error)
+                ), HTTPStatus.BAD_REQUEST
+
+            except Exception as general_error:
+                return ResponseHandler.create_error_response(
+                    HTTPStatus.INTERNAL_SERVER_ERROR, str(general_error)
+                ), HTTPStatus.INTERNAL_SERVER_ERROR
+
+        return wrapper
+
+#
+# utils/utils.py
+async def fetch_all_with_or_error(service, error_message="No records found"):
+    try:
+        items = await service.get_all()
+        if not items:
+            return None, error_response({"message": error_message}, HTTPStatus.NOT_FOUND)
+
+        return items, None
+
+    except Exception as e:
+        return None, error_response(f"An error occurred: {str(e)}", HTTPStatus.INTERNAL_SERVER_ERROR)
+
+#
+# utils/validators.py
+from functools import wraps
+from quart import request
+from http import HTTPStatus
+from app.utils.response import error_response
+from app.utils.utils import validate_schema
+from tortoise.exceptions import DoesNotExist, ValidationError
+
+def validate_input(schema_class):
+    """
+    Decorator to validate the input of a route using um schema do Marshmallow.
+    :param schema_class: A classe do schema que será usada para validar os dados da requisição
+    """
+    def decorator(f):
+        @wraps(f)
+        async def decorated_function(*args, **kwargs):
+            data = await request.get_json()
+            validated_data, errors = validate_schema(schema_class, data)
+            if errors:
+                return errors
+            return await f(*args, **kwargs, data=validated_data)  # Pass the validated data as a named argument 'data'
+        return decorated_function
+    return decorator
+
+def handle_errors(f):
+    """
+    Capture and treat generic errors on routes
+    """
+    @wraps(f)
+    async def decorated_function(*args, **kwargs):
+        try:
+            return await f(*args, **kwargs)
+        except Exception as e:
+            return error_response(f"An error occurred: {str(e)}", HTTPStatus.INTERNAL_SERVER_ERROR)
+    return decorated_function
+
+def handle_repository_errors(repo_name):
+    """
+    A decorator to handle common repository errors for asynchronous functions.
+    """
+    def decorator(func):
+        @wraps(func)
+        async def wrapper(*args, **kwargs):
+            try:
+                return await func(*args, **kwargs)
+            except ValidationError as e:
+                raise ValueError(f"Invalid data provided for {repo_name}: {str(e)}")
+            except DoesNotExist:
+                raise ValueError(f"{repo_name} not found")
+            except Exception as e:
+                raise Exception(f"Failed to perform operation on {repo_name}: {str(e)}")
+        return wrapper
+    return decorator
+
+def handle_service_errors(service_name):
+    """
+    A decorator to handle exceptions for a given service function.
+    """
+    def decorator(func):
+        @wraps(func)
+        async def wrapper(*args, **kwargs):
+            try:
+                return await func(*args, **kwargs)
+            except ValidationError as e:
+                raise ValueError(f"Invalid data provided for {service_name}: {str(e)}")
+            except DoesNotExist:
+                raise ValueError(f"{service_name} not found")
+            except Exception as e:
+                raise Exception(f"Failed to perform operation on {service_name}: {str(e)}")
+        return wrapper
+    return decorator
