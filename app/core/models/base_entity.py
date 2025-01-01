@@ -6,15 +6,35 @@ T = TypeVar("T", bound="BaseEntity")
 
 class BaseEntity(models.Model):
     """
-    Abstract base model containing common fields and utility methods for other models.
-    All models should inherit from this class to share the same base functionality.
+    Abstract base model containing common fields and utility methods
+    for other models.
+    All models should inherit from this class to share the same
+    base functionality.
     """
-    id = fields.IntField(pk=True, description="Primary key for the record.")
-    created_at = fields.DatetimeField(auto_now_add=True, description="Timestamp when the record was created.")
-    updated_at = fields.DatetimeField(auto_now=True, description="Timestamp when the record was last updated.")
-    is_active = fields.BooleanField(default=True, description="Indicates whether the record is active or not.")
-    deleted_at = fields.DatetimeField(null=True, description="Timestamp when the record was soft-deleted.")
-    version = fields.IntField(default=1, description="Version of the record for optimistic concurrency.")
+    id = fields.IntField(
+        pk=True,
+        description="Primary key for the record."
+    )
+    created_at = fields.DatetimeField(
+        auto_now_add=True,
+        description="Timestamp when the record was created."
+    )
+    updated_at = fields.DatetimeField(
+        auto_now=True,
+        description="Timestamp when the record was last updated."
+    )
+    is_active = fields.BooleanField(
+        default=True,
+        description="Indicates whether the record is active or not."
+    )
+    deleted_at = fields.DatetimeField(
+        null=True,
+        description="Timestamp when the record was soft-deleted."
+    )
+    version = fields.IntField(
+        default=1,
+        description="Version of the record for optimistic concurrency."
+    )
 
     class Meta:
         abstract = True
@@ -36,7 +56,8 @@ class BaseEntity(models.Model):
 
     async def restore_record(self: T) -> T:
         """
-        Restores a soft-deleted record by setting 'is_active' to True and clearing 'deleted_at'.
+        Restores a soft-deleted record by setting 'is_active' to True and
+        clearing 'deleted_at'.
 
         Args:
             self (T): The instance of the model.
@@ -54,7 +75,8 @@ class BaseEntity(models.Model):
         String representation of the object.
 
         Returns:
-            str: A string representation of the object, including its ID and active status.
+            str: A string representation of the object, including its ID
+            and active status.
         """
         return f"ID: {self.id}, Active: {self.is_active}"
 

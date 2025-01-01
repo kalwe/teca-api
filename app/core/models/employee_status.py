@@ -14,3 +14,14 @@ class EmployeeStatus(EmployeeRelatedModel):
 
     def __str__(self):
         return f"Status of {self.employee.full_name}: {self.current_status.value}"
+
+    @classmethod
+    async def get_status(cls, employee_id: int) -> "EmployeeStatus":
+        """
+        Retrieves the current employment status for an employee.
+        Args:
+            employee_id (int): The ID of the employee.
+        Returns:
+            EmployeeStatus: The current employment status of the employee.
+        """
+        return await cls.get(employee_id=employee_id)

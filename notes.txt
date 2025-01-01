@@ -100,15 +100,13 @@ e aplique as melhorias e alteracoes necessarias
 
 
 
-abstraia e implemente melhorias agindo como se fosse
+1 - abstraia e implemente melhorias agindo como se fosse
 um engenheiro de software do google, microsoft ou tesla
 
-
-evite o uso de numeros magicos, evite if/else
+2 - evite o uso de numeros magicos, evite if/else
 ultilize pattern avancados
 
-
-melhore o nome de variaveis e funcoes para seram mais descritivos
+3 - melhore o nome de variaveis e funcoes para seram mais descritivos
 crie comentarios em ingles para documentar o codigo
 aplique code style de acordo com as convencoes de python
 
