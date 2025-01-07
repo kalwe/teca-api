@@ -1,54 +1,105 @@
 from http import HTTPStatus
+from typing import Any, Type
 from app.api.common.fetch.fetch_strategy import FetchStrategy
-from app.common.responses.response_strategy import ApiResponseStrategy
+from app.api.schemas.base_schema import BaseSchema
+from app.common.responses_old.response_messages import ResponseMessages
+from app.common.responses_old.response_status import ResponseStatus
+from app.common.responses_old.response_strategy import ResponseStrategy
 from app.core.services.interfaces.base_service import BaseService
 
-class FetchResponseStrategy(ApiResponseStrategy):
+
+class FetchResponseStrategy(ResponseStrategy):
     """
     Strategy for handling fetch responses.
     """
 
-    def __init__(self, fetch_strategy: FetchStrategy):
-        self.fetch_strategy = fetch_strategy
+    DEFAULT_STATUSES = {
+        ResponseStatus.SUCCESS: HTTPStatus.OK,
+        ResponseStatus.NOT_FOUND: HTTPStatus.NOT_FOUND,
+        ResponseStatus.ERROR: HTTPStatus.INTERNAL_SERVER_ERROR,
+    }
 
-    async def create_response(self, service: BaseService, *args, **kwargs):
+    def __init__(self, fetch_strategy: FetchStrategy, schema: Type[BaseSchema], custom_statuses=None):
+        """
+        Initialize the response handler with the desired schema for serialization.
+
+        :param schema: The schema to use for serializing the fetched data.
+        :param custom_statuses: Optional custom HTTP status mappings.
+        """
+        self.fetch_strategy = fetch_strategy
+        self.schema = schema
+        self.statuses = {**self.DEFAULT_STATUSES, **(custom_statuses or {})}
+
+    def get_status(self, status_key: ResponseStatus):
+        """
+        Retrieve the HTTP status code for a given ResponseStatus key.
+
+        Args:
+            status_key (ResponseStatus): The status type.
+
+        Returns:
+            HTTPStatus: Corresponding HTTP status code.
+        """
+        return self.statuses.get(status_key, HTTPStatus.INTERNAL_SERVER_ERROR)
+
+    def get_success_message(self, data):
+        """
+        Determine the success message based on the fetched data type.
+
+        Args:
+            data: The fetched data.
+
+        Returns:
+            str: The appropriate success message.
+        """
+        if isinstance(data, list):
+            return ResponseMessages.FETCHED_ALL_SUCCESS.value
+        return ResponseMessages.FETCHED_SINGLE_SUCCESS.value
+
+    async def create_response(self, service: BaseService, fetch_strategy: callable, *args, **kwargs):
         """
         Handles the fetch flow and formats the response.
         """
         try:
             data = await self.fetch_strategy.fetch(service, *args, **kwargs)
-            return self.format_response(
-                data=data,
-                message="Operation successful",
-                status_code=HTTPStatus.OK
-            ), HTTPStatus.OK
+            success_status = self.get_status(ResponseStatus.SUCCESS)
+            success_message = self.get_success_message(data)
 
-        except ValueError as not_found_error:
+            schema_instance = self.schema()
+            serialized_data = schema_instance.dump(data)
+
             return self.format_response(
+                status=ResponseStatus.SUCCESS,  # TODO:
+                data=serialized_data,
+                message=success_message,
+                http_code=success_status
+            ), success_status
+        except ValueError as not_found_error:
+            not_found_status = self.get_status(ResponseStatus.NOT_FOUND)
+            return self.format_response(
+                status=ResponseStatus.FAILURE,  # TODO:
                 data=None,
-                message=str(not_found_error),
-                status_code=HTTPStatus.NOT_FOUND
-            ), HTTPStatus.NOT_FOUND
+                message=f"{ResponseMessages.get_message_for_status(not_found_status)}: {
+                    str(not_found_error)}",
+                http_code=not_found_status
+            ), not_found_status
 
         except Exception as unexpected_error:
+            error_status = self.get_status(ResponseStatus.ERROR)
             return self.format_response(
                 data=None,
-                message=f"Internal error: {str(unexpected_error)}",
-                status_code=HTTPStatus.INTERNAL_SERVER_ERROR
-            ), HTTPStatus.INTERNAL_SERVER_ERROR
+                message=f"{ResponseMessages.get_message_for_status(error_status)}: {
+                    str(unexpected_error)}",
+                http_code=error_status
+            ), error_status
 
-
-# from app.api.common.fetch_helpers import FetchItemStrategy, FetchAllItemsStrategy
-# from app.decorators.response_decorator import ApiResponseDecorator
-
-# @ApiResponseDecorator.standardize_response
-# async def get_item_handler(service: BaseService, item_id: int):
-#     fetch_strategy = FetchItemStrategy()
-#     fetch_response_strategy = FetchResponseStrategy(fetch_strategy)
-#     return await fetch_response_strategy.create_response(service, item_id)
-
-# @ApiResponseDecorator.standardize_response
-# async def get_all_items_handler(service: BaseService):
-#     fetch_strategy = FetchAllItemsStrategy()
-#     fetch_response_strategy = FetchResponseStrategy(fetch_strategy)
-#     return await fetch_response_strategy.create_response(service)
+    def format_response(self, status, data: Any, message: str, http_code: HTTPStatus):
+        """
+        Formats the response data into the expected structure.
+        """
+        return {
+            "status": status,  # TODO:
+            "http_code": http_code.value,
+            "message": message,
+            "data": data
+        }

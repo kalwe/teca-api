@@ -2,6 +2,7 @@ from tortoise.expressions import Q
 from http import HTTPStatus
 from app.responses.response_handler import unified_response
 
+
 def build_filters(**kwargs):
     filters = {}
     for key, value in kwargs.items():
@@ -13,6 +14,7 @@ def build_filters(**kwargs):
             filters[key] = value
     return filters
 
+
 async def apply_filters(query, filters: dict, operator: str = "AND"):
     if filters:
         expressions = [Q(**{key: value}) for key, value in filters.items()]
@@ -21,6 +23,7 @@ async def apply_filters(query, filters: dict, operator: str = "AND"):
         else:
             query = query.filter(*expressions)
     return await query
+
 
 async def get_filtered_items(repository, filters: dict, operator: str = "AND"):
     if not filters:
@@ -39,6 +42,8 @@ async def get_filtered_items(repository, filters: dict, operator: str = "AND"):
     return items, None
 
 # TODO: monkey check
+
+
 async def get_all_items(get_service, repository, request_args, output_schema):
     args = request_args.to_dict()
     operator = args.pop("operator", "AND")
@@ -52,8 +57,8 @@ async def get_all_items(get_service, repository, request_args, output_schema):
 
     if not items:
         if error_messages:
-            return unified_response(message=" | ".join(error_messages), status_code=HTTPStatus.NOT_FOUND)
-        return unified_response(message="No item found", status_code=HTTPStatus.NOT_FOUND)
+            return unified_response(message=" | ".join(error_messages), http_code=HTTPStatus.NOT_FOUND)
+        return unified_response(message="No item found", http_code=HTTPStatus.NOT_FOUND)
 
     items_result = output_schema(many=True).dump(items)
-    return unified_response(data=items_result, message="Item Obtained Sucessfully", status_code=HTTPStatus.OK)
+    return unified_response(data=items_result, message="Item Obtained Sucessfully", http_code=HTTPStatus.OK)

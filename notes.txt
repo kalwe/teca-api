@@ -106,13 +106,13 @@ um engenheiro de software do google, microsoft ou tesla
 2 - evite o uso de numeros magicos, evite if/else
 ultilize pattern avancados
 
-3 - melhore o nome de variaveis e funcoes para seram mais descritivos
+3 - melhore o nome ´de variaveis e funcoes para seram mais descritivos
 crie comentarios em ingles para documentar o codigo
 aplique code style de acordo com as convencoes de python
 
 
 4 - acordo com os patterns propostos em https://refactoring.guru/
-realize mudancas ou alteracoes se necessario
+realize mu´dancas ou alteracoes se necessario
 
 
 continuando a estruturacao das pastas e arquitetura no caso

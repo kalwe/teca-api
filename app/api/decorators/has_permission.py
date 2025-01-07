@@ -1,5 +1,5 @@
 from functools import wraps
-from flask import jsonify
+from quart import jsonify
 
 def has_permission(permission):
     def decorator(func):

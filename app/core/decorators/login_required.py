@@ -1,5 +1,5 @@
 from functools import wraps
-from flask import request, jsonify
+from quart import request, jsonify
 
 def login_required(func):
     @wraps(func)

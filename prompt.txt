@@ -62,9 +62,9 @@ para melhorar e de acordo com os padroes ultilizados ou sujeridos para a camada 
 from http import HTTPStatus
 
 class CustomValidationError(Exception):
-    def __init__(self, message, status_code=HTTPStatus.BAD_REQUEST):
+    def __init__(self, message, http_code=HTTPStatus.BAD_REQUEST):
         self.message = message
-        self.status_code = status_code
+        self.http_code = http_code
         super().__init__(self.message)
 
 #
@@ -108,9 +108,9 @@ class ResponseHandlerDecorator:
         @wraps(func)
         async def wrapper(*args, **kwargs):
             try:
-                data, message, status_code = await func(*args, **kwargs)
-                response = ResponseHandler.process_response(data, message, status_code)
-                return response, status_code
+                data, message, http_code = await func(*args, **kwargs)
+                response = ResponseHandler.process_response(data, message, http_code)
+                return response, http_code
 
             except CustomValidationError as validation_error:
                 return ResponseHandler.create_error_response(

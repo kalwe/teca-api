@@ -1,6 +1,10 @@
-from flask import jsonify, request
-from app.api.common.fetch.fetch_helpers import FetchHelper
-from app.api.decorators.response_decorator import ApiResponseDecorator
+from http import HTTPStatus
+from quart import request
+from app.api.common.fetch.fetch_handler import FetchHandler
+from app.api.decorators.response_decorator_old import Response
+from app.api.decorators.standardize_route_errors_decorator import standardize_route_errors
+from app.api.schemas.user_schema import UserSchema
+from app.common.responses_old.response_messages import ResponseMessages
 from app.core.services.user_service import UserService
 from app.decorators.route_validations_decorator import validate_input
 
@@ -10,8 +14,9 @@ class UserController:
     Controller that handles user-related HTTP requests.
     """
     @staticmethod
-    @validate_input()
-    @ApiResponseDecorator.standardize_response
+    @validate_input(UserSchema)
+    @standardize_route_errors
+    @Response.handler
     def create_user():
         """
         Creates a new user from the incoming JSON data.
@@ -24,12 +29,13 @@ class UserController:
 
         try:
             user = user_service.create_user(data)
-            return user, None, 201
+            return user, ResponseMessages.CREATED_SUCCESS.value, HTTPStatus.CREATED
         except Exception as e:
-            return None, f"An error occurred: {str(e)}", 500
+            return None, f"{ResponseMessages.INTERNAL_SERVER_ERROR}: {str(e)}", HTTPStatus.INTERNAL_SERVER_ERROR
 
     @staticmethod
-    @ApiResponseDecorator.standardize_response
+    @standardize_route_errors
+    @Response.handler
     async def get_user(user_id):
         """
         Retrieves a user by ID.
@@ -41,17 +47,11 @@ class UserController:
             Tuple: A tuple containing the user data (or an error message) and the HTTP status code.
         """
         user_service = UserService()
-
-        # Use FetchHelper to fetch the user and handle errors
-        user = await FetchHelper.fetch_item(
-            user_service, user_id
-        )
-
-        # Return user data if found, otherwise return the error response
-        return user, error_message, status_code
+        return await FetchHandler.fetch_item(user_service, user_id)
 
     @staticmethod
-    @ApiResponseDecorator.standardize_response
+    @standardize_route_errors
+    @Response.handler
     async def get_all_users():
         """
         Retrieves all users using FetchHelper to standardize error handling.
@@ -60,11 +60,4 @@ class UserController:
             Tuple: A tuple containing the list of users (or an error message) and the HTTP status code.
         """
         user_service = UserService()
-
-        # Use FetchHelper to fetch all users and handle errors
-        users = await FetchHelper.fetch_all_items(
-            user_service
-        )
-
-        # Return users if found, otherwise return the error response
-        return users, error_message, status_code
+        return await FetchHandler.fetch_all_items(user_service)
