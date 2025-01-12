@@ -4,8 +4,12 @@ from http import HTTPStatus
 from app.common.validation_helpers import validate_schema
 from app.common.response_helpers import create_error_response
 
+# DEPRECATED
+
+
 def validate_input(schema_class):
     """
+    DEPRECATED
     Decorator to validate route input against a schema.
 
     :param schema_class: Marshmallow schema class for validation.
@@ -21,6 +25,7 @@ def validate_input(schema_class):
         return wrapper
     return decorator
 
+
 def handle_route_errors(func):
     """
     Decorator to handle errors in route handlers.
@@ -31,6 +36,7 @@ def handle_route_errors(func):
             return await func(*args, **kwargs)
         except Exception as error:
             return create_error_response(
-                HTTPStatus.INTERNAL_SERVER_ERROR, f"Unexpected error: {str(error)}"
+                HTTPStatus.INTERNAL_SERVER_ERROR, f"Unexpected error: {
+                    str(error)}"
             )
     return wrapper

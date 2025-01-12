@@ -1,9 +1,53 @@
-from tortoise import Tortoise
 from app.config import Config
+from tortoise import Tortoise
+from threading import Lock
+
+
+class DatabaseManager:
+    """Singleton class for managing the database connection."""
+    _instance = None
+    _lock = Lock()
+
+    def __new__(cls, *args, **kwargs):
+        """Ensure only one instance is created (thread-safe)."""
+        if cls._instance is None:
+            with cls._lock:
+                if cls._instance is None:  # Double-checked locking
+                    cls._instance = super().__new__(cls, *args, **kwargs)
+        return cls._instance
+
+    def __init__(self):
+        """Initialize the database connection."""
+        if hasattr(self, "_initialized") and self._initialized:
+            return  # Prevent re-initialization
+        self._initialized = False
+
+    async def init_db(self):
+        """Initialize the database connection."""
+        if not self._initialized:
+            try:
+                await Tortoise.init(
+                    db_url=Config.DB_URI,
+                    modules={'models': ['app.models', "aerich.models"]}
+                )
+                await Tortoise.generate_schemas()
+                self._initialized = True
+            except Exception as e:
+                raise RuntimeError("Failed to init database") from e
+
+    async def close_db(self):
+        """Close the database connection."""
+        if self._initialized:
+            try:
+                await Tortoise.close_connections()
+                self._initialized = False
+            except Exception as e:
+                raise RuntimeError("Failed to close database") from e
+
 
 async def init_db():
-    await Tortoise.init(
-        db_url=Config.DB_URI,
-        modules={'models': ['app.models', "aerich.models"]}
-    )
-    await Tortoise.generate_schemas()
+    await DatabaseManager().init_db()
+
+
+async def close_db():
+    await DatabaseManager().close_db()

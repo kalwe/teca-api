@@ -1,12 +1,13 @@
 from http import HTTPStatus
-from typing import Any, Dict, List, Optional
-from pydantic import BaseModel, Field
+from typing import Dict, List, Optional
+from pydantic import BaseSchema, Field
 
+from app.common.base_schema import BaseSchema
 from app.common.responses.enums import ResponseStatus
-from app.common.responses.response_types import BodySchemaType
+from app.common.responses.response_types import BodySchemaType, DataBodyType
 
 
-class BaseResponse(BaseModel):
+class BaseResponse(BaseSchema):
     """
     Schema representing a response result with body and HTTP code.
 
@@ -16,25 +17,22 @@ class BaseResponse(BaseModel):
         headers (Optional[Dict[str, str]]): Optional headers for the response.
         content_type (Optional[str]): Content type of the response, defaults to "application/json".
     """
-    body: Dict[str, Any]
+    body: DataBodyType
     status: HTTPStatus = Field(
         ...,
-        description="The HTTP status code of the response."
-    )
+        description="The HTTP status code of the response.")
     headers: Optional[Dict[str, str]] = Field(
         None,
-        description="Optional headers to include in the response."
-    )
+        description="Optional headers to include in the response.")
     content_type: Optional[str] = Field(
         "application/json",
-        description="The content type of the response, default is 'application/json'.",
-    )
+        description="The content type default is 'application/json'.")
 
     class Config:
         use_enum_values = True  # Serialize Enums as their values
 
 
-class BodySuccessSchema(BaseModel):
+class BodySuccessSchema(BaseSchema):
     """
     Schema for a successful response.
 
@@ -45,13 +43,13 @@ class BodySuccessSchema(BaseModel):
     """
     status: ResponseStatus
     message: str
-    data: Dict[str, Any]
+    data: DataBodyType
 
     class Config:
         use_enum_values = True  # Serialize Enums as their values
 
 
-class ErrorDetailSchema(BaseModel):
+class ErrorDetailSchema(BaseSchema):
     """
     Schema for individual error details.
 
@@ -63,7 +61,7 @@ class ErrorDetailSchema(BaseModel):
     details: str
 
 
-class BodyErrorSchema(BaseModel):
+class BodyErrorSchema(BaseSchema):
     """
     Schema for an error response.
 
@@ -91,11 +89,10 @@ class ResponseSchema(BaseResponse):
     """
     body: BodySchemaType = Field(
         ...,
-        description="The main body of the response.",
-    )
+        description="The main body of the response.")
 
 
-class ResultSchema(BaseModel):
+class ResultSchema(BaseSchema):
     """
     Schema for the result extracted from a controller.
 
@@ -103,5 +100,5 @@ class ResultSchema(BaseModel):
         data (Dict[str, Any]): The data returned by the controller.
         http_code (HTTPStatus): The HTTP status code associated with the result.
     """
-    data: Dict[str, Any]
+    data: DataBodyType
     http_code: HTTPStatus

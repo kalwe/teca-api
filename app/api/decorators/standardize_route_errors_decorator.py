@@ -4,6 +4,7 @@ from app.common.responses_old.response_handler import ResponseHandler
 from app.common.responses_old.response_messages import ResponseMessages
 
 
+# DEPRECATED
 def standardize_route_errors(f):
     """
     Capture and handle generic errors in routes using standardized response formatting.

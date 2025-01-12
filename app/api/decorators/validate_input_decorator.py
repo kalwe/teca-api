@@ -1,6 +1,9 @@
 from functools import wraps
 from quart import jsonify
 
+# DEPRECATED
+
+
 def validate_input(schema):
     """
     Decorator for validating input data using the provided schema.

@@ -1,10 +1,12 @@
 import os
 
+
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY')
     DB_URI = os.getenv('DATABASE_URL')
     PROVIDE_AUTOMATIC_OPTIONS = True
     DEBUG = True
+
 
 TORTOISE_ORM = {
     "connections": {

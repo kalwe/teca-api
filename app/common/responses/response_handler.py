@@ -1,18 +1,14 @@
 from http import HTTPStatus
-from typing import Any, Dict, Optional, Tuple, Union
+from typing import Dict, Optional, Tuple
 
 from pydantic import ValidationError
-from pydantic_core import ErrorDetails
+from quart import Response, current_app
 
-from app.common.responses.enums import ResponseMessages, ResponseStatus
+from app.common.responses.factories.response_factory import ResponseFactory
 from app.common.responses.response_schema import (
-    BodyErrorSchema,
-    BodySuccessSchema,
-    ErrorDetailSchema,
-    ResponseSchema,
-    ResultSchema,
-)
-from app.common.responses.response_types import BodySchemaType
+    ResponseSchema, ResultSchema)
+from app.common.responses.response_types import (
+    BodySchemaType, DataBodyType, ResultType, ResultReturnType)
 
 
 class ResponseHandler:
@@ -29,11 +25,10 @@ class ResponseHandler:
 
     @staticmethod
     def create_response(
-        body: BodySchemaType,
-        status: HTTPStatus,
-        headers: Optional[Dict[str, str]] = None,
-        content_type: Optional[str] = None,
-    ) -> ResponseSchema:
+            body: BodySchemaType,
+            status: HTTPStatus,
+            headers: Optional[Dict[str, str]] = None,
+            content_type: Optional[str] = None) -> ResponseSchema:
         """
         Creates a response object using the appropriate schema.
 
@@ -50,129 +45,37 @@ class ResponseHandler:
             body=body,
             status=status,
             headers=headers,
-            content_type=content_type,
-        )
+            content_type=content_type)
 
     @staticmethod
     def create_success_response(
-        data: Dict[str, Any],
-        http_code: HTTPStatus,
-    ) -> ResponseSchema:
+            data: DataBodyType,
+            http_code: HTTPStatus) -> ResponseSchema:
         """
         Creates a standardized success response.
 
         Args:
-            data (Dict[str, Any]): The data payload for the response.
+            data (DataBodyType): The data payload for the response.
             http_code (HTTPStatus): The HTTP status code for the response.
 
         Returns:
             ResponseSchema: A standardized success response.
         """
-        body = BodySuccessSchema(
-            status=ResponseStatus.SUCCESS,
-            message=ResponseMessages.get_message_for_status(http_code),
+        body = ResponseFactory.create_success_body(
             data=data,
-        )
+            http_code=http_code)
+
+        # TODO: implements def create() as factory
         return ResponseHandler.create_response(
             body=body,
             status=http_code,
             headers=None,
-            content_type=None,
-        )
-
-    @staticmethod
-    def create_error_details(
-        errors,
-        default_message=None
-    ) -> list[ErrorDetailSchema]:
-        """
-        Generates a list of error details from the
-        provided errors or exception.
-
-        Args:
-            errors (list or Exception): A list of error objects or a single exception.
-            default_message (str, optional): A default message if none is provided in the error. Defaults to None.
-
-        Returns:
-            list[ErrorDetailSchema]: A list of standardized error details.
-        """
-        if isinstance(errors, list[ErrorDetails]):
-            return [
-                ErrorDetailSchema(
-                    message=err.get("msg", default_message),
-                    details=str(err),
-                )
-                for err in errors
-            ]
-        elif isinstance(errors, Exception):
-            return [
-                ErrorDetailSchema(
-                    message=default_message or "An unexpected error occurred.",
-                    details=str(errors),
-                )
-            ]
-        else:
-            raise ValueError("Invalid input for error details creation.")
-
-    @staticmethod
-    def create_validation_error_response(e: ValidationError) -> ResponseSchema:
-        """
-        Creates a standardized response for validation errors.
-
-        Args:
-            e (ValidationError): The validation error.
-
-        Returns:
-            ResponseSchema: A standardized error validation response.
-        """
-        # error_details_unused = [
-        #     ErrorDetailSchema(
-        #         message=err["msg"],
-        #         details=str(err),
-        #     )
-        #     for err in e.errors()
-        # ]
-        error_details = ResponseHandler.create_error_details(
-            e.errors(),
-            default_message="Validation failed.",
-        )
-        body_error = BodyErrorSchema(error=error_details)
-        return ResponseHandler.create_response(
-            body=body_error,
-            status=HTTPStatus.BAD_REQUEST,
-            headers=None,
-            content_type=None,
-        )
-
-    @staticmethod
-    def create_generic_error_response(e: Exception) -> ResponseSchema:
-        """
-        Creates a standardized response for generic exceptions.
-
-        Args:
-            e (Exception): The exception.
-
-        Returns:
-            ResponseSchema: A standardized error response.
-        """
-        http_code = HTTPStatus.INTERNAL_SERVER_ERROR
-
-        error_details = ResponseHandler.create_error_details(
-            e,
-            ResponseMessages.get_message_for_status(http_code),
-        )
-        body_error = BodyErrorSchema(error=error_details)
-        return ResponseHandler.create_response(
-            body=body_error,
-            status=http_code,
-            headers=None,
-            content_type=None,
-        )
+            content_type=None)
 
     @staticmethod
     def extract_result(
-        result: Union[Any, Tuple[Any, int]]
-    ) -> Tuple[Dict[str, Any], HTTPStatus]:
+        result: ResultType
+    ) -> ResultReturnType:
         """
         Extracts and validates the body and HTTP status from a controller result.
 
@@ -196,3 +99,18 @@ class ResponseHandler:
 
         except ValidationError as e:
             raise ValueError(f"Invalid result schema: {e}")
+
+    @staticmethod
+    async def convert_to_response(response_schema: ResponseSchema) -> Response:
+        """
+        Converts a ResponseSchema object to a Quart Response.
+
+        Args:
+            response_schema (ResponseSchema): The standardized response schema.
+
+        Returns:
+            Response: A Quart Response instance.
+        """
+        return await current_app.make_response(
+            (response_schema.body.model_dump(), response_schema.status,
+             response_schema.headers or {}))

@@ -2,13 +2,10 @@ from http import HTTPStatus
 from typing import Any, Type
 from app.api.common.fetch.fetch_strategy import FetchStrategy
 from app.api.schemas.base_schema import BaseSchema
-from app.common.responses_old.response_messages import ResponseMessages
-from app.common.responses_old.response_status import ResponseStatus
-from app.common.responses_old.response_strategy import ResponseStrategy
 from app.core.services.interfaces.base_service import BaseService
 
 
-class FetchResponseStrategy(ResponseStrategy):
+class FetchDataStrategy(ResponseStrategy):
     """
     Strategy for handling fetch responses.
     """

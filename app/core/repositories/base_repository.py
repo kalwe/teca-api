@@ -3,10 +3,12 @@ from typing import Type, List, Optional
 
 from app.models.base import BaseEntity
 
+
 class BaseRepository:
     """
     Abstract repository that defines common database operations.
     """
+
     def __init__(self, model_class: Type[BaseEntity]):
         self.model_class = model_class
 
@@ -15,6 +17,9 @@ class BaseRepository:
         Retrieve a record by its ID if it is active.
         """
         return await self.model_class.get_or_none(id=record_id, is_active=True)
+
+    async def get_all(self) -> List[BaseEntity]:
+        return await self.model_class.all()
 
     async def list_all_active(self) -> List[BaseEntity]:
         """
@@ -28,7 +33,8 @@ class BaseRepository:
         """
         return await self.model_class.create(**fields_data)
 
-    async def update_record(self, record_id: int, **fields_data) -> Optional[BaseEntity]:
+    async def update_record(
+            self, record_id: int, **fields_data) -> Optional[BaseEntity]:
         """
         Update fields for an existing record and increment its version.
         """

@@ -1,55 +1,92 @@
-version: '3'
+# version: '3'
 
+# services:
+#   db:
+#     image: "postgres:alpine"
+#     container_name: "db"
+#     environment:
+#       - POSTGRES_USER=${DB_USER}
+#       - POSTGRES_PASSWORD=${DB_PASSWORD}
+#       - POSTGRES_DB=${DB_NAME}
+#     ports:
+#       - "5432:5432"
+#     volumes:
+#       - ./docker-compose/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+#       - pgdata:/var/lib/postgresql/data
+#     healthcheck:
+#       test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME} || exit 1"]
+#       interval: 10s
+#       timeout: 5s
+#       retries: 5
+#     networks:
+#       - agil_network
+
+#   api:
+#     build: .
+#     container_name: api
+#     ports:
+#       - "5000:5000"
+#     env_file:
+#       - .env
+#     environment:
+#       - FLASK_ENV=development
+#       - FLASK_APP=run.py
+#       - FLASK_RUN_HOST=0.0.0.0
+#       - FLASK_RUN_PORT=5000
+#       - DATABASE_URL=postgres://docker:docker@db:5432/agil
+#     depends_on:
+#       db:
+#         condition: service_healthy
+#     volumes:
+#       - .:/app
+#     networks:
+#       - agil_network
+
+# volumes:
+#   pgdata:
+#     driver: local
+#     driver_opts:
+#       type: none
+#       device: ./docker-compose/postgres/pgdata
+#       o: bind
+
+# networks:
+#   agil_network:
+#     driver: bridge
+
+
+# refactoring
+version: "3.8"
 services:
-  db:
-    image: "postgres:alpine"
-    container_name: "db"
+  web:
+    build:
+      context: ./
+      target: development
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./:/app
+    links:
+      - db:postgres
+    container_name: api_web
+    depends_on:
+      - db
     environment:
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=${DB_NAME}
+      PORT: 5001
+      SECRET_KEY: "change_for_production"
+      ENV_FOR_DYNACONF: docker
+      DB_USERNAME: docker
+      DB_PASSWORD: docker
+      DB_HOST: postgres
+      DATABASE_NAME: api
+
+  db:
+    image: postgres:14-alpine
+    restart: always
+    container_name: api_db
     ports:
       - "5432:5432"
-    volumes:
-      - ./docker-compose/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - pgdata:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME} || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - agil_network
-
-  api:
-    build: .
-    container_name: api
-    ports:
-      - "5000:5000"
-    env_file:
-      - .env
     environment:
-      - FLASK_ENV=development
-      - FLASK_APP=run.py
-      - FLASK_RUN_HOST=0.0.0.0
-      - FLASK_RUN_PORT=5000
-      - DATABASE_URL=postgres://docker:docker@db:5432/agil
-    depends_on:
-      db:
-        condition: service_healthy
-    volumes:
-      - .:/app
-    networks:
-      - agil_network
-
-volumes:
-  pgdata:
-    driver: local
-    driver_opts:
-      type: none
-      device: ./docker-compose/postgres/pgdata
-      o: bind
-
-networks:
-  agil_network:
-    driver: bridge
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: api

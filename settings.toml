@@ -1,0 +1,14 @@
+[default]
+SECRET_KEY = "change_this_before_production"
+DB_USERNAME = "docker"
+DB_PASSWORD = "docker"
+DATABASE_NAME = "api"
+
+[development]
+DB_HOST = "localhost"
+
+[docker]
+DB_HOST = "db"
+DB_USERNAME = "docker"
+DB_PASSWORD = "docker"
+DATABASE_NAME = "api"

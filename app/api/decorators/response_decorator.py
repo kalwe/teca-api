@@ -3,6 +3,7 @@ from typing import Callable
 
 from pydantic import ValidationError
 
+from app.common.responses.response_error_handler import ResponseErrorHandler
 from app.common.responses.response_handler import ResponseHandler
 
 
@@ -15,7 +16,7 @@ class ResponseDecorator:
     """
 
     @staticmethod
-    def handle_response(func: Callable) -> Callable:
+    def build_response(func: Callable) -> Callable:
         """
         Decorator to handle responses for Quart route functions. Ensures consistent
         formatting of the response and handles validation and generic exceptions.
@@ -42,24 +43,29 @@ class ResponseDecorator:
             try:
                 # Execute the original route function
                 result = await func(*args, **kwargs)
-                handler = ResponseHandler()
 
                 # Extract result and HTTP status
-                data, http_code = handler.extract_result(result)
+                data, http_code = ResponseHandler.extract_result(result)
 
                 # Create a success response
-                response = handler.create_success_response(
+                response_schema = ResponseHandler.create_success_response(
                     data=data,
-                    http_code=http_code,
-                )
-                return response
+                    http_code=http_code)
+                return await ResponseHandler.convert_to_response(
+                    response_schema)
 
             except ValidationError as e:
                 # Handle validation errors
-                return ResponseHandler.create_validation_error_response(e)
+                response_schema = (ResponseErrorHandler.
+                                   create_validation_error_response(e))
+                return await ResponseHandler.convert_to_response(
+                    response_schema)
 
             except Exception as e:
                 # Handle generic exceptions
-                return ResponseHandler.create_generic_error_response(e)
+                response_schema = (ResponseErrorHandler.
+                                   create_generic_error_response(e))
+                return await ResponseHandler.convert_to_response(
+                    response_schema)
 
         return decorated_function
