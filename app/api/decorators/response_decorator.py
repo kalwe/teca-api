@@ -50,7 +50,8 @@ class ResponseDecorator:
                 # Create a success response
                 response_schema = ResponseHandler.create_success_response(
                     data=data,
-                    http_code=http_code)
+                    http_code=http_code
+                )
                 return await ResponseHandler.convert_to_response(
                     response_schema)
 

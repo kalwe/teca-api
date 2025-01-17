@@ -4,7 +4,9 @@ from typing import Dict, Optional, Tuple
 from pydantic import ValidationError
 from quart import Response, current_app
 
+from app.common.responses.factories.response_error_factory import ErrorResponseFactory
 from app.common.responses.factories.response_factory import ResponseFactory
+from app.common.responses.response_error_handler import ResponseErrorHandler
 from app.common.responses.response_schema import (
     ResponseSchema, ResultSchema)
 from app.common.responses.response_types import (
@@ -98,7 +100,8 @@ class ResponseHandler:
             return validated.data, HTTPStatus(validated.http_code)
 
         except ValidationError as e:
-            raise ValueError(f"Invalid result schema: {e}")
+            # raise ValueError(f"Invalid result schema: {e}")
+            ResponseErrorHandler.create_validation_error_response(e)
 
     @staticmethod
     async def convert_to_response(response_schema: ResponseSchema) -> Response:
@@ -112,5 +115,5 @@ class ResponseHandler:
             Response: A Quart Response instance.
         """
         return await current_app.make_response(
-            (response_schema.body.model_dump(), response_schema.status,
+            (response_schema.body.dump(), response_schema.status,
              response_schema.headers or {}))

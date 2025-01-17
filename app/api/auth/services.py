@@ -1,11 +1,12 @@
 import jwt
 from datetime import datetime, timedelta
 from passlib.context import CryptContext
-from app.api.auth.models import User
+from app.api.auth.user_model import User
 from app.api.auth.utils import TokenUtils
 
 # Setup the password context for hashing passwords
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
+
 
 class AuthService:
 

@@ -2,7 +2,7 @@ from http import HTTPStatus
 from typing import Any, Type
 from app.api.common.fetch.fetch_strategy import FetchStrategy
 from app.api.schemas.base_schema import BaseSchema
-from app.core.services.interfaces.base_service import BaseService
+from app.core.services.interfaces.get_service_interface import BaseService
 
 
 class FetchDataStrategy(ResponseStrategy):

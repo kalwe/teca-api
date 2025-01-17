@@ -1,4 +1,4 @@
-from .base_entity import BaseEntity
+from .shared.base_entity import BaseEntity
 from .enums import EmploymentStatus
 from .employee import Employee
 from .employee_related import EmployeeRelatedModel
@@ -7,4 +7,4 @@ from .contact_information import ContactInformation
 from .employee_documentation import EmployeeDocumentation
 from .employee_status import EmployeeStatus
 from .employment_history import EmploymentHistory
-from .person import PersonModel
+from .person_model import PersonModel

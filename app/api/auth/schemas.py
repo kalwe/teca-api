@@ -1,9 +1,11 @@
 from pydantic import BaseEntity, EmailStr
 
-class LoginSchema(BaseEntity):
+
+class LoginSchema():
     email: EmailStr
     password: str
 
-class RegisterSchema(BaseEntity):
+
+class RegisterSchema():
     email: EmailStr
     password: str

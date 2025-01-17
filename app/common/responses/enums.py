@@ -23,16 +23,20 @@ class ResponseMessages(Enum):
     Enum mapping HTTP status codes to user-friendly messages.
 
     Attributes:
-        CREATED_SUCCESS (tuple): Represents HTTP 201 (Created) with a success message.
-        FETCHED_SUCCESS (tuple): Represents HTTP 200 (OK) with a success message.
-        INVALID_INPUT (tuple): Represents HTTP 400 (Bad Request) with an error message.
-        INTERNAL_SERVER_ERROR (tuple): Represents HTTP 500 (Internal Server Error) with an error message.
-        ITEM_NOT_FOUND (tuple): Represents HTTP 404 (Not Found) with an error message.
+        CREATED_SUCCESS (tuple): Represents HTTP 201 (Created) with a success
+            message.
+        FETCHED_SUCCESS (tuple): Represents HTTP 200 (OK) with a success
+            message.
+        INVALID_INPUT (tuple): Represents HTTP 400 (Bad Request)
+            with an error message.
+        INTERNAL_SERVER_ERROR (tuple): Represents HTTP 500
+            (Internal Server Error) with an error message.
+        ITEM_NOT_FOUND (tuple): Represents HTTP 404
+            (Not Found) with an error message.
     """
     CREATED_SUCCESS = (HTTPStatus.CREATED, "Item successfully created.")
     FETCHED_SUCCESS = (HTTPStatus.OK, "Successfully fetched the item(s).")
-    INVALID_INPUT = (HTTPStatus.BAD_REQUEST,
-                     "Bad request syntax or unsupported method.")
+    INVALID_INPUT = (HTTPStatus.BAD_REQUEST, "Invalid input.")
     INTERNAL_SERVER_ERROR = (
         HTTPStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred.")
     ITEM_NOT_FOUND = (HTTPStatus.NOT_FOUND, "Item not found.")

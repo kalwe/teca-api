@@ -1,5 +1,5 @@
 from typing import Any, Generic, List, TypeVar
-from app.core.services.interfaces.base_service import BaseService
+from app.core.services.shared.get_service import GetService
 
 T = TypeVar("T")
 
@@ -16,7 +16,7 @@ class FetchStrategy(Generic[T]):
         T (TypeVar): The type of data expected to be fetched by the strategy.
     """
 
-    async def fetch(self, service: BaseService, *args, **kwargs) -> Any:
+    async def fetch(self, service: GetService, *args, **kwargs) -> Any:
         """
         Fetch data using the given service.
 
@@ -71,7 +71,7 @@ class FetchItemStrategy(FetchStrategy):
         fetch: Fetches a single item by its ID.
     """
 
-    async def fetch(self, service: BaseService, item_id: int) -> Any:
+    async def fetch(self, service: GetService, item_id: int) -> Any:
         """
         Fetch a single item by its ID using the provided service.
 
@@ -100,7 +100,7 @@ class FetchAllItemsStrategy(FetchStrategy):
         fetch: Fetches all items.
     """
 
-    async def fetch(self, service: BaseService) -> List[Any]:
+    async def fetch(self, service: GetService) -> List[Any]:
         """
         Fetch all items using the provided service.
 

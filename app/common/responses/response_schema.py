@@ -20,13 +20,16 @@ class BaseResponse(BaseSchema):
     body: DataBodyType
     status: HTTPStatus = Field(
         ...,
-        description="The HTTP status code of the response.")
+        description="The HTTP status code of the response.",
+    )
     headers: Optional[Dict[str, str]] = Field(
         None,
-        description="Optional headers to include in the response.")
+        description="Optional headers to include in the response.",
+    )
     content_type: Optional[str] = Field(
         "application/json",
-        description="The content type default is 'application/json'.")
+        description="The content type default is 'application/json'.",
+    )
 
     class Config:
         use_enum_values = True  # Serialize Enums as their values
@@ -89,7 +92,8 @@ class ResponseSchema(BaseResponse):
     """
     body: BodySchemaType = Field(
         ...,
-        description="The main body of the response.")
+        description="The main body of the response.",
+    )
 
 
 class ResultSchema(BaseSchema):
