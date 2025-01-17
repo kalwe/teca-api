@@ -14,11 +14,12 @@ class CreateService(Generic[T]):
         Initialize the service with the provided repository.
 
         Args:
-            repository (Type[CreateRepository[T]]): The repository class used for data creation.
+            repository (Type[CreateRepository[T]]): The repository
+                class used for data creation.
         """
-        self.repository = repository()
+        self.repository = repository
 
-    async def create(self, **fields_data) -> T:
+    async def create_record(self, **fields_data) -> T:
         """
         Create a new record in the repository.
 
@@ -28,4 +29,5 @@ class CreateService(Generic[T]):
         Returns:
             T: The newly created record.
         """
-        return await self.repository.create_record(**fields_data)
+        created_record = await self.repository.create_record(**fields_data)
+        return created_record

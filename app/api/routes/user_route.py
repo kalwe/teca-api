@@ -1,9 +1,19 @@
 from quart import Blueprint
 from app.api.controllers.user_controller import UserController
+from app.api.routes import API_PREFIX
 
-user_blueprint = Blueprint('user', __name__)
+user_bp = Blueprint('user', __name__, url_prefix=API_PREFIX)
 
-user_blueprint.add_url_rule(
+user_bp.add_url_rule(
     '/', view_func=UserController.create_user, methods=['POST'])
-user_blueprint.add_url_rule(
-    '/<int:user_id>', view_func=UserController.get_user, methods=['GET'])
+user_bp.add_url_rule(
+    '/<int:id>', view_func=UserController.get_user, methods=['GET'])
+user_bp.add_url_rule(
+    '/', view_func=UserController.get_all_users, methods=['GET']
+)
+user_bp.add_url_rule(
+    '/<int:id>', view_func=UserController.update_user, methods=['POST']
+)
+user_bp.add_url_rule(
+    '/<int:id>', view_func=UserController.delete_user, methods=['DELETE']
+)

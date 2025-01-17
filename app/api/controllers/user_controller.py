@@ -4,7 +4,12 @@ from quart_schema import validate_request
 
 from app.api.decorators.response_decorator import ResponseDecorator
 from app.api.schemas.user_schema import UserInputSchema
+from app.core.repositories.user.user_create_repository import UserCreateRepository
+from app.core.repositories.user.user_delete_repository import UserDeleteRepository
+from app.core.repositories.user.user_get_repository import UserGetRepository
+from app.core.repositories.user.user_update_repository import UserUpdateRepository
 from app.core.services.user.create_user_service import UserCreateService
+from app.core.services.user.delete_user_service import UserDeleteService
 from app.core.services.user.get_user_service import UserGetService
 from app.core.services.user.update_user_service import UserUpdateService
 
@@ -23,8 +28,9 @@ class UserController:
         Returns:
             Tuple: A tuple containing the user data and the HTTP status code.
         """
-        service = UserCreateService()
-        user = service.create_user(**data.dump())
+        repository = UserCreateRepository()
+        service = UserCreateService(repository)
+        user = service.create(**data.dump())
         return user, HTTPStatus.CREATED
 
     @staticmethod
@@ -40,8 +46,9 @@ class UserController:
             Tuple: A tuple containing the user data (or an error message)
             and the HTTP status code.
         """
-        user_get_service = UserGetService()
-        user = user_get_service.repository.get_by_id(id)
+        repository = UserGetRepository()
+        service = UserGetService(repository)
+        user = service.get_user(id)
         return user, HTTPStatus.OK
 
     @staticmethod
@@ -53,13 +60,24 @@ class UserController:
         Returns:
             Tuple: A tuple containing the list of users (or an error message) and the HTTP status code.
         """
-        user_get_service = UserGetService()
-        users = user_get_service.repository.get_all()
+        repository = UserGetRepository()
+        service = UserGetService(repository)
+        users = service.get_all_users()
         return users, HTTPStatus.OK
 
     @staticmethod
     @validate_request(UserInputSchema)
     @ResponseDecorator.build_response()
-    async def update_user(user: UserInputSchema):
-        user_update_service = UserUpdateService()
-        user_update_service.update()
+    async def update_user(id: int, data: UserInputSchema):
+        repository = UserUpdateRepository()
+        service = UserUpdateService(repository)
+        user = service.update(id, **data.dump)
+        return user, HTTPStatus.OK
+
+    @staticmethod
+    @ResponseDecorator.build_response()
+    async def delete_user(id: int):
+        repository = UserDeleteRepository()
+        service = UserDeleteService(repository)
+        user = service.delete(id)
+        return user, HTTPStatus.OK

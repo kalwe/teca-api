@@ -1,21 +1,33 @@
-import hashlib
 from typing import List, Optional
 from app.api.schemas.user_schema import UserOutputSchema
+from app.common.crypto_utils import hash_password
 from app.common.custom_exceptions import UserAlreadyExistsException
-from app.core.repositories.user.user_create_repository import UserCreateRepository
+from app.core.models.user_model import User
+from app.core.repositories.user.user_create_repository import (
+    UserCreateRepository)
+from app.core.repositories.user.user_get_repository import UserGetRepository
+from app.core.services.shared.create_service import CreateService
 from app.core.services.user.get_user_service import UserGetService
 
 
-class UserCreateService():
+class UserCreateService(CreateService[User]):
     """
     Service for managing user-related business logic.
     Handles creation of new users with role assignment and password hashing.
     """
 
-    def __init__(self):
-        self._repository = UserCreateRepository()
+    def __init__(self, repository: UserCreateRepository):
+        """
+        Initialize the service with a repository for user operations.
 
-    async def create_user(
+        Args:
+            repository (UserCreateRepository): An instance of UserCreateRepository
+                to handle data persistence for the User model.
+        """
+        super().__init__(repository)
+        self.repository = repository
+
+    async def create(
         self,
         username: str,
         email: str,
@@ -54,8 +66,9 @@ class UserCreateService():
         roles = roles or ["user"]  # Assign default role if none provided
 
         # Check if a user with the email already exists
-        user_get_service = UserGetService()
-        existing_user = await user_get_service.repository.get_user_by_email(
+        user_get_repository = UserGetRepository()
+        user_get_service = UserGetService(user_get_repository)
+        existing_user = await user_get_service.get_user_by_email(
             email
         )
         if existing_user:
@@ -63,25 +76,18 @@ class UserCreateService():
                 f"User with email {email} already exists."
             )
 
-        password_hash = self._hash_password(password)
+        password_hash = hash_password(password)
 
-        created_user = await self._repository.create_record(
+        created_user = await self.create_record(
             username=username,
             email=email,
             password_hash=password_hash,
             roles=roles
         )
-        return UserOutputSchema.from_orm(created_user)
+        return UserOutputSchema.model_validate(created_user)
 
-    @staticmethod
-    def _hash_password(password: str) -> str:
-        """
-        Hash the given password using SHA-256.
+# Instantiate the repository
+# user_repository = UserCreateRepository(User)
 
-        Args:
-            password (str): The plain-text password to hash.
-
-        Returns:
-            str: The hashed password.
-        """
-        return hashlib.sha256(password.encode()).hexdigest()
+# # Initialize the service
+# user_service = UserCreateService(user_repository)

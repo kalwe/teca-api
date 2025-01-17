@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from app.common.responses.response_types import DataBodyType
 
@@ -54,12 +54,10 @@ class BaseSchema(TimestampsMixin, SoftDeleteMixin):
         """
         return self.model_dump()
 
-# The method "from_orm" in class "BaseModel" is deprecated
-#   The `from_orm` method is deprecated; set `model_config['from_attributes']=True
-#   and use `model_validate` instead.Pylance
+    # Allows parsing from ORM instances
+    model_config = ConfigDict(from_attributes=True)
 
     class Config:
-        model_config['from_attributes'] = True
         orm_mode = True  # Enable compatibility with ORM objects
 
 
