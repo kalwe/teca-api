@@ -1,10 +1,10 @@
 from typing import Any, Optional, Type
 from app.core.repositories.shared.update_repository import UpdateRepository
+from app.core.services.shared.get_service import GetService
 
 
-class UpdateService():
-    def __init__(self, repository_class: Type[UpdateRepository]):
-        self.repository = repository_class
+class UpdateService(UpdateRepository):
 
-    async def update(self, id: int, **data) -> Optional[Any]:
-        return await self.repository.update_record(id, **data)
+    async def update(self, id, data):
+        record_updated = await self.update_record(id, data)
+        return record_updated

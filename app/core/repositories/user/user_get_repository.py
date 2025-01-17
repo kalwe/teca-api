@@ -4,8 +4,6 @@ from app.core.repositories.shared.get_repository import GetRepository
 
 
 class UserGetRepository(GetRepository[User]):
-    def __init__(self):
-        super().__init__(User)
 
     async def get_user_by_email(self, email: str) -> Optional[User]:
         """

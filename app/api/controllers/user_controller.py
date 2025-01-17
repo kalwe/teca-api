@@ -5,6 +5,8 @@ from quart_schema import validate_request
 from app.api.decorators.response_decorator import ResponseDecorator
 from app.api.schemas.user_schema import UserInputSchema
 from app.core.services.user.create_user_service import UserCreateService
+from app.core.services.user.get_user_service import UserGetService
+from app.core.services.user.update_user_service import UserUpdateService
 
 
 class UserController:
@@ -26,7 +28,8 @@ class UserController:
         return user, HTTPStatus.CREATED
 
     @staticmethod
-    async def get_user(id):
+    @ResponseDecorator.build_response()
+    async def get_user(id: int):
         """
         Retrieves a user by ID.
 
@@ -37,10 +40,12 @@ class UserController:
             Tuple: A tuple containing the user data (or an error message)
             and the HTTP status code.
         """
-        # user_service = UserService()
-        return await FetchHandler.fetch_item(user_service, id)
+        user_get_service = UserGetService()
+        user = user_get_service.repository.get_by_id(id)
+        return user, HTTPStatus.OK
 
     @staticmethod
+    @ResponseDecorator.build_response()
     async def get_all_users():
         """
         Retrieves all users using FetchHelper to standardize error handling.
@@ -48,5 +53,13 @@ class UserController:
         Returns:
             Tuple: A tuple containing the list of users (or an error message) and the HTTP status code.
         """
-        # user_service = UserService()
-        return await FetchHandler.fetch_all(user_service)
+        user_get_service = UserGetService()
+        users = user_get_service.repository.get_all()
+        return users, HTTPStatus.OK
+
+    @staticmethod
+    @validate_request(UserInputSchema)
+    @ResponseDecorator.build_response()
+    async def update_user(user: UserInputSchema):
+        user_update_service = UserUpdateService()
+        user_update_service.update()

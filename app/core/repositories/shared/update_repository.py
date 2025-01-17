@@ -1,19 +1,21 @@
-from typing import Type, List, Optional
+from typing import Generic, Type, List, Optional, TypeVar
 
 from app.core.models.shared.base_entity import BaseEntity
 
+T = TypeVar("T")
 
-class UpdateRepository:
+
+class UpdateRepository(Generic[T]):
     """
     Abstract repository that defines common database operations.
     """
 
-    def __init__(self, model: Type[BaseEntity]):
+    def __init__(self, model: Type[T]):
         self.model = model
 
     async def update_record(
         self, record_id: int, **fields_data
-    ) -> Optional[BaseEntity]:
+    ) -> T:
         """
         Update fields for an existing record and increment its version.
         """

@@ -1,11 +1,11 @@
-from app.core.models.user_model import User
+from app.core.repositories.user.user_get_repository import UserGetRepository
 from app.core.services.shared.get_service import GetService
 
 
-class UserGetService(GetService[User]):
+class UserGetService():
     """
     Service for managing user-related business logic.
     """
 
-    def __init__(self, repository):
-        super().__init__(repository)
+    def __init__(self):
+        self.repository = UserGetRepository()
