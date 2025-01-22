@@ -1,9 +1,9 @@
 from tortoise import fields
 
-from app.core.models.shared.base_entity import BaseEntity
+from app.core.models.shared.base_model import BaseModel
 
 
-class Permission(BaseEntity):
+class Permission(BaseModel):
     """
     Represents a permission in the system
     (e.g., 'can_edit_employee', 'can_view_reports').

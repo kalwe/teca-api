@@ -1,18 +1,19 @@
 from tortoise import fields, Model
-from datetime import datetime
 from typing import Type, TypeVar
 
-T = TypeVar("T", bound="BaseEntity")
+from app.common.datetime_utils import aware_utcnow
+
+T = TypeVar("T", bound="BaseModel")
 
 
-class BaseEntity(Model):
+class BaseModel(Model):
     """
     Abstract base model containing common fields and utility methods
     for other models.
     All models should inherit from this class to share the same
     base functionality.
     """
-    id = fields.IntField(
+    id: int | None = fields.IntField(
         pk=True,
         description="Primary key for the record.",
     )
@@ -51,8 +52,8 @@ class BaseEntity(Model):
             T: The instance of the model after deactivation.
         """
         self.is_active = False
-        self.deleted_at = datetime.now()
-        await self.save()
+        self.deleted_at = aware_utcnow()
+        # await self.save()
         return self
 
     async def restore_record(self: T) -> T:
@@ -68,7 +69,7 @@ class BaseEntity(Model):
         """
         self.is_active = True
         self.deleted_at = None
-        await self.save()
+        # await self.save()
         return self
 
     def __str__(self: T) -> str:
@@ -107,18 +108,18 @@ class BaseEntity(Model):
         """
         return await cls.filter(is_active=False)
 
-    @classmethod
-    async def soft_delete_record(cls: Type[T], record_id: int) -> Type[T]:
-        """
-        Soft deletes a record by its ID.
+    # @classmethod
+    # async def soft_delete_record(cls: Type[T], record_id: int) -> Type[T]:
+    #     """
+    #     Soft deletes a record by its ID.
 
-        Args:
-            cls (Type[T]): The class of the model.
-            record_id (int): The ID of the record to be soft deleted.
+    #     Args:
+    #         cls (Type[T]): The class of the model.
+    #         record_id (int): The ID of the record to be soft deleted.
 
-        Returns:
-            Type[T]: The soft-deleted record.
-        """
-        record = await cls.get(id=record_id)
-        await record.deactivate_record()
-        return record
+    #     Returns:
+    #         Type[T]: The soft-deleted record.
+    #     """
+    #     record = await cls.get(id=record_id)
+    #     await record.deactivate_record()
+    #     return record

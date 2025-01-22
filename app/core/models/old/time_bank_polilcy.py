@@ -1,9 +1,9 @@
 from tortoise import fields
 
-from app.core.models.shared.base_entity import BaseEntity
+from app.core.models.shared.base_model import BaseModel
 
 
-class TimeBankPolicy(BaseEntity):
+class TimeBankPolicy(BaseModel):
     """
     Represents the time bank policy, such as limits for using overtime
     or how compensations are calculated.

@@ -15,7 +15,8 @@ class GetService(Generic[T]):
         Initialize the service with the provided repository.
 
         Args:
-            repository (Type[GetRepository[T]]): The repository class used for data access.
+            repository (Type[GetRepository[T]]): The repository class
+            used for data access.
         """
         self.repository = repository
 
@@ -29,18 +30,29 @@ class GetService(Generic[T]):
         Returns:
             Optional[T]: The retrieved record if found, otherwise None.
         """
-        if record_id <= 0:
-            raise ValueError(f"Invalid record ID: {record_id}")
+        try:
+            if record_id <= 0:
+                raise ValueError(f"Invalid record ID: {record_id}")
+            record = await self.repository.get_record_by_id(record_id=record_id)
+            if not record:
+                return None
 
-        record = await self.repository.get_by_id(record_id=record_id)
-        return record
+            return record
+        except Exception as e:
+            raise Exception(f"Failed GetService().get_by_id(): {e}") from e
 
-    async def get_all(self, filters: Optional[dict] = None) -> List[T]:
+    async def get_all(self, filters: Optional[dict] = None) -> Optional[List[T]]:
         """
         Retrieve all records from the repository.
 
         Returns:
             List[T]: A list of all retrieved records.
         """
-        records = await self.repository.get_all(filters=filters)
-        return records
+        try:
+            records = await self.repository.get_all_records(filters=filters)
+            if not records:
+                return None
+
+            return records
+        except Exception as e:
+            raise Exception(f"Failed GetService().get_all(): {e}") from e

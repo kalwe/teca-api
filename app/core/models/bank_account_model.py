@@ -1,9 +1,9 @@
 from tortoise import fields
 
-from app.core.models.shared.base_entity import BaseEntity
+from app.core.models.shared.base_model import BaseModel
 
 
-class BankAccount(BaseEntity):
+class BankAccount(BaseModel):
     """
     Model representing an bank account with details.
     """

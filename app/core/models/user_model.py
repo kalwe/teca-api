@@ -1,22 +1,23 @@
 from tortoise import fields
 
-from app.core.models.shared.base_entity import BaseEntity
+from app.core.models.shared.base_model import BaseModel
 
 
-class User(BaseEntity):
+class UserModel(BaseModel):
     """
     Represents a user in the system, who can have one or more roles.
 
     A user can have one or more roles, each granting different permissions.
     """
-    username = fields.CharField(
+    name = fields.CharField(
         max_length=80,
         unique=True,
-        description="The unique username for the user."
+        description="The unique user name for the user."
     )
     email = fields.CharField(
         max_length=255,
         unique=True,
+        index=True,
         description="The unique email address of the user."
     )
     password_hash = fields.CharField(
@@ -35,6 +36,6 @@ class User(BaseEntity):
         Returns the string representation of the User object.
 
         Returns:
-            str: The username of the user.
+            str: The name of the user.
         """
-        return self.username
+        return self.name

@@ -1,9 +1,9 @@
 from tortoise import fields
 
-from app.core.models.shared.base_entity import BaseEntity
+from app.core.models.shared.base_model import BaseModel
 
 
-class User(BaseEntity):
+class User(BaseModel):
     """
     Represents a user in the system, who can have one or more roles.
 

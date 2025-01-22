@@ -1,9 +1,9 @@
 from tortoise import fields
 
-from app.core.models.shared.base_entity import BaseEntity
+from app.core.models.shared.base_model import BaseModel
 
 
-class EmployeeRelatedModel(BaseEntity):
+class EmployeeRelatedModel(BaseModel):
     """
     Abstract model for data related to an employee.
     """

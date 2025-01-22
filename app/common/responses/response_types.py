@@ -11,7 +11,7 @@ if TYPE_CHECKING:
         BodyErrorSchema, BodySuccessSchema)
 
 # Define a type for data body(JSON)
-DataBodyType = Dict[str, Any]
+DictType = Dict[str, Any]
 
 # Define a type alias for the response body schema
 BodySchemaType = Union[BodySuccessSchema, BodyErrorSchema]
@@ -22,4 +22,4 @@ ErrorDetailsType = Union[list[ErrorDetails], Exception]
 # Define a type alias for Result extraction
 ResultType = Union[Any, Tuple[Any, int]]
 # Less flexible
-ResultReturnType = Tuple[DataBodyType, HTTPStatus]
+ResultReturnType = Tuple[DictType, HTTPStatus]

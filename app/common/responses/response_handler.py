@@ -10,7 +10,7 @@ from app.common.responses.response_error_handler import ResponseErrorHandler
 from app.common.responses.response_schema import (
     ResponseSchema, ResultSchema)
 from app.common.responses.response_types import (
-    BodySchemaType, DataBodyType, ResultType, ResultReturnType)
+    BodySchemaType, DictType, ResultType, ResultReturnType)
 
 
 class ResponseHandler:
@@ -51,13 +51,13 @@ class ResponseHandler:
 
     @staticmethod
     def create_success_response(
-            data: DataBodyType,
+            data: DictType,
             http_code: HTTPStatus) -> ResponseSchema:
         """
         Creates a standardized success response.
 
         Args:
-            data (DataBodyType): The data payload for the response.
+            data (DictType): The data payload for the response.
             http_code (HTTPStatus): The HTTP status code for the response.
 
         Returns:

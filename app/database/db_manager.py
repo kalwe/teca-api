@@ -1,14 +1,15 @@
-from app.config import Config
+from quart import Quart
+from app.config import TORTOISE_ORM, Config
 from tortoise import Tortoise
 from threading import Lock
 
 
-class DatabaseManager:
+class DatabaseManager():
     """Singleton class for managing the database connection."""
     _instance = None
     _lock = Lock()
 
-    def __new__(cls, *args, **kwargs):
+    def __new__(cls, app: Quart, *args, **kwargs):
         """Ensure only one instance is created (thread-safe)."""
         if cls._instance is None:
             with cls._lock:
@@ -28,7 +29,9 @@ class DatabaseManager:
             try:
                 await Tortoise.init(
                     db_url=Config.DB_URI,
-                    modules={'models': ['app.models', "aerich.models"]}
+                    modules={
+                        "models": TORTOISE_ORM["apps"]["models"]["models"]
+                    }
                 )
                 await Tortoise.generate_schemas()
                 self._initialized = True

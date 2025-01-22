@@ -1,13 +1,13 @@
 from http import HTTPStatus
 from typing import Dict, List, Optional
-from pydantic import BaseSchema, Field
+from pydantic import Field
 
-from app.common.base_schema import BaseSchema
+from app.common.common_schema import CommonSchema
 from app.common.responses.enums import ResponseStatus
-from app.common.responses.response_types import BodySchemaType, DataBodyType
+from app.common.responses.response_types import BodySchemaType, DictType
 
 
-class BaseResponse(BaseSchema):
+class BaseResponse(CommonSchema):
     """
     Schema representing a response result with body and HTTP code.
 
@@ -17,7 +17,7 @@ class BaseResponse(BaseSchema):
         headers (Optional[Dict[str, str]]): Optional headers for the response.
         content_type (Optional[str]): Content type of the response, defaults to "application/json".
     """
-    body: DataBodyType
+    body: DictType
     status: HTTPStatus = Field(
         ...,
         description="The HTTP status code of the response.",
@@ -35,7 +35,7 @@ class BaseResponse(BaseSchema):
         use_enum_values = True  # Serialize Enums as their values
 
 
-class BodySuccessSchema(BaseSchema):
+class BodySuccessSchema(CommonSchema):
     """
     Schema for a successful response.
 
@@ -46,13 +46,13 @@ class BodySuccessSchema(BaseSchema):
     """
     status: ResponseStatus
     message: str
-    data: DataBodyType
+    data: DictType
 
     class Config:
         use_enum_values = True  # Serialize Enums as their values
 
 
-class ErrorDetailSchema(BaseSchema):
+class ErrorDetailSchema(CommonSchema):
     """
     Schema for individual error details.
 
@@ -60,11 +60,17 @@ class ErrorDetailSchema(BaseSchema):
         message (str): A descriptive message about the error.
         details (str): Additional details explaining the error.
     """
-    message: str
-    details: str
+    message: str = Field(
+        ...,
+        description="Error message from Exception"
+    )
+    details: str = Field(
+        ...,
+        description="Error details from Exception"
+    )
 
 
-class BodyErrorSchema(BaseSchema):
+class BodyErrorSchema(CommonSchema):
     """
     Schema for an error response.
 
@@ -92,11 +98,11 @@ class ResponseSchema(BaseResponse):
     """
     body: BodySchemaType = Field(
         ...,
-        description="The main body of the response.",
+        description="The main body(JSON) of the response.",
     )
 
 
-class ResultSchema(BaseSchema):
+class ResultSchema(CommonSchema):
     """
     Schema for the result extracted from a controller.
 
@@ -104,5 +110,5 @@ class ResultSchema(BaseSchema):
         data (Dict[str, Any]): The data returned by the controller.
         http_code (HTTPStatus): The HTTP status code associated with the result.
     """
-    data: DataBodyType
+    data: DictType
     http_code: HTTPStatus

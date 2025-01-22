@@ -1,10 +1,10 @@
 from tortoise import fields
 
 
-from app.core.models.shared.base_entity import BaseEntity
+from app.core.models.shared.base_model import BaseModel
 
 
-class Contact(BaseEntity):
+class Contact(BaseModel):
     """
     Represents a contact information's
     """

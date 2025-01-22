@@ -1,9 +1,9 @@
 from tortoise import fields
 
-from app.core.models.shared.base_entity import BaseEntity
+from app.core.models.shared.base_model import BaseModel
 
 
-class Resume(BaseEntity):
+class Resume(BaseModel):
     """
     Model for storing resumes of job candidates.
     """

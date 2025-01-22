@@ -2,7 +2,7 @@ from http import HTTPStatus
 
 from app.common.responses.enums import ResponseMessages, ResponseStatus
 from app.common.responses.response_schema import BodySuccessSchema
-from app.common.responses.response_types import DataBodyType
+from app.common.responses.response_types import DictType
 
 
 class ResponseFactory:
@@ -12,7 +12,7 @@ class ResponseFactory:
 
     @staticmethod
     def create_success_body(
-            data: DataBodyType,
+            data: DictType,
             http_code: HTTPStatus) -> BodySuccessSchema:
         """
         Creates a success body schema.

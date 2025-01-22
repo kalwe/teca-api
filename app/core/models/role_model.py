@@ -1,9 +1,9 @@
 from tortoise import fields
 
-from app.core.models.shared.base_entity import BaseEntity
+from app.core.models.shared.base_model import BaseModel
 
 
-class Role(BaseEntity):
+class Role(BaseModel):
     """
     Represents a role in the system, grouping a set of permissions
     (e.g., 'Admin', 'Manager').

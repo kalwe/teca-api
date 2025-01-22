@@ -2,10 +2,10 @@ from tortoise import fields
 
 from app.core.enums.gender_enum import GenderType
 from app.core.enums.marital_status_enum import MaritalStatusType
-from app.core.models.shared.base_entity import BaseEntity
+from app.core.models.shared.base_model import BaseModel
 
 
-class PersonModel(BaseEntity):
+class PersonModel(BaseModel):
     """
     Abstract model for person-related details.
     """

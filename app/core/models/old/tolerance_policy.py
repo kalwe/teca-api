@@ -1,9 +1,9 @@
 from tortoise import fields
 
-from app.core.models.shared.base_entity import BaseEntity
+from app.core.models.shared.base_model import BaseModel
 
 
-class TolerancePolicy(BaseEntity):
+class TolerancePolicy(BaseModel):
     """
     Represents the tolerance policy for delays and compensations.
     """

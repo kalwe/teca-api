@@ -1,24 +1,26 @@
-from typing import List, Optional
+from typing import List, Optional, Type, TypeVar
 from app.api.schemas.user_schema import UserOutputSchema
-from app.core.models.user_model import User
+from app.core.models.user_model import UserModel
 from app.core.repositories.shared.get_repository import GetRepository
 
+T = TypeVar("T", bound=UserModel)
 
-class UserGetRepository(GetRepository[User]):
-    def __init__(self, model: type[User]):
+
+class UserGetRepository(GetRepository[UserModel]):
+    def __init__(self, model_class: Type[UserModel]):
         """
-        Initialize the repository with the User model.
+        Initialize the repository with the User model_class.
 
         Args:
-            model (type[User]): The User model class to be managed by
+            model_class (type[User]): The User model_class class to be managed by
             the repository.
         """
-        super().__init__(model)
+        super().__init__(model_class)
 
     async def get_user_by_email(
         self,
         email: str
-    ) -> Optional[UserOutputSchema]:
+    ) -> Optional[UserModel]:
         """
         Retrieve a user by their email address.
 
@@ -28,12 +30,17 @@ class UserGetRepository(GetRepository[User]):
         Returns:
             Optional[UserOutputSchema]: The serialized user data or None if not found.
         """
-        user = await self.model.filter(email=email).first()
-        if user:
-            return UserOutputSchema.model_validate(user)
-        return None
+        try:
+            user = await self.model_class.filter(email=email).first()
+            if not user:
+                return None
 
-    async def get_users_by_role(self, role: str) -> List[UserOutputSchema]:
+            return user
+        except Exception as e:
+            raise Exception(
+                f"Failed repository get_user_by_email(): {e}") from e
+
+    async def get_users_by_role(self, role: str) -> List[UserModel]:
         """
         Fetch users by their role and return serialized data.
 
@@ -43,5 +50,12 @@ class UserGetRepository(GetRepository[User]):
         Returns:
             List[UserOutputSchema]: A list of serialized users with the specified role.
         """
-        users = await self.model.filter(roles__contains=[role]).all()
-        return [UserOutputSchema.model_validate(user) for user in users]
+        try:
+            users = await self.model_class.filter(roles__contains=[role]).all()
+            if not users:
+                return None
+
+            return users
+        except Exception as e:
+            raise Exception(
+                f"Failed repository get_users_by_role(): {e}") from e

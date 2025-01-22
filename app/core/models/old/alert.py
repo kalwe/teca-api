@@ -1,7 +1,7 @@
 from tortoise import fields
 from typing import List, Protocol
 
-from app.core.models.shared.base_entity import BaseEntity
+from app.core.models.shared.base_model import BaseModel
 
 
 class Notifiable(Protocol):
@@ -29,7 +29,7 @@ class AlertEvent:
         return f"Alert for {self.alert_type} to {self.recipient_email}"
 
 
-class Alert(BaseEntity):
+class Alert(BaseModel):
     """
     Represents an alert to be sent to an employee, using an injectable notifier.
     """

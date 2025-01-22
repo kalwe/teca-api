@@ -1,9 +1,9 @@
 from tortoise import fields
 
-from app.core.models.shared.base_entity import BaseEntity
+from app.core.models.shared.base_model import BaseModel
 
 
-class RecruitmentIntegration(BaseEntity):
+class RecruitmentIntegration(BaseModel):
     """
     Represents the integration settings for the recruitment system,
     such as API keys or URLs.

@@ -1,13 +1,15 @@
 from typing import Generic, Optional, Type, TypeVar
 
+from app.core.models.shared.base_model import BaseModel
 
-T = TypeVar("T")
+
+T = TypeVar("T", bound=BaseModel)
 
 
 class CreateRepository(Generic[T]):
     """
     Abstract repository class providing common database operations for a
-    specified model type.
+    specified model_class type.
 
     This generic repository is designed to operate with models that
     follow an asynchronous
@@ -18,8 +20,9 @@ class CreateRepository(Generic[T]):
     for creating records in the database.
 
     Attributes:
-        model (Type[T]): The model class associated with the repository.
-        This model class
+        model_class (Type[T]): The model_class class associated with
+        the repository.
+        This model_class class
             should support asynchronous methods like `create`.
 
     Methods:
@@ -29,38 +32,46 @@ class CreateRepository(Generic[T]):
             field data.
     """
 
-    def __init__(self, model: Type[T]):
+    def __init__(self, model_class: Type[T]):
         """
-        Initialize the repository with a specific model class.
+        Initialize the repository with a specific model_class class.
 
         Args:
-            model (Type[T]): The model class to be managed by the repository.
+            model_class (Type[T]): The model_class class to be managed by
+            the repository.
         """
-        self.model = model
+        self.model_class = model_class
 
     async def create_record(self, **fields_data) -> Optional[T]:
         """
         Create a new record in the database.
 
-        This method uses the `create` method of the associated model to persist
-        a new record in the database. The field data provided as keyword arguments
-        should match the fields defined in the model schema.
+        This method uses the `create` method of the associated model_class
+        to persist
+        a new record in the database. The field data provided as keyword
+        arguments
+        should match the fields defined in the model_class schema.
 
         Args:
-            **fields_data: Arbitrary keyword arguments representing the field data
+            **fields_data: Arbitrary keyword arguments representing the
+            field data
                 required to create a new record. The keys should correspond to
-                model field names.
+                model_class field names.
 
         Returns:
-            T: An instance of the created model, representing the newly persisted
+            T: An instance of the created model_class, representing
+            the newly persisted
             record in the database.
 
         Raises:
-            ValueError: If the provided field data does not match the model schema.
-            Exception: Any exception raised by the model's `create` method.
+            ValueError: If the provided field data does not match the
+            model_class schema.
+            Exception: Any exception raised by the model_class's
+            `create` method.
         """
         try:
-            created_record = await self.model.create(**fields_data)
+            created_record = await self.model_class.create(**fields_data)
             return created_record
         except Exception as e:
-            raise Exception(f"Failed to create record: {e}")
+            raise Exception(
+                f"Failed CreateRepository().create_record(): {e}") from e

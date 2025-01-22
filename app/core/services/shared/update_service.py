@@ -1,4 +1,4 @@
-from typing import Generic, TypeVar
+from typing import Generic, Optional, TypeVar
 from app.core.repositories.shared.update_repository import UpdateRepository
 
 T = TypeVar("T")
@@ -15,7 +15,13 @@ class UpdateService(Generic[T]):
         """
         self.repository = repository
 
-    async def update_record(self, record, **fields_data) -> T:
-        updated_record = await self.repository.update_record(record,
-                                                             **fields_data)
-        return updated_record
+    async def update_data(self, record, **fields_data) -> Optional[T]:
+        try:
+            updated_record = await self.repository.update_record(record,
+                                                                 **fields_data)
+            if not updated_record:
+                return None
+
+            return updated_record
+        except Exception as e:
+            raise Exception(f"Failed UpdateService.update_record")

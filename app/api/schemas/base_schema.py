@@ -1,14 +1,16 @@
 from datetime import datetime
-from typing import Optional
+from typing import Any, Optional, Self
 from pydantic import BaseModel, ConfigDict, Field
 
-from app.common.responses.response_types import DataBodyType
+from app.common.datetime_utils import aware_utcnow
+from app.common.responses.response_types import DictType
 
 
-class TimestampsMixin(BaseModel):
+class TimestampsMixin():
     created_at: datetime = Field(
         ...,
-        description="Timestamp when the record was created."
+        description="Timestamp when the record was created.",
+        # default_factory=aware_utcnow()
     )
     updated_at: datetime = Field(
         ...,
@@ -16,7 +18,7 @@ class TimestampsMixin(BaseModel):
     )
 
 
-class SoftDeleteMixin(BaseModel):
+class SoftDeleteMixin():
     is_active: bool = Field(
         default=True,
         description="Indicates whether the record is active or not."
@@ -27,42 +29,42 @@ class SoftDeleteMixin(BaseModel):
     )
 
 
-class BaseSchema(TimestampsMixin, SoftDeleteMixin):
+class BaseSchema(BaseModel, TimestampsMixin, SoftDeleteMixin):
     """
-    Base class for defining generic fields for models using Quart-Schema and Pydantic.
+    Base class for defining generic fields for models using Quart-Schema
+    and Pydantic.
     """
     id: int = Field(
         ...,
         description="Primary key for the record.",
-        gt=0,
+        # gt=0,
     )
     version: int = Field(
         default=1,
         description="Version of the record for optimistic concurrency."
     )
 
-    # def get_fields(self) -> DataBodyType:
-    #     """
-    #     Each subclass should implement this method to define model-specific fields.
-    #     """
-    #     raise NotImplementedError(
-    #         "Subclasses must implement get_fields method.")
+    def validate_json(self, json):
+        return self.model_validate_json(json)
 
-    def dump(self) -> DataBodyType:
+    def validate(self, model: Any) -> Self:
+        return self.model_validate(model)
+
+    def dump(self) -> DictType:
         """
         Serializes the model instance into a dictionary.
         """
         return self.model_dump()
 
+    def dump_json(self) -> str:
+        return self.model_dump_json()
+
     # Allows parsing from ORM instances
     model_config = ConfigDict(from_attributes=True)
 
-    class Config:
-        orm_mode = True  # Enable compatibility with ORM objects
-
 
 class BaseInputSchema(BaseSchema):
-    id: int | None = Field(
+    id: Optional[int] = Field(
         ...,
         description="Primary key for the record.",
     )

@@ -49,7 +49,7 @@ Para executar as migrações do banco de dados, utilize os seguintes comandos:
 
 ```bash
 docker exec -it <container_id> /bin/sh
-aerich init -t app.config.TORTOISE_ORM
+aerich init -t app.database.config.TORTOISE_ORM
 aerich init-db
 aerich migrate
 aerich update

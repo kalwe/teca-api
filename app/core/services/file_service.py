@@ -1,5 +1,5 @@
 
-from app.core.models.shared.base_entity import BaseEntity
+from app.core.models.shared.base_model import BaseModel
 from app.core.repositories.shared.get_repository import BaseRepository
 
 
@@ -13,7 +13,7 @@ class FileUploadService:
     def __init__(self, repository: BaseRepository):
         self.repository = repository
 
-    async def upload_file(self, file_path: str, file_extension: str, uploader_id: int) -> BaseEntity:
+    async def upload_file(self, file_path: str, file_extension: str, uploader_id: int) -> BaseModel:
         """
         Validates file type and uploads the file.
         """

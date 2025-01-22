@@ -1,9 +1,9 @@
 from tortoise import fields
 
-from app.core.models.shared.base_entity import BaseEntity
+from app.core.models.shared.base_model import BaseModel
 
 
-class ManualAdjustment(BaseEntity):
+class ManualAdjustment(BaseModel):
     """
     Represents a manual adjustment made by a manager on an employee's hours.
     """

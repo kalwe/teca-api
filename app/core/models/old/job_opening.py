@@ -1,9 +1,9 @@
 from tortoise import fields
 
-from app.core.models.shared.base_entity import BaseEntity
+from app.core.models.shared.base_model import BaseModel
 
 
-class JobOpening(BaseEntity):
+class JobOpening(BaseModel):
     """
     Model to represent a job opening within the company.
     """

@@ -1,4 +1,4 @@
-from .shared.base_entity import BaseEntity
+from .shared.base_model import BaseModel
 from .enums import EmploymentStatus
 from .employee import Employee
 from .employee_related import EmployeeRelatedModel

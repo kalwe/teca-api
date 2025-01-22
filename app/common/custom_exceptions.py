@@ -73,3 +73,31 @@ class UserAlreadyExistsException(Exception):
             str: The error message.
         """
         return self.message
+
+
+class UserNotFoundException(Exception):
+    """
+    Exception raised when attempting to create a user that already exists.
+
+    Attributes:
+        message (str): Explanation of the error.
+    """
+
+    def __init__(self, message: str = "User already exists."):
+        """
+        Initialize the exception with an optional custom message.
+
+        Args:
+            message (str): Custom error message. Defaults to "User already exists."
+        """
+        self.message = message
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        """
+        Return the string representation of the exception.
+
+        Returns:
+            str: The error message.
+        """
+        return self.message

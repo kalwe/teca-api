@@ -1,7 +1,7 @@
 from tortoise import fields
 from datetime import timedelta
 
-from app.core.models.shared.base_entity import BaseEntity
+from app.core.models.shared.base_model import BaseModel
 from app.core.models.employee_related import EmployeeRelatedModel
 
 
@@ -81,7 +81,7 @@ class Workday(EmployeeRelatedModel):
         return f"Workday for {self.employee.full_name} - Total Hours Worked: {self.total_hours_worked}"
 
 
-class WorkSchedule(BaseEntity):
+class WorkSchedule(BaseModel):
     """
     Represents the standard work schedule, including start time, end time, and break duration.
     This schedule defines the expected working hours for employees.

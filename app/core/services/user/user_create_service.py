@@ -1,16 +1,16 @@
-from typing import List, Optional
-from app.api.schemas.user_schema import UserOutputSchema
+from typing import List, Optional, TypeVar
+from app.api.schemas.user_schema import UserOutputSchema, UserInputSchema
 from app.common.crypto_utils import hash_password
 from app.common.custom_exceptions import UserAlreadyExistsException
-from app.core.models.user_model import User
+from app.core.models.user_model import UserModel
 from app.core.repositories.user.user_create_repository import (
     UserCreateRepository)
 from app.core.repositories.user.user_get_repository import UserGetRepository
 from app.core.services.shared.create_service import CreateService
-from app.core.services.user.get_user_service import UserGetService
+from app.core.services.user.user_get_service import UserGetService
 
 
-class UserCreateService(CreateService[User]):
+class UserCreateService(CreateService[UserModel]):
     """
     Service for managing user-related business logic.
     Handles creation of new users with role assignment and password hashing.
@@ -25,20 +25,15 @@ class UserCreateService(CreateService[User]):
                 to handle data persistence for the User model.
         """
         super().__init__(repository)
-        self.repository = repository
+        # self.repository = repository
+        self.get_service = UserGetService(UserGetRepository())
 
-    async def create(
-        self,
-        username: str,
-        email: str,
-        password: str,
-        roles: Optional[List[str]] = None
-    ) -> UserOutputSchema:
+    async def create(self, user: UserInputSchema) -> UserOutputSchema:
         """
         Create a new user with additional business logic.
 
         Args:
-            username (str): The username of the user.
+            name (str): The name of the user.
             email (str): The email of the user.
             password (str): The plain-text password to be hashed.
             roles (Optional[List[str]]): List of roles to assign to the user.
@@ -52,7 +47,7 @@ class UserCreateService(CreateService[User]):
         Create a new user with additional business logic.
 
         Args:
-            username (str): The username of the user.
+            name (str): The name of the user.
             email (str): The email of the user.
             password (str): The plain-text password to be hashed.
             roles (Optional[List[str]]): List of roles to assign to the user.
@@ -63,31 +58,27 @@ class UserCreateService(CreateService[User]):
         Raises:
             UserAlreadyExistsException: If a user with the given email already exists.
         """
-        roles = roles or ["user"]  # Assign default role if none provided
+        roles = user.roles or ["user"]  # Assign default role if none provided
 
-        # Check if a user with the email already exists
-        user_get_repository = UserGetRepository()
-        user_get_service = UserGetService(user_get_repository)
-        existing_user = await user_get_service.get_user_by_email(
-            email
-        )
-        if existing_user:
-            raise UserAlreadyExistsException(
-                f"User with email {email} already exists."
+        try:
+            # Check if a user with the email already exists
+            existing_user = await self.get_service.get_by_email(
+                user.email
             )
+            if existing_user:
+                raise UserAlreadyExistsException(
+                    f"User with email {user.email} already exists."
+                )
 
-        password_hash = hash_password(password)
+            password_hash = hash_password(user.password_hash)
 
-        created_user = await self.create_record(
-            username=username,
-            email=email,
-            password_hash=password_hash,
-            roles=roles
-        )
-        return UserOutputSchema.model_validate(created_user)
-
-# Instantiate the repository
-# user_repository = UserCreateRepository(User)
-
-# # Initialize the service
-# user_service = UserCreateService(user_repository)
+            created_user = await self.create_record(
+                name=user.name,
+                email=user.email,
+                password_hash=password_hash,
+                roles=roles
+            )
+            return UserOutputSchema().dump_json(created_user)
+        except Exception as e:
+            raise Exception(
+                f"Failed UserCreateService().create(): {e}") from e

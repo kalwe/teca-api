@@ -1,6 +1,8 @@
-from typing import Generic, Type, List, Optional, TypeVar
+from typing import Generic, Type, Optional, TypeVar
 
-T = TypeVar("T")
+from app.core.models.shared.base_model import BaseModel
+
+T = TypeVar("T", bound=BaseModel)
 
 
 class UpdateRepository(Generic[T]):
@@ -8,17 +10,21 @@ class UpdateRepository(Generic[T]):
     Abstract repository that defines common database operations.
     """
 
-    def __init__(self, model: Type[T]):
-        self.model = model
+    def __init__(self, model_class: Type[T]):
+        self.model_class = model_class
 
     async def update_record(
-        self, record: Type[T], **fields_data
-    ) -> T:
+        self, **fields_data
+    ) -> Optional[T]:
         """
         Update fields for an existing record and increment its version.
         """
         for field_name, value in fields_data.items():
-            setattr(record, field_name, value)
-        record.version += 1
-        await record.save()
-        return record
+            setattr(self.model_class, field_name, value)
+        self.model_class.version += 1
+        try:
+            await self.model_class.save()
+            return self.model_class
+        except Exception as e:
+            raise Exception(
+                f"Failed UpdateRepository.update_record(): {e}") from e

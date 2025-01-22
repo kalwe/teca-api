@@ -1,11 +1,11 @@
 from tortoise import fields
 
-from app.core.models.shared.base_entity import BaseEntity
+from app.core.models.shared.base_model import BaseModel
 
 # TODO: verified is this class is necessary
 
 
-class PayrollExportRecord(BaseEntity):
+class PayrollExportRecord(BaseModel):
     """
     Represents the export of reports for payroll.
     """
