@@ -2,6 +2,6 @@ from enum import Enum
 
 
 class MaritalStatusType(Enum):
-    SINGLE = 'single'
-    MARRIED = 'married'
-    DIVORCED = 'divorced'
+    SINGLE = 'SINGLE'
+    MARRIED = 'MARRIED'
+    DIVORCED = 'DIVORCED'

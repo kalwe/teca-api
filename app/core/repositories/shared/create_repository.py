@@ -1,12 +1,9 @@
-from typing import Generic, Optional, Type, TypeVar
+from typing import Optional
 
 from app.core.models.shared.base_model import BaseModel
 
 
-T = TypeVar("T", bound=BaseModel)
-
-
-class CreateRepository(Generic[T]):
+class CreateRepository[T: BaseModel]():
     """
     Abstract repository class providing common database operations for a
     specified model_class type.
@@ -20,7 +17,7 @@ class CreateRepository(Generic[T]):
     for creating records in the database.
 
     Attributes:
-        model_class (Type[T]): The model_class class associated with
+        model_class (T): The model_class class associated with
         the repository.
         This model_class class
             should support asynchronous methods like `create`.
@@ -32,17 +29,17 @@ class CreateRepository(Generic[T]):
             field data.
     """
 
-    def __init__(self, model_class: Type[T]):
+    def __init__(self, model_class: T):
         """
         Initialize the repository with a specific model_class class.
 
         Args:
-            model_class (Type[T]): The model_class class to be managed by
+            model_class (T): The model_class class to be managed by
             the repository.
         """
         self.model_class = model_class
 
-    async def create_record(self, **fields_data) -> Optional[T]:
+    async def create_record(self, fields_data: T) -> Optional[T]:
         """
         Create a new record in the database.
 

@@ -1,9 +1,9 @@
 from http import HTTPStatus
-from quart_schema import validate_request
+from typing import List
+from quart_schema import validate_request, validate_response
 
-from app.api.decorators.response_decorator import ResponseDecorator
-from app.api.schemas.user_schema import UserInputSchema
-from app.core.models.user_model import UserModel
+from app.api.schemas.user_schema import UserInputSchema, UserOutputSchema
+from app.core.models.user_model import User
 from app.core.repositories.user.user_create_repository import UserCreateRepository
 from app.core.repositories.user.user_delete_repository import UserDeleteRepository
 from app.core.repositories.user.user_get_repository import UserGetRepository
@@ -12,7 +12,7 @@ from app.core.services.user.user_create_service import UserCreateService
 from app.core.services.user.user_delete_service import UserDeleteService
 from app.core.services.user.user_get_service import UserGetService
 from app.core.services.user.user_update_service import UserUpdateService
-from app.api.routes import api
+from app.api.routes import user_bp
 
 
 class UserController:
@@ -21,21 +21,20 @@ class UserController:
     """
     @staticmethod
     @validate_request(UserInputSchema)
-    @ResponseDecorator.build_response()
-    @api.route('/user', methods=['POST'])
-    async def create_user(data: UserInputSchema):
+    @user_bp.route('/', methods=['POST'])
+    @validate_response(UserOutputSchema)
+    async def create_user(data: User):
         """
         Creates a new user from the incoming JSON data.
 
         Returns:
             Tuple: A tuple containing the user data and the HTTP status code.
         """
-        service = UserCreateService(UserCreateRepository(UserModel))
-        user = service.create(**data)
+        service = UserCreateService(UserCreateRepository(User()))
+        user = service.create(data)
         return user, HTTPStatus.CREATED
 
     @staticmethod
-    @ResponseDecorator.build_response()
     async def get_user(id: int):
         """
         Retrieves a user by ID.
@@ -47,13 +46,13 @@ class UserController:
             Tuple: A tuple containing the user data (or an error message)
             and the HTTP status code.
         """
-        service = UserGetService(UserGetRepository())
-        user = service.get_user(id)
+        service = UserGetService(UserGetRepository(User()))
+        user = service.get(id)
         return user, HTTPStatus.OK
 
     @staticmethod
-    @ResponseDecorator.build_response()
-    @api.route('/user', methods=['GET'])
+    @user_bp.route('/', methods=['GET'])
+    @validate_response(List[UserOutputSchema])
     async def get_all_users():
         """
         Retrieves all users using FetchHelper to standardize error handling.
@@ -61,23 +60,22 @@ class UserController:
         Returns:
             Tuple: A tuple containing the list of users (or an error message) and the HTTP status code.
         """
-        service = UserGetService(UserGetRepository())
-        users = service.get_all_users()
+        service = UserGetService(UserGetRepository(User()))
+        users = service.get_all()
         return users, HTTPStatus.OK
 
     @staticmethod
     @validate_request(UserInputSchema)
-    @ResponseDecorator.build_response()
-    @api.route('/user', methods=['POST'])
-    async def update_user(id: int, data: UserInputSchema):
-        service = UserUpdateService(UserUpdateRepository())
-        user = service.update(id, **data.dump)
+    @user_bp.route('/', methods=['POST'])
+    @validate_response(UserOutputSchema)
+    async def update_user(id: int, data: User):
+        service = UserUpdateService(UserUpdateRepository(User()))
+        user = service.update(id, data)
         return user, HTTPStatus.OK
 
     @staticmethod
-    @ResponseDecorator.build_response()
-    @api.route('/user', methods=['DELETE'])
+    @user_bp.route('/', methods=['DELETE'])
     async def delete_user(id: int):
-        service = UserDeleteService(UserDeleteRepository())
+        service = UserDeleteService(UserDeleteRepository(User()))
         user = service.delete(id)
-        return user, HTTPStatus.OK
+        return user["is_active"], HTTPStatus.NO_CONTENT

@@ -1,10 +1,12 @@
 from quart import Quart
-from app.config import TORTOISE_ORM, Config
+from app.config import Config
 from tortoise import Tortoise
 from threading import Lock
 
+from app.database.config import TORTOISE_ORM
 
-class DatabaseManager():
+
+class DatabaseManager:
     """Singleton class for managing the database connection."""
     _instance = None
     _lock = Lock()

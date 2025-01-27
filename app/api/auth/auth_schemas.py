@@ -1,14 +1,18 @@
-from pydantic import BaseModel, EmailStr, Field, SecretStr
+from pydantic import BaseModel, Field
 
-from app.api.schemas.user_schema import UserBaseSchema, UserPasswordSchema
+from app.api.schemas.user_schema import UserPasswordMixin
 
 
-class UserLoginSchema(BaseModel, UserPasswordSchema):
-    email: EmailStr = Field(
+class UseAuthInputSchema(BaseModel, UserPasswordMixin):
+    name: str = Field(
         ...,
-        description="Email as username to login.",
-        max_length=255,
+        description="Username to login.",
+        max_length=80,
     )
 
 
-class RegisterSchema(UserBaseSchema, UserPasswordSchema):
+class UserAuthOutputLoginSchema(BaseModel):
+    current_user_id: int
+    name: str
+    id_authenticated: bool
+    token: str

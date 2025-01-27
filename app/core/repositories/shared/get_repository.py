@@ -1,24 +1,21 @@
-from typing import Generic, Type, List, Optional, TypeVar
+from typing import List, Optional
 
 from app.core.models.shared.base_model import BaseModel
 
 
-T = TypeVar("T", bound=BaseModel)
-
-
-class GetRepository(Generic[T]):
+class GetRepository[T: BaseModel]:
     """
     Abstract repository that defines common database operations.
     """
 
-    def __init__(self, model_class: Type[T]):
+    def __init__(self, model_class: T):
         """
         Initialize the repository with the model class.
         :param model_class: The model class to operate on.
         """
         self.model_class = model_class
 
-    async def get_record_by_id(self, record_id: int) -> Optional[T]:
+    async def get_record_by_id(self) -> Optional[T]:
         """
         Retrieve a record by its ID if it is active.
 
@@ -30,17 +27,17 @@ class GetRepository(Generic[T]):
             otherwise None.
         """
         try:
-            record = await self.model_class.get_or_none(id=record_id,
+            record = await self.model_class.get_or_none(id=self.model_class.id,
                                                         is_active=True)
             return record
         except Exception as e:
             raise Exception(
-                f"Failed to retrieve record by ID {record_id}: {e}") from e
+                f"Failed to retrieve record by ID {self.model_class.id}: {e}") from e
 
     async def get_all_records(
         self,
         filters: Optional[dict] = None
-    ) -> List[T]:
+    ) -> Optional[List[T]]:
         """
         Retrieve all records, optionally applying filters.
 

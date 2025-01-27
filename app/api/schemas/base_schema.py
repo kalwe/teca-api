@@ -1,24 +1,19 @@
 from datetime import datetime
-from typing import Any, Optional, Self
+from typing import Any, Optional
 from pydantic import BaseModel, ConfigDict, Field
 
-from app.common.datetime_utils import aware_utcnow
-from app.common.responses.response_types import DictType
 
-
-class TimestampsMixin():
+class TimestampsMixin:
     created_at: datetime = Field(
-        ...,
         description="Timestamp when the record was created.",
         # default_factory=aware_utcnow()
     )
-    updated_at: datetime = Field(
-        ...,
+    updated_at: Optional[datetime] = Field(
         description="Timestamp when the record was last updated."
     )
 
 
-class SoftDeleteMixin():
+class SoftDeleteMixin:
     is_active: bool = Field(
         default=True,
         description="Indicates whether the record is active or not."
@@ -34,6 +29,9 @@ class BaseSchema(BaseModel, TimestampsMixin, SoftDeleteMixin):
     Base class for defining generic fields for models using Quart-Schema
     and Pydantic.
     """
+    # Allows parsing from ORM instances
+    model_config = ConfigDict(from_attributes=True)
+
     id: int = Field(
         ...,
         description="Primary key for the record.",
@@ -44,13 +42,13 @@ class BaseSchema(BaseModel, TimestampsMixin, SoftDeleteMixin):
         description="Version of the record for optimistic concurrency."
     )
 
-    def validate_json(self, json):
-        return self.model_validate_json(json)
-
-    def validate(self, model: Any) -> Self:
+    def validate(self, model):
         return self.model_validate(model)
 
-    def dump(self) -> DictType:
+    def validate_json(self, model):
+        return self.model_validate_json(model)
+
+    def dump(self) -> dict[str, Any]:
         """
         Serializes the model instance into a dictionary.
         """
@@ -59,16 +57,12 @@ class BaseSchema(BaseModel, TimestampsMixin, SoftDeleteMixin):
     def dump_json(self) -> str:
         return self.model_dump_json()
 
-    # Allows parsing from ORM instances
-    model_config = ConfigDict(from_attributes=True)
 
-
-class BaseInputSchema(BaseSchema):
+class InputBaseSchema(BaseSchema):
     id: Optional[int] = Field(
-        ...,
         description="Primary key for the record.",
     )
 
 
-class BaseOutputSchema(BaseSchema):
+class OutputBaseSchema(BaseSchema):
     pass

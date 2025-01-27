@@ -3,23 +3,15 @@ from tortoise import fields
 from app.core.models.shared.base_model import BaseModel
 
 
-class Role(BaseModel):
+class Function(BaseModel):
     """
-    Represents a role in the system, grouping a set of permissions
-    (e.g., 'Admin', 'Manager').
+    Represents a function of the employee
 
-    A role defines a collection of permissions that a user can have.
     """
     name = fields.CharField(
         max_length=120,
         unique=True,
-        description="Name for role",
-    )
-    permissions = fields.ManyToManyField(
-        "models.Permission",
-        related_name="roles",
-        through="role_permissions",
-        description="The permissions associated with the role",
+        description="Name of function",
     )
 
     def __str__(self) -> str:

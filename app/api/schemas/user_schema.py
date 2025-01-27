@@ -1,9 +1,9 @@
 from pydantic import Field, EmailStr, SecretStr
-from app.api.schemas.base_schema import (BaseInputSchema,
-                                         BaseOutputSchema, BaseSchema)
+from app.api.schemas.base_schema import (InputBaseSchema,
+                                         OutputBaseSchema, BaseSchema, SoftDeleteMixin)
 
 
-class UserPasswordMixin():
+class UserPasswordMixin:
     password_hash: SecretStr = Field(
         ...,
         description="The hashed password of the user",
@@ -12,7 +12,7 @@ class UserPasswordMixin():
     )
 
 
-class UserEmailMixin():
+class UserEmailMixin:
     email: EmailStr = Field(
         ...,
         description="The email address of the user",
@@ -24,10 +24,9 @@ class UserBaseSchema(BaseSchema):
     """
     Schema for serializing and deserializing the User model using Pydantic.
     """
-
     name: str = Field(
         ...,
-        description="The username of the user",
+        description="The name of the user",
         min_length=5,
         max_length=80,
     )
@@ -40,8 +39,8 @@ class UserBaseSchema(BaseSchema):
 
 
 class UserInputSchema(
+    InputBaseSchema,
     UserBaseSchema,
-    BaseInputSchema,
     UserEmailMixin,
     UserPasswordMixin
 ):
@@ -50,7 +49,11 @@ class UserInputSchema(
 
 class UserOutputSchema(
     UserBaseSchema,
-    BaseOutputSchema,
+    OutputBaseSchema,
     UserEmailMixin
 ):
+    pass
+
+
+class UserDeletedSchema(BaseSchema, SoftDeleteMixin):
     pass

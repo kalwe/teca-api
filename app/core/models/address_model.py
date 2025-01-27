@@ -1,20 +1,30 @@
 from tortoise import fields
 
 
+from app.core.models.employee_related import EmployeeRelated
 from app.core.models.shared.base_model import BaseModel
 
 
-class Address(BaseModel):
+class Address(BaseModel, EmployeeRelated):
     """
     Represents a address
     """
+
     street = fields.CharField(
         max_length=255,
-        description="Name of street",
+        description="Name of street"
+    )
+    number = fields.CharField(
+        max_length=8,
+        description="Number of street"
     )
     neighborhood = fields.CharField(
         max_length=120,
-        description="Name of neighborhood",
+        description="Name of neighborhood"
+    )
+    city = fields.CharField(
+        max_length=255,
+        description="Name of the city"
     )
     zip_code = fields.CharField(
         max_length=12,
@@ -22,9 +32,5 @@ class Address(BaseModel):
     )
     state = fields.CharField(
         max_length=60,
-        description="Name of state",
-    )
-    municipality = fields.CharFields(
-        max_length=60,
-        description="Name of municipality",
+        description="Name of state"
     )

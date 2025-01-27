@@ -1,4 +1,4 @@
-from typing import Generic, Optional, TypeVar
+from typing import Generic, Optional, Type, TypeVar
 from app.core.repositories.shared.create_repository import CreateRepository
 
 T = TypeVar("T")
@@ -19,7 +19,7 @@ class CreateService(Generic[T]):
         """
         self.repository = repository
 
-    async def create_record(self, **fields_data) -> Optional[T]:
+    async def create_record(self, record_data: T) -> Optional[T]:
         """
         Create a new record in the repository.
 
@@ -30,7 +30,7 @@ class CreateService(Generic[T]):
             T: The newly created record.
         """
         try:
-            created_record = await self.repository.create_record(**fields_data)
+            created_record = await self.repository.create_record(record_data)
             return created_record
         except Exception as e:
             raise Exception(

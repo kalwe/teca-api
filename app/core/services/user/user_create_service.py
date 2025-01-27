@@ -1,8 +1,8 @@
-from typing import List, Optional, TypeVar
-from app.api.schemas.user_schema import UserOutputSchema, UserInputSchema
-from app.common.crypto_utils import hash_password
+from typing import List, Optional
+from app.api.schemas.user_schema import UserOutputSchema
+from app.common.hash_utils import hash_password
 from app.common.custom_exceptions import UserAlreadyExistsException
-from app.core.models.user_model import UserModel
+from app.core.models.user_model import User
 from app.core.repositories.user.user_create_repository import (
     UserCreateRepository)
 from app.core.repositories.user.user_get_repository import UserGetRepository
@@ -10,7 +10,7 @@ from app.core.services.shared.create_service import CreateService
 from app.core.services.user.user_get_service import UserGetService
 
 
-class UserCreateService(CreateService[UserModel]):
+class UserCreateService(CreateService[User]):
     """
     Service for managing user-related business logic.
     Handles creation of new users with role assignment and password hashing.
@@ -25,10 +25,9 @@ class UserCreateService(CreateService[UserModel]):
                 to handle data persistence for the User model.
         """
         super().__init__(repository)
-        # self.repository = repository
-        self.get_service = UserGetService(UserGetRepository())
+        self.get_service = UserGetService(UserGetRepository(User()))
 
-    async def create(self, user: UserInputSchema) -> UserOutputSchema:
+    async def create(self, user: User) -> Optional[UserOutputSchema]:
         """
         Create a new user with additional business logic.
 
@@ -58,7 +57,7 @@ class UserCreateService(CreateService[UserModel]):
         Raises:
             UserAlreadyExistsException: If a user with the given email already exists.
         """
-        roles = user.roles or ["user"]  # Assign default role if none provided
+        # roles = user.roles or ["user"]  # Assign default role if none provided
 
         try:
             # Check if a user with the email already exists
@@ -72,13 +71,8 @@ class UserCreateService(CreateService[UserModel]):
 
             password_hash = hash_password(user.password_hash)
 
-            created_user = await self.create_record(
-                name=user.name,
-                email=user.email,
-                password_hash=password_hash,
-                roles=roles
-            )
-            return UserOutputSchema().dump_json(created_user)
+            created_user = await self.create_record(user)
+            return UserOutputSchema().validate(created_user)
         except Exception as e:
             raise Exception(
                 f"Failed UserCreateService().create(): {e}") from e

@@ -1,0 +1,18 @@
+from pydantic import Field
+from app.api.schemas.base_schema import BaseSchema
+
+
+class ClothingSchema(BaseSchema):
+    """
+    Schema for serializing and deserializing the
+    Clothing model using Pydantic.
+    """
+    shirt_size: str = Field(
+        max_length=80,
+    )
+    pants_size: str = Field(
+        max_length=80,
+    )
+    shoe_size: str = Field(
+        max_length=80,
+    )

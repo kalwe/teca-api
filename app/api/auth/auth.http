@@ -1,0 +1,8 @@
+### Login user on system and create credential
+POST http://localhost:5001/api/v1/auth/login
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "password": "pass123"
+}

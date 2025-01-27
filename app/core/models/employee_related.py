@@ -1,15 +1,15 @@
 from tortoise import fields
 
-from app.core.models.shared.base_model import BaseModel
+from app.core.models.employee_model import Employee
 
 
-class EmployeeRelatedModel(BaseModel):
+class EmployeeRelated:
     """
     Abstract model for data related to an employee.
     """
-    employee = fields.ForeignKeyField(
+    employee: fields.ForeignKeyRelation[Employee] = fields.ForeignKeyField(
         "models.Employee",
-        related_name="%(class)s_related",
+        related_name="%(class)s%",
         description="Reference to the associated employee"
     )
 

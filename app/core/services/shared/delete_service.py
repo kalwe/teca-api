@@ -1,15 +1,14 @@
-from typing import Any, Generic, Optional,  TypeVar
+from typing import Optional
+from app.core.models.shared.base_model import BaseModel
 from app.core.repositories.shared.delete_repository import DeleteRepository
 
-T = TypeVar("T")
 
-
-class DeleteService(Generic[T]):
+class DeleteService[T: BaseModel]():
     """
     Base service for handling soft-delete operations.
     """
 
-    def __init__(self, repository: DeleteRepository[T]):
+    def __init__(self, repository: DeleteRepository):
         """
         Initialize the delete service with a repository instance.
         :param repository: The repository for managing delete operations.
@@ -23,6 +22,7 @@ class DeleteService(Generic[T]):
         :return: The soft-deleted instance, or None if the operation fails.
         """
         try:
+            self.repository.model_class = instance
             deleted_record = self.repository.soft_delete_record(instance)
             return deleted_record
         except Exception as e:

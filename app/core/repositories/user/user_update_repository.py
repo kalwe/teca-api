@@ -1,10 +1,7 @@
-from typing import Type, TypeVar
-from app.core.models.user_model import UserModel
+from app.core.models.user_model import User
 from app.core.repositories.shared.update_repository import UpdateRepository
 
-T = TypeVar("T", bound=UserModel)
 
-
-class UserUpdateRepository(UpdateRepository[UserModel]):
-    def __init__(self, model_class: Type[UserModel]):
-        super().__init__(model_class)
+class UserUpdateRepository(UpdateRepository[User]):
+    def __init__(self, model_class: User):
+        super().__init__(model_class=model_class)

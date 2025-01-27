@@ -1,16 +1,14 @@
-from typing import Generic, List, Optional, Type, TypeVar
+from typing import List, Optional
+from app.core.models.shared.base_model import BaseModel
 from app.core.repositories.shared.get_repository import GetRepository
 
 
-T = TypeVar("T")
-
-
-class GetService(Generic[T]):
+class GetService[T]:
     """
     Generic service layer for retrieving data using a repository.
     """
 
-    def __init__(self, repository: GetRepository[T]):
+    def __init__(self, repository: GetRepository):
         """
         Initialize the service with the provided repository.
 
@@ -20,7 +18,7 @@ class GetService(Generic[T]):
         """
         self.repository = repository
 
-    async def get_by_id(self, record_id: int) -> Optional[T]:
+    async def get_by_id(self) -> Optional[T]:
         """
         Retrieve a single record by its ID.
 
@@ -30,10 +28,12 @@ class GetService(Generic[T]):
         Returns:
             Optional[T]: The retrieved record if found, otherwise None.
         """
+        model_class = self.repository.model_class
         try:
-            if record_id <= 0:
-                raise ValueError(f"Invalid record ID: {record_id}")
-            record = await self.repository.get_record_by_id(record_id=record_id)
+            if self.repository.model_class.id <= 0:
+                raise ValueError(f"Invalid record ID: {model_class.id}")
+
+            record = await self.repository.get_record_by_id()
             if not record:
                 return None
 
@@ -41,7 +41,8 @@ class GetService(Generic[T]):
         except Exception as e:
             raise Exception(f"Failed GetService().get_by_id(): {e}") from e
 
-    async def get_all(self, filters: Optional[dict] = None) -> Optional[List[T]]:
+    async def get_all_records(self, filters: Optional[dict] = None
+                              ) -> Optional[List[T]]:
         """
         Retrieve all records from the repository.
 

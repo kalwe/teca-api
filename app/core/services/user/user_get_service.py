@@ -1,11 +1,11 @@
-from typing import List, Optional, TypeVar
+from typing import List, Optional
 from app.api.schemas.user_schema import UserOutputSchema
-from app.core.models.user_model import UserModel
+from app.core.models.user_model import User
 from app.core.repositories.user.user_get_repository import UserGetRepository
 from app.core.services.shared.get_service import GetService
 
 
-class UserGetService(GetService[UserModel]):
+class UserGetService(GetService[User]):
     """
     Service for managing user-related business logic, leveraging generic
     methods from GetService.
@@ -13,6 +13,9 @@ class UserGetService(GetService[UserModel]):
     This service adds user-specific business logic on top of the generic
     functionality provided by GetService.
     """
+
+    # Override the type for specialization
+    repository = UserGetRepository
 
     def __init__(self, repository: UserGetRepository):
         """
@@ -23,26 +26,27 @@ class UserGetService(GetService[UserModel]):
             data retrieval.
         """
         super().__init__(repository)
-        self.repository = repository
 
     async def get(self, id: int) -> Optional[UserOutputSchema]:
         try:
-            user = self.get_by_id(id)
+            self.repository.model_class.id = id
+            user = self.get_by_id()
             if not user:
                 return None
 
-            return UserOutputSchema.dump_json(user)
+            return UserOutputSchema.validate(user)
         except Exception as e:
             raise Exception(
                 f"Failed UserGetService().get(): {e}") from e
 
-    async def get_all(self) -> Optional[List[UserOutputSchema]]:
+    async def get_all(self, filters: Optional[dict] = None
+                      ) -> Optional[List[UserOutputSchema]]:
         try:
-            users = self.get_all()
+            users = self.get_all_records(filters)
             if not users:
                 return None
 
-            return [UserOutputSchema.dump_json(user) for user in users]
+            return [UserOutputSchema.validate(user) for user in users]
         except Exception as e:
             raise Exception(
                 f"Failed UserGetService().get_all(): {e}") from e
@@ -84,7 +88,19 @@ class UserGetService(GetService[UserModel]):
             if not users:
                 return None
 
-            return [UserOutputSchema.dump_json(user) for user in users]
+            return [UserOutputSchema.validate(user) for user in users]
         except Exception as e:
             raise Exception(
                 f"Failed UserGetService().get_by_role(): {e}") from e
+
+    async def get_by_name(self, name: str) -> Optional[UserOutputSchema]:
+        try:
+            self.repository.model_class.name = name
+            user = self.repository.get_user_by_name()
+            if not user:
+                return None
+
+            return UserOutputSchema.validate(user)
+        except Exception as e:
+            raise Exception(
+                f"Failed UserGetService().get_all(): {e}") from e

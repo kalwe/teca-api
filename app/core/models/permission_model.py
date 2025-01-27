@@ -11,7 +11,7 @@ class Permission(BaseModel):
     Permissions define the actions that can be performed within the system.
     """
     name = fields.CharField(
-        max_length=80,
+        max_length=120,
         unique=True,
         description="The unique name of the permission."
     )

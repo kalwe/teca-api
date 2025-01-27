@@ -5,6 +5,7 @@ aerich
 asyncpg
 aiohttp
 quart-schema
+quart-auth
 pydantic
 uvicorn
 Werkzeug

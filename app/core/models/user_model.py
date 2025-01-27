@@ -3,7 +3,30 @@ from tortoise import fields
 from app.core.models.shared.base_model import BaseModel
 
 
-class UserModel(BaseModel):
+class EmailMixin:
+    email = fields.CharField(
+        max_length=255,
+        unique=True,
+        index=True,
+        description="The unique email address of the user."
+    )
+
+
+class PasswordMixin:
+    password_hash = fields.CharField(
+        max_length=255,
+        description="The hashed password for the user."
+    )
+
+
+class SaltMixin:
+    salt = fields.CharField(
+        max_length=255,
+        description="Salt for hash password"
+    )
+
+
+class User(BaseModel, EmailMixin, PasswordMixin, SaltMixin):
     """
     Represents a user in the system, who can have one or more roles.
 
@@ -13,16 +36,6 @@ class UserModel(BaseModel):
         max_length=80,
         unique=True,
         description="The unique user name for the user."
-    )
-    email = fields.CharField(
-        max_length=255,
-        unique=True,
-        index=True,
-        description="The unique email address of the user."
-    )
-    password_hash = fields.CharField(
-        max_length=255,
-        description="The hashed password for the user."
     )
     roles = fields.ManyToManyField(
         "models.Role",
@@ -39,3 +52,6 @@ class UserModel(BaseModel):
             str: The name of the user.
         """
         return self.name
+
+    def password_hash(self):
+        self.password_hash = hash_provider()
