@@ -3,7 +3,7 @@ from typing import Optional
 from app.core.models.shared.base_model import BaseModel
 
 
-class CreateRepository[T: BaseModel]():
+class CreateRepository:
     """
     Abstract repository class providing common database operations for a
     specified model_class type.
@@ -29,7 +29,7 @@ class CreateRepository[T: BaseModel]():
             field data.
     """
 
-    def __init__(self, model_class: T):
+    def __init__(self, model_class: ):
         """
         Initialize the repository with a specific model_class class.
 
@@ -39,7 +39,7 @@ class CreateRepository[T: BaseModel]():
         """
         self.model_class = model_class
 
-    async def create_record(self, fields_data: T) -> Optional[T]:
+    async def create_record[T: BaseModel](self, fields_data: T) -> Optional[T]:
         """
         Create a new record in the database.
 

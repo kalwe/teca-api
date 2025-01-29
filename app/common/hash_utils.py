@@ -1,64 +1,39 @@
 
 import hashlib
-import os
-from typing import Tuple
+import uuid
 
 
-def hash_provider(
-    password: str,
-    salt: bytes = None,
-    hash_name: str = 'sha256',
-    iterations: int = 100000
-) -> Tuple[bytes, bytes]:
+def hash_provider(plain_text: str):
     """
-    Hash the provided hashed password with a randomly-generated
-    salt and return the salt and hash to store in the database.
-    On salt preferrer pass a os.urandom(16)
-    SHA256 is a default hash algorithm
+    Hash password with a randomly-generated
+    salt and return a hash + salt.
 
     Args:
-        salt: (bytes) = None - Random value to salt - \
-            (default is os.urandom(16))
-        password: (str) - The plain password text to hash.
-        hash_name: (str) - Hash name algorithm - (default = 'sha256')
-        iterations: (int) = 100000 - The number of iterations to use \
-            (default = 100000) - min recommend
+        plain_text: (str) - The plain  text to hash.
 
     Returns:
-        Tuple[bytes, bytes]: salt, hash
+        str: hash (hash + ':' + salt)
     """
-    if salt is None:
-        salt = os.urandom(1)
+    salt = uuid.uuid4().hex
+    hash = hashlib.sha256(salt.encode() + plain_text.encode()
+                          ).hexdigest() + ':' + salt
 
-    hash_salt = hashlib.sha256(salt + password.encode()).hexdigest()
-    + ':' + salt.hex()
-    # hash = hashlib.pbkdf2_hmac(
-    #     hash_name,
-    #     password.encode(),
-    #     salt,
-    #     iterations
-    # )
-    return salt, hash
+    return hash
 
 
-# def unhash(salt: bytes, str_hash: bytes, str_plain: str) -> bool:
-#     """
-#     Unhash hash.
+def hash_match(hash: str, plain_text: str):
+    """
+    Check if password match
 
-#     Args:
-#         salt (bytes): Salt for unhash
-#         str_hash (str): The plain-text password to hash.
-#         str_plain (str): The plain-text password to hash.
+    Args:
+        hash (str): hash with salt
+        plain (str): plain password
 
-#     Returns:
-#         bool: password_hash == password.
-#     """
-#     hashlib.pbkdf2_hmac('sha256', str_plain.encode(), salt, 100000)
-#     return
+    Returns:
+        bool: True if match
+    """
+    _hash, salt = hash.split(':')
+    hash_digest = hashlib.sha256(salt.encode() + plain_text.encode()
+                                 ).hexdigest()
 
-
-# # Example usage:
-# salt, pw_hash = hash_new_password('correct horse battery staple')
-# assert is_correct_password(salt, pw_hash, 'correct horse battery staple')
-# assert not is_correct_password(salt, pw_hash, 'Tr0ub4dor&3')
-# assert not is_correct_password(salt, pw_hash, 'rosebud')
+    return _hash == hash_digest

@@ -3,9 +3,9 @@ from tortoise import fields
 from app.core.models.shared.base_model import BaseModel
 
 
-class Permission(BaseModel):
+class Role(BaseModel):
     """
-    Represents a permission in the system
+    Represents a Roles in the system
     (e.g., 'can_edit_employee', 'can_view_reports').
 
     Permissions define the actions that can be performed within the system.
@@ -21,9 +21,9 @@ class Permission(BaseModel):
 
     def __str__(self) -> str:
         """
-        Returns the string representation of the Permission object.
+        Returns the string representation of the Role object.
 
         Returns:
-            str: The name of the permission.
+            str: The name of the role.
         """
         return self.name

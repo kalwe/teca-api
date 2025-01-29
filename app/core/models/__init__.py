@@ -7,4 +7,4 @@ from .contact_information import ContactInformation
 from .employee_documentation import EmployeeDocumentation
 from .employee_status import EmployeeStatus
 from .employment_history import EmploymentHistory
-from .person_model import PersonModel
+from .person_model import Person

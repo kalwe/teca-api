@@ -1,0 +1,47 @@
+@baseUrl = {{host}}:{{port}}/api/{{version}}
+@contentType = {{contentType}}
+
+###
+
+@endpoint = clothing
+@id = 1
+@employee = 1
+
+
+### Clothing create
+POST http://{{baseUrl}}/{{endpoint}}
+Content-Type: {{contentType}}
+
+{
+        "shirt_size": "m",
+        "pants_size": "m",
+        "shoe_size": "40",
+        "employee": {{employee}}
+}
+
+
+### Clothing get by id /clothing/<id: int>
+GET http://{{baseUrl}}/{{endpoint}}/{{id}}
+Content-Type: {{contentType}}
+
+
+### Clothing get all - return a list of clothing with all clothings active
+GET http://{{baseUrl}}/{{endpoint}}b
+Content-Type: {{contentType}}
+
+
+### Clothing update- return clothing updated
+PUT http://{{baseUrl}}/{{endpoint}}/{{id}}
+Content-Type: {{contentType}}
+
+{
+        "shirt_size": "m",
+        "pants_size": "m",
+        "shoe_size": "40",
+        "employee": {{employee}}
+}
+
+
+## Clothing delete by id /clothing/<id: int> - return return id, is_active and deleted_at
+DELETE http://{{baseUrl}}/{{endpoint}}/{{endpoint}}/{{id}}
+Content-Type: {{contentType}}

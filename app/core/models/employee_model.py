@@ -4,12 +4,12 @@ from app.core.models.address_model import Address
 from app.core.models.bank_account_model import BankAccount
 from app.core.models.clothing_model import Clothing
 from app.core.models.contact_model import Contact
-from app.core.models.person_model import PersonModel
-from app.core.models.role_model import Function
+from app.core.models.person_model import Person
+from app.core.models.function_model import Function
 from app.core.models.shared.base_model import BaseModel
 
 
-class Employee(BaseModel, PersonModel):
+class Employee(BaseModel, Person):
     """
     Model representing an employee with personal details.
     """
@@ -40,10 +40,10 @@ class Employee(BaseModel, PersonModel):
         "models.Function",
         related_name="function"
     )
-    address = fields.ReverseRelation[Address]
-    contact = fields.ReverseRelation[Contact]
-    bank = fields.ReverseRelation[BankAccount]
-    clothing = fields.ReverseRelation[Clothing]
+    address: fields.ReverseRelation["Address"]
+    contact: fields.ReverseRelation["Contact"]
+    bank: fields.ReverseRelation["BankAccount"]
+    clothing: fields.ReverseRelation["Clothing"]
 
     def __str__(self):
         return self.full_name

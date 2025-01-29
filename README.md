@@ -69,6 +69,10 @@ Link para estrutura de:
 
 ### Testes
 
+**REST Client**(extensao):
+1. Instale a extensao "REST Client" no vscode
+2. Na pasta ./tests/rest-client estao os .http para realizar as chamadas nos endpoints
+
 Para executar os testes locais, após o início da aplicação, acesse: [SwaggerUI](http://localhost:5000/swaggerui/)
 
 ---

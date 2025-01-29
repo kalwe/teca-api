@@ -1,6 +1,6 @@
 from pydantic import Field, EmailStr, SecretStr
-from app.api.schemas.base_schema import (InputBaseSchema,
-                                         OutputBaseSchema, BaseSchema, SoftDeleteMixin)
+from app.api.schemas.base_schema import (
+    InputBaseSchema, OutputBaseSchema, BaseSchema, SoftDeleteMixin)
 
 
 class UserPasswordMixin:
@@ -33,7 +33,7 @@ class UserBaseSchema(BaseSchema):
 
     # TODO: create List[Roles]
     roles: list[str] | None = Field(
-        default_factory=list,
+        # default_factory=list,
         description="List of roles assigned to the user",
     )
 

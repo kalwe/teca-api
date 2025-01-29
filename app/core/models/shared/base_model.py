@@ -12,7 +12,7 @@ class BaseModel(Model):
     base functionality.
     """
 
-    id: Optional[int] = fields.IntField(
+    id = fields.IntField(
         pk=True,
         description="Primary key for the record.",
     )
@@ -25,6 +25,10 @@ class BaseModel(Model):
         null=True,
         auto_now=True,
         description="Timestamp when the record was last updated."
+    )
+    modified_by = fields.CharField(
+        null=True,
+        description="Name of the last user who modified"
     )
     is_active = fields.BooleanField(
         default=True,

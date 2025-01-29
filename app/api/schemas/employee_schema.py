@@ -76,6 +76,6 @@ class EmployeeSchema(BaseSchema, PersonSchema):
         description="Date when employee has contracted"
     )
     function: FunctionSchema
-    address: List[AddressSchema]
-    bank_account: List[BankAccountSchema]
-    clothing: List[ClothingSchema]
+    address: AddressSchema
+    bank_account: BankAccountSchema
+    clothing: ClothingSchema

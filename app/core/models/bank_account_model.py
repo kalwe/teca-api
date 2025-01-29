@@ -1,7 +1,7 @@
 from tortoise import fields
 
-from app.core.models.employee_related import EmployeeRelated
 from app.core.models.shared.base_model import BaseModel
+from app.core.models.shared.employee_related import EmployeeRelated
 
 
 class BankAccount(BaseModel, EmployeeRelated):

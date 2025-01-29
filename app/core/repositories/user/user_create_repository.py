@@ -16,4 +16,4 @@ class UserCreateRepository(CreateRepository[User]):
             to be managed by
             the repository.
         """
-        super().__init__(model_class=model_class)
+        super().__init__(model_class)

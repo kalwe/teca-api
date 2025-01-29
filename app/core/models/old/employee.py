@@ -1,9 +1,9 @@
 from tortoise import fields
 
-from app.core.models.person_model import PersonModel
+from app.core.models.person_model import Person
 
 
-class Employee(PersonModel):
+class Employee(Person):
     """
     Model representing an employee with personal details.
     """

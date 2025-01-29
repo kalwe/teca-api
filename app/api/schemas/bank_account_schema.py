@@ -4,7 +4,8 @@ from app.api.schemas.base_schema import BaseSchema
 
 class BankAccountSchema(BaseSchema):
     """
-    Schema for serializing and deserializing the BankAccount model using Pydantic.
+    Schema for serializing and deserializing the BankAccount model
+    using Pydantic.
     """
     bank: str = Field(
         max_length=120,

@@ -1,0 +1,42 @@
+@baseUrl = {{host}}:{{port}}/api/{{version}}
+@contentType = application/json
+
+###
+
+@endpoint = function
+@id = 1
+@employee = 1
+
+### Function create
+POST http://{{baseUrl}}/{{endpoint}}
+Content-Type: {{contentType}}
+
+{
+    "name": "Motorista",
+    "description": "Motorista de carro de passeio"
+}
+
+
+### Function get by id /function/<id: int>
+GET http://{{baseUrl}}/{{endpoint}}/{{id}}
+Content-Type: {{contentType}}
+
+
+### Function get all - return a list of Function
+GET http://{{baseUrl}}/{{endpoint}}
+Content-Type: {{contentType}}
+
+
+### Function update - return Function updated
+PUT http://{{baseUrl}}/{{endpoint}}/{{id}}
+Content-Type: {{contentType}}
+
+{
+    "name": "Motorista Trator",
+    "description": "Motorista de trator"
+}
+
+
+## Function delete by id - return id, is_active and deleted_at
+DELETE http://{{baseUrl}}/{{endpoint}}/{{id}}
+Content-Type: {{contentType}}

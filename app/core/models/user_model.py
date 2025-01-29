@@ -1,5 +1,7 @@
+from typing import Self
 from tortoise import fields
 
+from app.common.hash_utils import hash_provider
 from app.core.models.shared.base_model import BaseModel
 
 
@@ -19,14 +21,7 @@ class PasswordMixin:
     )
 
 
-class SaltMixin:
-    salt = fields.CharField(
-        max_length=255,
-        description="Salt for hash password"
-    )
-
-
-class User(BaseModel, EmailMixin, PasswordMixin, SaltMixin):
+class User(BaseModel, EmailMixin, PasswordMixin):
     """
     Represents a user in the system, who can have one or more roles.
 
@@ -53,5 +48,7 @@ class User(BaseModel, EmailMixin, PasswordMixin, SaltMixin):
         """
         return self.name
 
-    def password_hash(self):
-        self.password_hash = hash_provider()
+    def gen_hashed_password(self):
+        hash = hash_provider(self.password_hash)
+        self.password_hash = hash
+        # return hash

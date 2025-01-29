@@ -4,7 +4,7 @@ from app.core.enums.gender_enum import GenderType
 from app.core.enums.marital_status_enum import MaritalStatusType
 
 
-class PersonModel:
+class Person:
     """
     Abstract model for person-related details.
     """

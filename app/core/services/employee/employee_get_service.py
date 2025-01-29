@@ -1,4 +1,4 @@
-from typing import List, Optional, TypeVar
+from typing import List, Optional
 from app.api.schemas.employee_schema import EmployeeOutputSchema
 from app.core.models.employee_model import Employee
 from app.core.repositories.employee.employee_get_repository import EmployeeGetRepository
