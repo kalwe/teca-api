@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class MaritalStatusType(Enum):
+class MaritalStatus(str, Enum):
     SINGLE = 'SINGLE'
     MARRIED = 'MARRIED'
     DIVORCED = 'DIVORCED'

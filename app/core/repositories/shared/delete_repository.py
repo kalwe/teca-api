@@ -1,21 +1,24 @@
-from typing import Optional
+from typing import Any, Optional
 
-from app.core.models.shared.base_model import BaseModel
+# from app.core.models.shared.base_model import BaseModel
+from app.common.custom_exceptions import RepositoryError
+from app.core.models.shared.base_model import ModelT
+# from app.api.schemas.base_schema import SchemaT
 
 
-class DeleteRepository[T: BaseModel]:
+class DeleteRepository:
     """
     Abstract repository that defines common database operations.
     """
 
-    def __init__(self, model_class: T):
+    def __init__(self, model_class: ModelT):
         """
         Initialize the repository with the model class.
         :param model_class: The model class to operate on.
         """
-        self.model_class = model_class
+        self._model_class = model_class
 
-    async def soft_delete_record(self) -> Optional[T]:
+    async def soft_delete_record(self, record: ModelT) -> Optional[ModelT]:
         """
         Perform a soft delete by marking a record as inactive and setting
         a deleted_at timestamp.
@@ -23,11 +26,10 @@ class DeleteRepository[T: BaseModel]:
         :param instance: The model instance to soft delete.
         :return: The updated model instance, or None if the operation fails.
         """
-        # instance.deactivate_record()
-        self.model_class.deactivate_record
         try:
-            await self.model_class.save()
-            return self.model_class
+            record.deactivate_record()
+            await record.save()
+            return record
         except Exception as e:
-            raise Exception(
-                f"Failed DeleteRepository().soft_delete(): {e}") from e
+            raise RepositoryError(
+                f"Failed DeleteRepository().soft_delete_record(): {e}") from e

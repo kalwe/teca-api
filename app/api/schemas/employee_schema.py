@@ -3,7 +3,7 @@ from typing import List
 from pydantic import Field
 from app.api.schemas.address_schema import AddressSchema
 from app.api.schemas.bank_account_schema import BankAccountSchema
-from app.api.schemas.base_schema import BaseSchema
+from app.api.schemas.base_schema import BaseSchema, InputBaseSchema, OutputBaseSchema, SoftDeleteMixin
 from app.api.schemas.clothing_schema import ClothingSchema
 from app.api.schemas.function_schema import FunctionSchema
 from app.core.enums.gender_enum import GenderType
@@ -79,3 +79,15 @@ class EmployeeSchema(BaseSchema, PersonSchema):
     address: AddressSchema
     bank_account: BankAccountSchema
     clothing: ClothingSchema
+
+
+class EmployeeInputSchema(InputBaseSchema, EmployeeSchema):
+    pass
+
+
+class EmployeeOutputSchema(OutputBaseSchema, EmployeeSchema):
+    pass
+
+
+class EmployeeDeletedSchema(BaseSchema, SoftDeleteMixin):
+    pass

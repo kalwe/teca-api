@@ -1,60 +1,35 @@
-from typing import List, Optional, Type, TypeVar
+from typing import Optional
+from app.common.custom_exceptions import RepositoryError
 from app.core.models.employee_model import Employee
 from app.core.repositories.shared.get_repository import GetRepository
 
-T = TypeVar("T", bound=Employee)
 
-
-class EmployeeGetRepository(GetRepository[Employee]):
-    def __init__(self, model_class: Type[Employee]):
+class EmployeeGetRepository(GetRepository):
+    def __init__(self):
         """
         Initialize the repository with the Employee model_class.
 
         Args:
-            model_class (type[Employee]): The Employee model_class class to be managed by
+            model_class ([Employee): The Employee model_class class to be managed by
             the repository.
         """
-        super().__init__(model_class)
+        super().__init__(Employee())
 
-    # async def get_employee_by_email(
-    #     self,
-    #     email: str
-    # ) -> Optional[Employee]:
-    #     """
-    #     Retrieve a employee by their email address.
+    async def get_employee_by_name(self, name) -> Optional[Employee]:
+        """
+        Retrieve a record by its name if it is active.
 
-    #     Args:
-    #         email (str): The email of the employee to retrieve.
+        Args:
+            record_name (str): The name of the record to retrieve.
 
-    #     Returns:
-    #         Optional[Employee]: The serialized employee data or None if not found.
-    #     """
-    #     try:
-    #         employee = await self.get_all_records(email=email)
-    #         if not employee:
-    #             return None
+        Returns:
+            Optional[Employee]: The retrieved record if found and active,
+            otherwise None.
+        """
+        try:
+            record = await self._model_class.get_or_none(name, is_active=True)
 
-    #         return employee
-    #     except Exception as e:
-    #         raise Exception(
-    #             f"Failed repository get_employee_by_email(): {e}") from e
-
-    # async def get_employees_by_role(self, role: str) -> List[Employee]:
-    #     """
-    #     Fetch employees by their role and return serialized data.
-
-    #     Args:
-    #         role (str): The role to filter employees by.
-
-    #     Returns:
-    #         List[Employee]: A list of serialized employees with the specified role.
-    #     """
-    #     try:
-    #         employees = await self.get_all_records(roles__contains=[role])
-    #         if not employees:
-    #             return None
-
-    #         return employees
-    #     except Exception as e:
-    #         raise Exception(
-    #             f"Failed repository get_employees_by_role(): {e}") from e
+            return record
+        except Exception as e:
+            raise RepositoryError(
+                f"Failed EmployeeGetRepository.get_employee_by_name: {e}") from e

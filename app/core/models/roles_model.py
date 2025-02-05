@@ -1,9 +1,9 @@
 from tortoise import fields
 
-from app.core.models.shared.base_model import BaseModel
+from app.core.models.shared.base_model import ModelBase
 
 
-class Role(BaseModel):
+class Role(ModelBase):
     """
     Represents a Roles in the system
     (e.g., 'can_edit_employee', 'can_view_reports').

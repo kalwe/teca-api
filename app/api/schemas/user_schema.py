@@ -1,10 +1,10 @@
-from pydantic import Field, EmailStr, SecretStr
+from pydantic import ConfigDict, Field, EmailStr, SecretStr
 from app.api.schemas.base_schema import (
     InputBaseSchema, OutputBaseSchema, BaseSchema, SoftDeleteMixin)
 
 
 class UserPasswordMixin:
-    password_hash: SecretStr = Field(
+    password: SecretStr = Field(
         ...,
         description="The hashed password of the user",
         min_length=6,
@@ -44,7 +44,13 @@ class UserInputSchema(
     UserEmailMixin,
     UserPasswordMixin
 ):
-    pass
+    model_config = ConfigDict(
+        alias_generator=lambda field: {
+            'password': 'password_hash'
+        }.get(field, field),
+        populate_by_name=True,
+        by_alias=True
+    )
 
 
 class UserOutputSchema(

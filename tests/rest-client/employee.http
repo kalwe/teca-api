@@ -5,6 +5,7 @@
 
 @endpoint = employee
 @id = 1
+@function = 1
 
 ### Employee create - return created user
 POST http://{{baseUrl}}/{{endpoint}}
@@ -23,10 +24,7 @@ Content-Type: {{contentType}}
     "manager": false,
     "salary": 8000.00,
     "contract_date": "01/02/1990",
-    "function": {
-        "name": "Motorista",
-        "description": "Motorista de carro de passeio"
-    },
+    "function": "{{function}}",
     "address": {
         "street": "Rua Nome",
         "number": "999",
@@ -67,7 +65,7 @@ PUT http://{{baseUrl}}/{{endpoint}}/{{id}}
 Content-Type: {{contentType}}
 
 {
-    "id": 1,
+    "id": "{{id}}",
     "full_name": "John Doe",
     "tax_id": "111.222.333-00",
     "national_id": "187876MG",

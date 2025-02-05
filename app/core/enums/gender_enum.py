@@ -1,6 +1,6 @@
 from enum import Enum
 
 
-class GenderType(str, Enum):
+class Gender(str, Enum):
     MALE = 'M'
     FEMALE = 'F'

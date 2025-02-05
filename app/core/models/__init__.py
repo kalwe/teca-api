@@ -1,10 +1,12 @@
-from .shared.base_model import BaseModel
-from .enums import EmploymentStatus
-from .employee import Employee
-from .employee_related import EmployeeRelatedModel
-from .professional_details import ProfessionalDetails
-from .contact_information import ContactInformation
-from .employee_documentation import EmployeeDocumentation
-from .employee_status import EmployeeStatus
-from .employment_history import EmploymentHistory
-from .person_model import Person
+# from .shared.base_model import BaseModel
+# from .enums import EmploymentStatus
+from .employee_model import Employee
+from .address_model import Address
+from .bank_account_model import BankAccount
+from .clothing_model import Clothing
+from .contact_model import Contact
+from .function_model import Function
+from .reminder_model import Reminder
+from .roles_model import Role
+from .user_model import User
+from .vacancy_model import Vacancy

@@ -1,10 +1,10 @@
 from tortoise import fields
 
-from app.core.enums.gender_enum import GenderType
-from app.core.enums.marital_status_enum import MaritalStatusType
+from app.core.enums.gender_enum import Gender
+from app.core.enums.marital_status_enum import MaritalStatus
 
 
-class Person:
+class PersonAbs:
     """
     Abstract model for person-related details.
     """
@@ -30,12 +30,12 @@ class Person:
         max_length=120,
         description="Indicate issuing body from RG",
     )
-    gender = fields.CharEnumField(
-        GenderType,
+    gender: Gender = fields.CharEnumField(
+        Gender,
         description="Gender male or female",
     )
-    marital_status = fields.CharEnumField(
-        MaritalStatusType,
+    marital_status: MaritalStatus = fields.CharEnumField(
+        MaritalStatus,
         description="Current marital status of person",
     )
 

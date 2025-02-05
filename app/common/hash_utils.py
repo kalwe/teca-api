@@ -3,27 +3,28 @@ import hashlib
 import uuid
 
 
-def hash_provider(plain_text: str):
+def hash_provider(plain_text: str) -> str:
     """
-    Hash password with a randomly-generated
-    salt and return a hash + salt.
+    Hash password with a randomly-generated uuid4(16 bytes) salt.
 
     Args:
         plain_text: (str) - The plain  text to hash.
 
     Returns:
-        str: hash (hash + ':' + salt)
+        str: salted_hash
     """
     salt = uuid.uuid4().hex
-    hash = hashlib.sha256(salt.encode() + plain_text.encode()
-                          ).hexdigest() + ':' + salt
+    hash = hashlib.sha256(
+        salt.encode() + plain_text.encode()
+    ).hexdigest()
 
-    return hash
+    return salt + ':' + hash
 
 
-def hash_match(hash: str, plain_text: str):
+def hash_match(hash: str, plain_text: str) -> bool:
     """
     Check if password match
+    Split salt from hash by _IFS=:,
 
     Args:
         hash (str): hash with salt
@@ -32,8 +33,9 @@ def hash_match(hash: str, plain_text: str):
     Returns:
         bool: True if match
     """
-    _hash, salt = hash.split(':')
-    hash_digest = hashlib.sha256(salt.encode() + plain_text.encode()
-                                 ).hexdigest()
+    salt, _hash = hash.split(':')
+    hash_digest = hashlib.sha256(
+        salt.encode() + plain_text.encode()
+    ).hexdigest()
 
     return _hash == hash_digest

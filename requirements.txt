@@ -7,5 +7,6 @@ aiohttp
 quart-schema
 quart-auth
 pydantic
+email-validator
 uvicorn
 Werkzeug

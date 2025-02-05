@@ -2,7 +2,10 @@
 
 - **Python**: Linguagem principal da aplicação.
 - **Quart**: Framework assíncrono baseado no Flask.
+- **Quart-Auth**: Quart-Auth is an extension for Quart to provide for secure cookie authentication (session management).
+- **Quart-Schema**: Quart-Schema is a Quart extension that provides schema validation and auto-generated API documentation.
 - **Tortoise-ORM**: ORM para gerenciar as interações com o banco de dados.
+- **Aerich**: Aerich is a database migrations tool for TortoiseORM, which is like alembic for SQLAlchemy, or like Django ORM with it's own migration solution.
 - **PostgreSQL**: Banco de dados relacional.
 - **Docker**: Ferramenta de contêinerização para facilitar o deployment e a execução da aplicação.
 
@@ -69,10 +72,33 @@ Link para estrutura de:
 
 ### Testes
 
-**REST Client**(extensao):
+**REST Client** (extensao):
 1. Instale a extensao "REST Client" no vscode
-2. Na pasta ./tests/rest-client estao os .http para realizar as chamadas nos endpoints
+   adicione no settings.json
+   ```json
+   "rest-client.environmentVariables": {
+     "$shared": {
+        "prodToken": "foo",
+        "nonProdToken": "bar",
+      },
+     "local": {
+        "version": "v1",
+        "host": "localhost",
+        "port": "5001",
+        "token": "{{$shared nonProdToken}}",
+        "secretKey": "dev-secret"
+     },
+     "production": {
+        "host": "example.com", // teca-coif.com.br
+        "token": "{{$shared prodToken}}",
+        "secretKey" : "prodSecret"
+     }
+   },
+   ```
+   Em seguida mude para o environment Local
 
-Para executar os testes locais, após o início da aplicação, acesse: [SwaggerUI](http://localhost:5000/swaggerui/)
+2. Na pasta ./tests/rest-client esta os .http para realizar as chamadas nos endpoints
+
+<!-- Para executar os testes locais, após o início da aplicação, acesse: [SwaggerUI](http://localhost:5000/swaggerui/) -->
 
 ---

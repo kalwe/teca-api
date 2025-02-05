@@ -1,16 +1,13 @@
-from typing import Type, TypeVar
 from app.core.models.employee_model import Employee
 from app.core.repositories.shared.create_repository import CreateRepository
 
-T = TypeVar("T", bound=Employee)
 
-
-class EmployeeCreateRepository(CreateRepository[Employee]):
+class EmployeeCreateRepository(CreateRepository):
     """
     Repository for managing employee-related create .
     """
 
-    def __init__(self, model_class: Type[Employee]):
+    def __init__(self):
         """
         Initialize the repository with the Employee model_class.
 
@@ -19,4 +16,4 @@ class EmployeeCreateRepository(CreateRepository[Employee]):
             to be managed by
             the repository.
         """
-        super().__init__(model_class)
+        super().__init__(Employee())

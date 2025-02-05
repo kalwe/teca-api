@@ -1,7 +1,7 @@
 from typing import Any, Dict
 from quart_auth import current_user
-from app.api.auth.auth_schemas import UserAuthOutputLoginSchema
-from app.common.hash_utils import provide_hash
+from app.api.auth.auth_schemas import UseAuthInputSchema, UserAuthOutputLoginSchema
+from app.common.hash_utils import hash_provider
 from app.core.models.user_model import User
 from app.core.repositories.user.user_get_repository import UserGetRepository
 from app.core.services.user.user_get_service import UserGetService
@@ -13,14 +13,15 @@ from app.api.auth import auth_manager
 class AuthService:
 
     @staticmethod
-    async def auth_login_user(user_data: Dict[str, Any]) -> UserAuthOutputLoginSchema:
+    async def auth_login_user(
+        user_data: UseAuthInputSchema
+    ) -> UserAuthOutputLoginSchema:
         try:
-
-            user_service = UserGetService(UserGetRepository(User()))
-            user = await user_service.get_by_name(name=user_data["name"])
+            user_service = UserGetService(UserGetRepository())
+            user = await user_service.get_by_name(name=user_data.name)
             user = user.index()
-            _, password_hash = provide_hash(user_data["password_hash"])
-            if user["name"] == user_data.name and compare_digest(
+            password_hash = hash_provider(user_data["password_hash"])
+            if user["name"] == user_data["name"] and compare_digest(
                     user["password_hash"], password_hash
             ):
                 token_dump = auth_manager.dump_token(user["name"])

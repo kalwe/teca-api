@@ -1,14 +1,14 @@
 from typing import List, Optional
-from app.core.models.shared.base_model import BaseModel
-from app.core.repositories.shared.get_repository import GetRepository
+from app.core.models.shared.base_model import ModelT
+from app.core.repositories.shared.get_repository import GetRepositoryT
 
 
-class GetService[T]:
+class GetService:
     """
     Generic service layer for retrieving data using a repository.
     """
 
-    def __init__(self, repository: GetRepository):
+    def __init__(self, repository: GetRepositoryT):
         """
         Initialize the service with the provided repository.
 
@@ -16,9 +16,9 @@ class GetService[T]:
             repository (Type[GetRepository[T]]): The repository class
             used for data access.
         """
-        self.repository = repository
+        self._repository = repository
 
-    async def get_by_id(self) -> Optional[T]:
+    async def get_by_id(self, id: int) -> Optional[ModelT]:
         """
         Retrieve a single record by its ID.
 
@@ -28,32 +28,19 @@ class GetService[T]:
         Returns:
             Optional[T]: The retrieved record if found, otherwise None.
         """
-        model_class = self.repository.model_class
-        try:
-            if self.repository.model_class.id <= 0:
-                raise ValueError(f"Invalid record ID: {model_class.id}")
+        if id <= 0:
+            raise ValueError(f"Invalid record ID: {id}")
 
-            record = await self.repository.get_record_by_id()
-            if not record:
-                return None
-
-            return record
-        except Exception as e:
-            raise Exception(f"Failed GetService().get_by_id(): {e}") from e
+        record = await self._repository.get_record_by_id(id)
+        return record
 
     async def get_all_records(self, filters: Optional[dict] = None
-                              ) -> Optional[List[T]]:
+                              ) -> Optional[List[ModelT]]:
         """
         Retrieve all records from the repository.
 
         Returns:
             List[T]: A list of all retrieved records.
         """
-        try:
-            records = await self.repository.get_all_records(filters=filters)
-            if not records:
-                return None
-
-            return records
-        except Exception as e:
-            raise Exception(f"Failed GetService().get_all(): {e}") from e
+        records = await self._repository.get_all_records(filters=filters)
+        return records

@@ -1,15 +1,14 @@
-from typing import Generic, Optional, Type, TypeVar
-from app.core.repositories.shared.create_repository import CreateRepository
+from typing import Optional
+from app.core.models.shared.base_model import ModelT
+from app.api.schemas.base_schema import SchemaT
+from app.core.repositories.shared.create_repository import CreateRepositoryT
 
-T = TypeVar("T")
-
-
-class CreateService(Generic[T]):
+class CreateService:
     """
     Generic service layer for creating new records using a repository.
     """
 
-    def __init__(self, repository: CreateRepository[T]):
+    def __init__(self, repository: CreateRepositoryT):
         """
         Initialize the service with the provided repository.
 
@@ -17,9 +16,9 @@ class CreateService(Generic[T]):
             repository (Type[CreateRepository[T]]): The repository
                 class used for data creation.
         """
-        self.repository = repository
+        self._repository = repository
 
-    async def create_record(self, record_data: T) -> Optional[T]:
+    async def create_record(self, data_fields: SchemaT) -> Optional[ModelT]:
         """
         Create a new record in the repository.
 
@@ -29,9 +28,5 @@ class CreateService(Generic[T]):
         Returns:
             T: The newly created record.
         """
-        try:
-            created_record = await self.repository.create_record(record_data)
-            return created_record
-        except Exception as e:
-            raise Exception(
-                f"Failed CreateService().create_record(): {e}") from e
+        created_record = await self._repository.model_create(data_fields)
+        return created_record

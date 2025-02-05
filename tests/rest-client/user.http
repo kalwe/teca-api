@@ -1,0 +1,48 @@
+@baseUrl = {{host}}:{{port}}/api/{{version}}
+@contentType = application/json
+
+
+@endpoint = user
+
+# name=foo&password=bar
+
+### User create
+
+# @name createUser
+POST http://{{baseUrl}}/{{endpoint}} HTTP/1.1
+content-type: {{contentType}}
+
+{
+    "email": "john.doe@email.com",
+    "password_hash": "passwd@123"
+}
+
+
+### User get by id /user/<id: int>
+
+@id = {{createUser.request.body.$.id}}
+GET http://{{baseUrl}}/{{endpoint}}/{{id}}
+Content-Type: {{contentType}}
+
+
+### User get all - return a list of User
+
+GET http://{{baseUrl}}/{{endpoint}}
+Content-Type: {{contentType}}
+
+
+### User update - return User updated
+
+PUT http://{{baseUrl}}/{{endpoint}}/{{id}}
+Content-Type: {{contentType}}
+
+{
+    "email": "john.updated.john@email.com",
+    "password_hash": "321@passwd"
+}
+
+
+### User delete by id - return id, is_active and deleted_at
+
+DELETE http://{{baseUrl}}/{{endpoint}}/{{id}}
+Content-Type: {{contentType}}

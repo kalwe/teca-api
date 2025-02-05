@@ -1,8 +1,7 @@
-from typing import Self
 from tortoise import fields
 
 from app.common.hash_utils import hash_provider
-from app.core.models.shared.base_model import BaseModel
+from app.core.models.shared.base_model import ModelBase
 
 
 class EmailMixin:
@@ -21,7 +20,7 @@ class PasswordMixin:
     )
 
 
-class User(BaseModel, EmailMixin, PasswordMixin):
+class User(ModelBase, EmailMixin, PasswordMixin):
     """
     Represents a user in the system, who can have one or more roles.
 
@@ -32,6 +31,7 @@ class User(BaseModel, EmailMixin, PasswordMixin):
         unique=True,
         description="The unique user name for the user."
     )
+    # TODO: create enum
     roles = fields.ManyToManyField(
         "models.Role",
         related_name="users",
@@ -48,7 +48,7 @@ class User(BaseModel, EmailMixin, PasswordMixin):
         """
         return self.name
 
-    def gen_hashed_password(self):
-        hash = hash_provider(self.password_hash)
-        self.password_hash = hash
-        # return hash
+    # def gen_hashed_password(schema: SchemaT):
+    #     hash = hash_provider(self.password_hash)
+    #     self.password_hash = hash
+    #     return hash

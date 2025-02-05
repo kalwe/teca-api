@@ -1,10 +1,11 @@
 from typing import List, Optional, Type
+from app.common.custom_exceptions import RepositoryError
 from app.core.models.user_model import User
 from app.core.repositories.shared.get_repository import GetRepository
 
 
-class UserGetRepository(GetRepository[User]):
-    def __init__(self, model_class: User):
+class UserGetRepository(GetRepository):
+    def __init__(self):
         """
         Initialize the repository with the User model_class.
 
@@ -12,7 +13,7 @@ class UserGetRepository(GetRepository[User]):
             model_class ([User): The User model_class class to be managed by
             the repository.
         """
-        super().__init__(model_class=model_class)
+        super().__init__(User())
 
     async def get_user_by_email(
         self,
@@ -29,13 +30,11 @@ class UserGetRepository(GetRepository[User]):
         """
         try:
             user = await self.get_all_records(email=email)
-            if not user:
-                return None
 
             return user
         except Exception as e:
-            raise Exception(
-                f"Failed repository get_user_by_email(): {e}") from e
+            raise RepositoryError(
+                f"Failed UserGetRepository.get_user_by_email(): {e}") from e
 
     async def get_users_by_role(self, role: str) -> List[User]:
         """
@@ -57,7 +56,7 @@ class UserGetRepository(GetRepository[User]):
             raise Exception(
                 f"Failed repository get_users_by_role(): {e}") from e
 
-    async def get_user_by_name(self) -> Optional[User]:
+    async def get_user_by_name(self, name) -> Optional[User]:
         """
         Retrieve a record by its name if it is active.
 
@@ -69,12 +68,9 @@ class UserGetRepository(GetRepository[User]):
             otherwise None.
         """
         try:
-            record = await self.model_class.get_or_none(
-                name=self.model_class.name,
-                is_active=True)
+            record = await self._model_class.get_or_none(name, is_active=True)
 
             return record
         except Exception as e:
-            raise Exception(
-                f"Failed to retrieve record by name={self.model_class.name}:
-                {e}") from e
+            raise RepositoryError(
+                f"Failed UserGetRepository.get_user_by_name: {e}") from e

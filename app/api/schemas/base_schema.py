@@ -3,12 +3,14 @@ from typing import Any, Optional
 from pydantic import BaseModel, ConfigDict, Field
 
 
+
 class TimestampsMixin:
     created_at: datetime = Field(
         description="Timestamp when the record was created.",
         # default_factory=aware_utcnow()
     )
     updated_at: Optional[datetime] = Field(
+        None,
         description="Timestamp when the record was last updated."
     )
 
@@ -30,12 +32,12 @@ class BaseSchema(BaseModel, TimestampsMixin, SoftDeleteMixin):
     and Pydantic.
     """
     # Allows parsing from ORM instances
-    model_config = ConfigDict(from_attributes=True)
+    # model_config = ConfigDict(from_attributes=True)
 
     id: int = Field(
         ...,
         description="Primary key for the record.",
-        # gt=0,
+        gt=0,
     )
     version: int = Field(
         default=1,
@@ -46,6 +48,15 @@ class BaseSchema(BaseModel, TimestampsMixin, SoftDeleteMixin):
         return self.model_validate(model)
 
     def validate_json(self, model):
+        """
+        Validate the given JSON data against the Pydantic model.
+
+        Args:
+            model: str | bytes | bytearray
+
+        Returns:
+            The validated Pydantic model.
+        """
         return self.model_validate_json(model)
 
     def dump(self) -> dict[str, Any]:
@@ -58,6 +69,7 @@ class BaseSchema(BaseModel, TimestampsMixin, SoftDeleteMixin):
         return self.model_dump_json()
 
 
+# TODO: remove TimestampsMixin, SoftDeleteMixin from InputBaseSchema
 class InputBaseSchema(BaseSchema):
     id: Optional[int] = Field(
         description="Primary key for the record.",
@@ -65,4 +77,9 @@ class InputBaseSchema(BaseSchema):
 
 
 class OutputBaseSchema(BaseSchema):
-    pass
+    model_config = ConfigDict(
+        from_attributes=True
+    )
+
+
+type SchemaT = BaseSchema

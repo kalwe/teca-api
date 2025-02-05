@@ -1,13 +1,12 @@
-import os
-from quart import Blueprint, Quart
+from quart import Quart
 from quart_auth import QuartAuth
 
-API_PREFIX_V1 = os.getenv("ENGINE_SUFFIX_V1")
-
-auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
-
-auth_manager = QuartAuth
+from app.api.auth.auth_models import UserAuth
 
 
-def init_auth(app: Quart):
+auth_manager = QuartAuth()
+
+
+def init_auth(app: Quart) -> None:
+    auth_manager.user_class = UserAuth
     auth_manager.init_app(app)

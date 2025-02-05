@@ -1,50 +1,53 @@
 from http import HTTPStatus
 from typing import Any, Optional
 
-from app.common.responses.enums import ResponseMessages
+# from app.common.responses.enums import ResponseMessages
 
+
+class RepositoryError(Exception):
+    pass
 
 # DEPRECATED
-class CustomValidationError(Exception):
-    """
-    Custom exception for validation errors in API requests.
-    Provides a standardized structure for error handling and response.
-    """
+# class CustomValidationError(Exception):
+#     """
+#     Custom exception for validation errors in API requests.
+#     Provides a standardized structure for error handling and response.
+#     """
 
-    def __init__(
-        self,
-        message=ResponseMessages.INVALID_INPUT,
-        http_code: int = HTTPStatus.BAD_REQUEST,
-        details: Optional[Any] = None
-    ):
-        """
-        Initialize the CustomValidationError.
+#     def __init__(
+#         self,
+#         message=ResponseMessages.INVALID_INPUT,
+#         http_code: int = HTTPStatus.BAD_REQUEST,
+#         details: Optional[Any] = None
+#     ):
+#         """
+#         Initialize the CustomValidationError.
 
-        Args:
-            message (Union[str, dict]): The error message or a dictionary of error details.
-            http_code (int): The HTTP status code associated with the error.
-            details (Optional[Any]): Additional error details for debugging or logging.
-        """
-        self.message = message
-        self.http_code = http_code
-        self.details = details
-        super().__init__(self.message)
+#         Args:
+#             message (Union[str, dict]): The error message or a dictionary of error details.
+#             http_code (int): The HTTP status code associated with the error.
+#             details (Optional[Any]): Additional error details for debugging or logging.
+#         """
+#         self.message = message
+#         self.http_code = http_code
+#         self.details = details
+#         super().__init__(self.message)
 
-    # def to_dict(self) -> dict:
-    #     """
-    #     Convert the exception to a dictionary for standardized API responses.
+#     # def to_dict(self) -> dict:
+#     #     """
+#     #     Convert the exception to a dictionary for standardized API responses.
 
-    #     Returns:
-    #         dict: A dictionary representation of the exception.
-    #     """
-    #     error_response = {
-    #         "error": "ValidationError",
-    #         "message": self.message,
-    #         "http_code": self.http_code,
-    #     }
-    #     if self.details:
-    #         error_response["details"] = self.details
-    #     return error_response
+#     #     Returns:
+#     #         dict: A dictionary representation of the exception.
+#     #     """
+#     #     error_response = {
+#     #         "error": "ValidationError",
+#     #         "message": self.message,
+#     #         "http_code": self.http_code,
+#     #     }
+#     #     if self.details:
+#     #         error_response["details"] = self.details
+#     #     return error_response
 
 
 class UserAlreadyExistsException(Exception):

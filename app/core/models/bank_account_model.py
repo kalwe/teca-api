@@ -1,10 +1,12 @@
 from tortoise import fields
 
-from app.core.models.shared.base_model import BaseModel
+from app.core.models.employee_model import Employee
+from app.core.models.shared.base_model import ModelBase
 from app.core.models.shared.employee_related import EmployeeRelated
+from app.core.models.shared.foreign_related import ForeignRelated
 
 
-class BankAccount(BaseModel, EmployeeRelated):
+class BankAccount(ModelBase):
     """
     Model representing an bank account with details.
     """
@@ -24,4 +26,7 @@ class BankAccount(BaseModel, EmployeeRelated):
     account_type = fields.CharField(
         max_length=120,
         description="Type of account"
+    )
+    employee: fields.ForeignKeyRelation[Employee] = (
+        ForeignRelated.foreign_key('Employee', 'bank')
     )

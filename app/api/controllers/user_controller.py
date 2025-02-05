@@ -1,8 +1,9 @@
 from http import HTTPStatus
 from typing import List
+from quart import request
 from quart_schema import validate_request, validate_response
 
-from app.api.schemas.user_schema import UserInputSchema, UserOutputSchema
+from app.api.schemas.user_schema import UserDeletedSchema, UserInputSchema, UserOutputSchema
 from app.core.models.user_model import User
 from app.core.repositories.user.user_create_repository import UserCreateRepository
 from app.core.repositories.user.user_delete_repository import UserDeleteRepository
@@ -12,26 +13,26 @@ from app.core.services.user.user_create_service import UserCreateService
 from app.core.services.user.user_delete_service import UserDeleteService
 from app.core.services.user.user_get_service import UserGetService
 from app.core.services.user.user_update_service import UserUpdateService
-from app.api.routes import user_bp
 
 
 class UserController:
     """
     Controller that handles user-related HTTP requests.
     """
+
     @staticmethod
     @validate_request(UserInputSchema)
-    @user_bp.route('/', methods=['POST'])
     @validate_response(UserOutputSchema)
-    async def create_user(data: User):
+    async def create_user(data: UserInputSchema) -> UserOutputSchema:
         """
         Creates a new user from the incoming JSON data.
 
         Returns:
             Tuple: A tuple containing the user data and the HTTP status code.
         """
-        service = UserCreateService(UserCreateRepository(User()))
-        user = service.create(data)
+        repository = UserCreateRepository()
+        service = UserCreateService(repository)
+        user = await service.create(data)
         return user, HTTPStatus.CREATED
 
     @staticmethod
@@ -46,12 +47,12 @@ class UserController:
             Tuple: A tuple containing the user data (or an error message)
             and the HTTP status code.
         """
-        service = UserGetService(UserGetRepository(User()))
+
+        service = UserGetService(UserGetRepository())
         user = service.get(id)
         return user, HTTPStatus.OK
 
     @staticmethod
-    @user_bp.route('/', methods=['GET'])
     @validate_response(List[UserOutputSchema])
     async def get_all_users():
         """
@@ -60,22 +61,23 @@ class UserController:
         Returns:
             Tuple: A tuple containing the list of users (or an error message) and the HTTP status code.
         """
-        service = UserGetService(UserGetRepository(User()))
+        service = UserGetService(UserGetRepository())
         users = service.get_all()
         return users, HTTPStatus.OK
 
     @staticmethod
     @validate_request(UserInputSchema)
-    @user_bp.route('/', methods=['POST'])
     @validate_response(UserOutputSchema)
-    async def update_user(id: int, data: User):
-        service = UserUpdateService(UserUpdateRepository(User()))
+    async def update_user(id: int, data: UserInputSchema):
+        repository = UserUpdateRepository()
+        service = UserUpdateService(repository)
         user = service.update(id, data)
         return user, HTTPStatus.OK
 
     @staticmethod
-    @user_bp.route('/', methods=['DELETE'])
+    @validate_response(UserDeletedSchema)
     async def delete_user(id: int):
-        service = UserDeleteService(UserDeleteRepository(User()))
+        repository = UserDeleteRepository()
+        service = UserDeleteService(repository)
         user = service.delete(id)
-        return user["is_active"], HTTPStatus.NO_CONTENT
+        return user, HTTPStatus.NO_CONTENT

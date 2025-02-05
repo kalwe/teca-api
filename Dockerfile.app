@@ -1,17 +1,18 @@
-FROM python:3.11-slim
+FROM python:3.12-slim
 
 ENV APP_DIR /app
 
 # RUN adduser -D quart
 WORKDIR /app
 
-COPY requirements.txt ./
+COPY requirements-freeze.txt ./requirements.txt
 COPY .env .
 
 RUN pip install --no-cache-dir -r requirements.txt
 RUN pip freeze > requirements-freeze.txt
 
-COPY . .
+COPY ./app .
+COPY ./run.py .
 
 # USER quart
 EXPOSE 5000

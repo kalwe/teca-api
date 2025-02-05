@@ -1,9 +1,9 @@
 from tortoise import fields
 
-from app.core.models.shared.base_model import BaseModel
+from app.core.models.shared.base_model import ModelBase
 
 
-class Function(BaseModel):
+class Function(ModelBase):
     """
     Represents a function of the employee
 

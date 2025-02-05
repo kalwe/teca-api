@@ -1,29 +1,33 @@
 from typing import Optional
-from app.core.models.shared.base_model import BaseModel
-from app.core.repositories.shared.delete_repository import DeleteRepository
+from app.core.common.custom_types import DeleteRepositoryT, ModelT
+from app.core.repositories.shared.get_repository import GetRepository
 
 
-class DeleteService[T: BaseModel]():
+class DeleteService:
     """
     Base service for handling soft-delete operations.
     """
 
-    def __init__(self, repository: DeleteRepository):
+    def __init__(self, repository: DeleteRepositoryT):
         """
         Initialize the delete service with a repository instance.
         :param repository: The repository for managing delete operations.
         """
-        self.repository = repository
+        self._repository = repository
+        self._get_repository = GetRepository(repository._model_class)
 
-    async def soft_delete(self, instance: T) -> Optional[T]:
+    async def soft_delete(self, id: int) -> Optional[ModelT]:
         """
         Perform a soft delete operation on the given instance.
         :param instance: The model instance to soft delete.
         :return: The soft-deleted instance, or None if the operation fails.
         """
-        try:
-            self.repository.model_class = instance
-            deleted_record = self.repository.soft_delete_record(instance)
-            return deleted_record
-        except Exception as e:
-            raise Exception(f"Failed service soft_delete(): {e}") from e
+        if id <= 0:
+            return None
+
+        record = self._get_repository.get_record_by_id(id)
+        if not record:
+            return None
+
+        deleted_record = self._repository.soft_delete_record(record)
+        return deleted_record

@@ -1,6 +1,9 @@
 from typing import Optional
 
-from app.core.models.shared.base_model import BaseModel
+# from app.core.models.shared.base_model import TModel
+from app.common.custom_exceptions import RepositoryError
+from app.core.models.shared.base_model import ModelT
+from app.api.schemas.base_schema import SchemaT
 
 
 class CreateRepository:
@@ -29,7 +32,7 @@ class CreateRepository:
             field data.
     """
 
-    def __init__(self, model_class: ):
+    def __init__(self, model_class: ModelT):
         """
         Initialize the repository with a specific model_class class.
 
@@ -37,9 +40,10 @@ class CreateRepository:
             model_class (T): The model_class class to be managed by
             the repository.
         """
-        self.model_class = model_class
+        self._model_class = model_class
 
-    async def create_record[T: BaseModel](self, fields_data: T) -> Optional[T]:
+    # TODO: model_fields: Dict[str, Any], use model_dump() on service layer
+    async def model_create(self, model_fields: SchemaT) -> Optional[ModelT]:
         """
         Create a new record in the database.
 
@@ -67,8 +71,13 @@ class CreateRepository:
             `create` method.
         """
         try:
-            created_record = await self.model_class.create(**fields_data)
+            created_record = await self._model_class.create(
+                **model_fields.dump()
+            )
             return created_record
-        except Exception as e:
+        except RepositoryError as e:
             raise Exception(
-                f"Failed CreateRepository().create_record(): {e}") from e
+                f"Failed CreateRepository().model_create(): {e}") from e
+
+
+type CreateRepositoryT = CreateRepository

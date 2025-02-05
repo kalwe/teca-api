@@ -11,6 +11,9 @@ def aware_utcnow():
     return datetime.now(timezone.utc)
 
 
+def aware_now(format: str = '%Y-%m-%d') -> str:
+    return datetime.now().strftime(format)
+
 def aware_utcfromtimestamp(timestamp):
     """
     Convert a UNIX timestamp to a timezone-aware UTC datetime.

@@ -1,10 +1,11 @@
-from tortoise import fields, Model
-from typing import Optional, Self
+from tortoise import fields
+from tortoise.models import Model
+from typing import Self
 
 from app.common.datetime_utils import aware_utcnow
 
 
-class BaseModel(Model):
+class ModelBase(Model):
     """
     Abstract base model containing common fields and utility methods
     for other models.
@@ -26,10 +27,10 @@ class BaseModel(Model):
         auto_now=True,
         description="Timestamp when the record was last updated."
     )
-    modified_by = fields.CharField(
-        null=True,
-        description="Name of the last user who modified"
-    )
+    # modified_by = fields.IntField(
+    #     null=True,
+    #     description="Name of the last user who modified"
+    # )
     is_active = fields.BooleanField(
         default=True,
         description="Indicates whether the record is active or not."
@@ -102,3 +103,6 @@ class BaseModel(Model):
             Self: A queryset of all soft-deleted records.
         """
         return await cls.filter(is_active=False)
+
+
+type ModelT = ModelBase

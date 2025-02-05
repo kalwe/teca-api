@@ -5,7 +5,7 @@ from app.core.repositories.user.user_get_repository import UserGetRepository
 from app.core.services.shared.get_service import GetService
 
 
-class UserGetService(GetService[User]):
+class UserGetService(GetService):
     """
     Service for managing user-related business logic, leveraging generic
     methods from GetService.
@@ -15,7 +15,7 @@ class UserGetService(GetService[User]):
     """
 
     # Override the type for specialization
-    repository = UserGetRepository
+    # repository = UserGetRepository
 
     def __init__(self, repository: UserGetRepository):
         """
@@ -26,30 +26,16 @@ class UserGetService(GetService[User]):
             data retrieval.
         """
         super().__init__(repository)
+        self._get_repository = repository
 
     async def get(self, id: int) -> Optional[UserOutputSchema]:
-        try:
-            self.repository.model_class.id = id
-            user = self.get_by_id()
-            if not user:
-                return None
-
-            return UserOutputSchema.validate(user)
-        except Exception as e:
-            raise Exception(
-                f"Failed UserGetService().get(): {e}") from e
+        user = self.get_by_id(id)
+        return UserOutputSchema.validate(user)
 
     async def get_all(self, filters: Optional[dict] = None
                       ) -> Optional[List[UserOutputSchema]]:
-        try:
-            users = self.get_all_records(filters)
-            if not users:
-                return None
-
-            return [UserOutputSchema.validate(user) for user in users]
-        except Exception as e:
-            raise Exception(
-                f"Failed UserGetService().get_all(): {e}") from e
+        users = self.get_all_records(filters)
+        return [UserOutputSchema.validate(user) for user in users]
 
     async def get_by_email(self, email: str) -> Optional[UserOutputSchema]:
         """
@@ -62,15 +48,8 @@ class UserGetService(GetService[User]):
             Optional[UserOutputSchema]: The serialized user data or None
             if not found.
         """
-        try:
-            user = await self.repository.get_user_by_email(email)
-            if not user:
-                return None
-
-            return UserOutputSchema.validate(user)
-        except Exception as e:
-            raise Exception(
-                f"Failed UserGetService().get_by_email(): {e}") from e
+        user = await self._get_repository.get_user_by_email(email)
+        return UserOutputSchema.validate(user)
 
     async def get_by_role(self, role: str) -> List[UserOutputSchema]:
         """
@@ -83,24 +62,9 @@ class UserGetService(GetService[User]):
             List[UserOutputSchema]: A list of serialized users with the
             specified role.
         """
-        try:
-            users = await self.repository.get_users_by_role(role)
-            if not users:
-                return None
-
-            return [UserOutputSchema.validate(user) for user in users]
-        except Exception as e:
-            raise Exception(
-                f"Failed UserGetService().get_by_role(): {e}") from e
+        users = await self._get_repository.get_users_by_role(role)
+        return [UserOutputSchema.validate(user) for user in users]
 
     async def get_by_name(self, name: str) -> Optional[UserOutputSchema]:
-        try:
-            self.repository.model_class.name = name
-            user = self.repository.get_user_by_name()
-            if not user:
-                return None
-
-            return UserOutputSchema.validate(user)
-        except Exception as e:
-            raise Exception(
-                f"Failed UserGetService().get_all(): {e}") from e
+        user = self._get_repository.get_user_by_name(name)
+        return UserOutputSchema.validate(user)

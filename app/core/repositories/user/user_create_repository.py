@@ -2,12 +2,12 @@ from app.core.models.user_model import User
 from app.core.repositories.shared.create_repository import CreateRepository
 
 
-class UserCreateRepository(CreateRepository[User]):
+class UserCreateRepository(CreateRepository):
     """
     Repository for managing user-related create .
     """
 
-    def __init__(self, model_class: User):
+    def __init__(self):
         """
         Initialize the repository with the User model_class.
 
@@ -16,4 +16,4 @@ class UserCreateRepository(CreateRepository[User]):
             to be managed by
             the repository.
         """
-        super().__init__(model_class)
+        super().__init__(User())

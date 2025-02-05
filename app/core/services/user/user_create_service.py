@@ -1,6 +1,6 @@
 from typing import List, Optional
-from app.api.schemas.user_schema import UserOutputSchema
-from app.common.hash_utils import hash_password
+from app.api.schemas.user_schema import UserInputSchema, UserOutputSchema
+from app.common.hash_utils import hash_password, hash_provider
 from app.common.custom_exceptions import UserAlreadyExistsException
 from app.core.models.user_model import User
 from app.core.repositories.user.user_create_repository import (
@@ -10,7 +10,7 @@ from app.core.services.shared.create_service import CreateService
 from app.core.services.user.user_get_service import UserGetService
 
 
-class UserCreateService(CreateService[User]):
+class UserCreateService(CreateService):
     """
     Service for managing user-related business logic.
     Handles creation of new users with role assignment and password hashing.
@@ -25,9 +25,12 @@ class UserCreateService(CreateService[User]):
                 to handle data persistence for the User model.
         """
         super().__init__(repository)
-        self.get_service = UserGetService(UserGetRepository(User()))
+        self._get_service = UserGetService(UserGetRepository(User()))
 
-    async def create(self, user: User) -> Optional[UserOutputSchema]:
+    async def create(
+        self,
+        user_data: UserInputSchema,
+    ) -> Optional[UserOutputSchema]:
         """
         Create a new user with additional business logic.
 
@@ -41,7 +44,8 @@ class UserCreateService(CreateService[User]):
             UserOutputSchema: Serialized data of the created user.
 
         Raises:
-            UserAlreadyExistsException: If a user with the given email already exists.
+            UserAlreadyExistsException: If a user with the given email
+            already exists.
         """        """
         Create a new user with additional business logic.
 
@@ -55,24 +59,22 @@ class UserCreateService(CreateService[User]):
             UserOutputSchema: Serialized data of the created user.
 
         Raises:
-            UserAlreadyExistsException: If a user with the given email already exists.
+            UserAlreadyExistsException: If a user with the given email
+            already exists.
         """
         # roles = user.roles or ["user"]  # Assign default role if none provided
 
-        try:
-            # Check if a user with the email already exists
-            existing_user = await self.get_service.get_by_email(
-                user.email
-            )
-            if existing_user:
-                raise UserAlreadyExistsException(
-                    f"User with email {user.email} already exists."
-                )
+        # Check if a user with the email already exists
+        # existing_user = await self._get_service.get_by_email(
+        #     user.email
+        # )
+        # if existing_user:
+        #     raise UserAlreadyExistsException(
+        #         f"User with email {user.email} already exists."
+        #     )
 
-            password_hash = hash_password(user.password_hash)
+        password = user_data.password.get_secret_value()
+        user_data.password = hash_provider(password)
 
-            created_user = await self.create_record(user)
-            return UserOutputSchema().validate(created_user)
-        except Exception as e:
-            raise Exception(
-                f"Failed UserCreateService().create(): {e}") from e
+        created_user = await self.create_record(user_data)
+        return UserOutputSchema().validate(created_user)
