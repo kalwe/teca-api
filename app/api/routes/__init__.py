@@ -30,12 +30,16 @@ api_bp = Blueprint('api', __name__, url_prefix=API_PREFIX)
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 user_bp = Blueprint('user', __name__, url_prefix='/user')
 employee_bp = Blueprint('employee', __name__, url_prefix='/employee')
+address_bp = Blueprint('address', __name__, url_prefix='/address')
+bank_account_bp = Blueprint('bank_account', __name__, url_prefix='/bank_account')
 
 
 def init_bp(app: Quart) -> None:
     api_bp.register_blueprint(auth_bp)
     api_bp.register_blueprint(user_bp)
     api_bp.register_blueprint(employee_bp)
+    api_bp.register_blueprint(address_bp)
+    api_bp.register_blueprint(bank_account_bp)
     app.register_blueprint(api_bp)
 
     from app.api.auth import auth_routes
