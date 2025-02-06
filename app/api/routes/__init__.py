@@ -33,11 +33,11 @@ employee_bp = Blueprint('employee', __name__, url_prefix='/employee')
 
 
 def init_bp(app: Quart) -> None:
-    api_bp.register_blueprint(auth_bp)
+    # api_bp.register_blueprint(auth_bp)
     api_bp.register_blueprint(user_bp)
-    api_bp.register_blueprint(employee_bp)
+    # api_bp.register_blueprint(employee_bp)
     app.register_blueprint(api_bp)
 
-    from app.api.auth import auth_routes
-    # from app.api.routes import user_route
+    # from app.api.auth import auth_routes
+    from app.api.routes import user_route
     # from app.api.routes import employee_route

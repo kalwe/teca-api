@@ -6,8 +6,8 @@ from app.api.schemas.bank_account_schema import BankAccountSchema
 from app.api.schemas.base_schema import BaseSchema, InputBaseSchema, OutputBaseSchema, SoftDeleteMixin
 from app.api.schemas.clothing_schema import ClothingSchema
 from app.api.schemas.function_schema import FunctionSchema
-from app.core.enums.gender_enum import GenderType
-from app.core.enums.marital_status_enum import MaritalStatusType
+from app.common.enums.gender_enum import GenderEnum
+from app.common.enums.marital_status_enum import MaritalStatusEnum
 
 
 class PersonSchema:
@@ -34,14 +34,6 @@ class PersonSchema:
         ...,
         max_length=120,
         description="Indicate issuing body from RG",
-    )
-    gender = Field(
-        GenderType,
-        description="Gender male or female",
-    )
-    marital_status = Field(
-        MaritalStatusType,
-        description="Current marital status of person",
     )
 
 

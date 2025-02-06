@@ -1,7 +1,7 @@
 from tortoise import fields
 
-from app.core.enums.gender_enum import Gender
-from app.core.enums.marital_status_enum import MaritalStatus
+from app.common.enums.gender_enum import GenderEnum
+from app.common.enums.marital_status_enum import MaritalStatusEnum
 
 
 class PersonAbs:
@@ -30,14 +30,8 @@ class PersonAbs:
         max_length=120,
         description="Indicate issuing body from RG",
     )
-    gender: Gender = fields.CharEnumField(
-        Gender,
-        description="Gender male or female",
-    )
-    marital_status: MaritalStatus = fields.CharEnumField(
-        MaritalStatus,
-        description="Current marital status of person",
-    )
+    gender: GenderEnum = GenderEnum.MALE
+    marital_status: MaritalStatusEnum = MaritalStatusEnum.SINGLE,
 
     class Meta:
         abstract = True

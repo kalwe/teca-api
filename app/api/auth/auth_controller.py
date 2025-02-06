@@ -1,10 +1,8 @@
-from quart import request
 from quart_auth import logout_user
 from quart_schema import validate_request, validate_response
 
+from app.api.auth.auth_schemas import UseAuthInputSchema, UserAuthOutputLoginSchema
 from app.api.auth.auth_services import AuthService
-from app.api.auth.auth_schemas import (
-    UseAuthInputSchema, UserAuthOutputLoginSchema)
 
 
 class AuthController:

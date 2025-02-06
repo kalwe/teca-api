@@ -1,13 +1,12 @@
-from typing import Any, Dict
-from quart_auth import current_user
-from app.api.auth.auth_schemas import UseAuthInputSchema, UserAuthOutputLoginSchema
-from app.common.hash_utils import hash_provider
-from app.core.models.user_model import User
-from app.core.repositories.user.user_get_repository import UserGetRepository
-from app.core.services.user.user_get_service import UserGetService
 from secrets import compare_digest
 
+from quart_auth import current_user
+
 from app.api.auth import auth_manager
+from app.api.auth.auth_schemas import UseAuthInputSchema, UserAuthOutputLoginSchema
+from app.common.hash_utils import hash_provider
+from app.core.repositories.user.user_get_repository import UserGetRepository
+from app.core.services.user.user_get_service import UserGetService
 
 
 class AuthService:

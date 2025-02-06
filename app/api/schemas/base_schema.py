@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Any, Optional
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, ValidationError, ValidationInfo
 
 
 
@@ -33,19 +33,16 @@ class BaseSchema(BaseModel, TimestampsMixin, SoftDeleteMixin):
     """
     # Allows parsing from ORM instances
     # model_config = ConfigDict(from_attributes=True)
-
-    id: int = Field(
-        ...,
-        description="Primary key for the record.",
-        gt=0,
-    )
     version: int = Field(
         default=1,
         description="Version of the record for optimistic concurrency."
     )
 
     def validate(self, model):
-        return self.model_validate(model)
+        try:
+            return self.model_validate(model)
+        except ValidationError as e:
+            raise ValidationError(f"model_validate() e: {e}") from e
 
     def validate_json(self, model):
         """
@@ -57,29 +54,42 @@ class BaseSchema(BaseModel, TimestampsMixin, SoftDeleteMixin):
         Returns:
             The validated Pydantic model.
         """
-        return self.model_validate_json(model)
+        try:
+            return self.model_validate_json(model)
+        except ValidationError as e:
+            raise ValidationError(f"model_validate_json() e: {e}") from e
 
-    def dump(self) -> dict[str, Any]:
+    def dump(self, by_alias: bool = False) -> dict[str, Any]:
         """
         Serializes the model instance into a dictionary.
         """
-        return self.model_dump()
+        try:
+            return self.model_dump(by_alias=by_alias)
+        except ValidationError as e:
+            raise ValidationError(f"model_dump() e: {e}") from e
 
-    def dump_json(self) -> str:
-        return self.model_dump_json()
+    def dump_json(self, by_alias: bool = False) -> str:
+        try:
+            return self.model_dump_json(by_alias=by_alias)
+        except ValidationError as e:
+            raise ValidationError(f"model_dump_json() e: {e}") from e
 
 
 # TODO: remove TimestampsMixin, SoftDeleteMixin from InputBaseSchema
 class InputBaseSchema(BaseSchema):
-    id: Optional[int] = Field(
-        description="Primary key for the record.",
-    )
+    id: int = Field()
 
 
 class OutputBaseSchema(BaseSchema):
     model_config = ConfigDict(
         from_attributes=True
     )
-
+    id: int = Field(
+        description="Primary key for the record.",
+        gt=0,
+    )
+    id: int = Field(
+        description="Primary key for the record.",
+    )
 
 type SchemaT = BaseSchema

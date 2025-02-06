@@ -1,8 +1,5 @@
-from os import name
 from tortoise import fields
 
-
-from app.core.models.employee_model import Employee
 from app.core.models.shared.base_model import ModelBase
 from app.core.models.shared.foreign_related import ForeignRelated
 
@@ -35,6 +32,4 @@ class Address(ModelBase):
         max_length=60,
         description="Name of state"
     )
-    # employee = EmployeeRelated.employee_related("address")
-    employee: fields.ForeignKeyRelation[Employee] = (
-        ForeignRelated.foreign_key('Employee', 'address'))
+    employee = ForeignRelated.foreign_related('Employee', 'address')

@@ -16,32 +16,32 @@ class Employee(ModelBase, PersonAbs):
     """
     name = fields.CharField(
         max_length=80,
-        description="First name of employee"
+        description="First name of employee",
     )
     registration = fields.CharField(
         max_length=4,
-        description="Registration number of employee"
+        description="Registration number of employee",
     )
     supervisor = fields.BooleanField(
         default=False,
-        description="Indicates if employee is a supervisor"
+        description="Indicates if employee is a supervisor",
     )
     manager = fields.BooleanField(
         default=False,
-        description="Indicates if employee is a manager"
+        description="Indicates if employee is a manager",
     )
     salary = fields.IntField(
-        description="Salary of employee"
+        description="Salary of employee",
     )
     admission_date = fields.DateField(
-        description="Date when employee has contracted"
+        description="Date when employee has contracted",
     )
     removal_date = fields.DateField(
         null=True,
-        description="Date when employee has fired"
+        description="Date when employee has fired",
     )
     function: fields.ForeignKeyRelation[Function] = (
-        ForeignRelated.foreign_key('Function', 'function')
+        ForeignRelated.foreign_related('Function', 'function')
     )
     address: fields.ReverseRelation["Address"]
     contacts: fields.ReverseRelation["Contact"]

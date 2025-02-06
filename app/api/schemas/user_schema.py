@@ -1,11 +1,10 @@
-from pydantic import ConfigDict, Field, EmailStr, SecretStr
+from pydantic import AliasGenerator, ConfigDict, Field, EmailStr, SecretStr
 from app.api.schemas.base_schema import (
     InputBaseSchema, OutputBaseSchema, BaseSchema, SoftDeleteMixin)
 
 
 class UserPasswordMixin:
     password: SecretStr = Field(
-        ...,
         description="The hashed password of the user",
         min_length=6,
         max_length=255,
@@ -14,18 +13,16 @@ class UserPasswordMixin:
 
 class UserEmailMixin:
     email: EmailStr = Field(
-        ...,
         description="The email address of the user",
         max_length=255,
     )
 
 
-class UserBaseSchema(BaseSchema):
+class UserBaseSchema():
     """
     Schema for serializing and deserializing the User model using Pydantic.
     """
     name: str = Field(
-        ...,
         description="The name of the user",
         min_length=5,
         max_length=80,
@@ -45,9 +42,11 @@ class UserInputSchema(
     UserPasswordMixin
 ):
     model_config = ConfigDict(
-        alias_generator=lambda field: {
-            'password': 'password_hash'
-        }.get(field, field),
+        alias_generator=AliasGenerator(
+            validation_alias=lambda field: {
+                'password': 'password_hash'
+            }.get(field, field)
+        ),
         populate_by_name=True,
         by_alias=True
     )

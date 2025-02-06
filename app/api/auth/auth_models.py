@@ -1,6 +1,5 @@
 from quart_auth import AuthUser
 
-from app.core.models.user_model import User
 from app.core.repositories.user.user_get_repository import UserGetRepository
 from app.core.services.user.user_get_service import UserGetService
 
