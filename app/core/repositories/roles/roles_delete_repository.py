@@ -1,4 +1,4 @@
-from app.core.models.roles_model import Roles
+from app.core.models.roles_model import Role
 from app.core.repositories.shared.delete_repository import DeleteRepository
 
 
@@ -12,4 +12,4 @@ class RolesDeleteRepository(DeleteRepository):
         Initialize the roles-specific delete repository.
         :param model_class: The Roles class.
         """
-        super().__init__(Roles())
+        super().__init__(Role())

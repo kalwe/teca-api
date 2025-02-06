@@ -1,5 +1,5 @@
 from pydantic import Field
-from app.api.schemas.base_schema import BaseSchema
+from app.api.schemas.base_schema import BaseSchema, InputBaseSchema, OutputBaseSchema
 
 
 class ClothingSchema(BaseSchema):
@@ -16,3 +16,10 @@ class ClothingSchema(BaseSchema):
     shoe_size: str = Field(
         max_length=80,
     )
+
+
+class ClothingInputSchema(ClothingSchema, InputBaseSchema):
+   pass
+
+class ClothingOutputSchema(ClothingSchema, OutputBaseSchema):
+   pass

@@ -3,7 +3,7 @@ from typing import List
 from quart import request
 from quart_schema import validate_request, validate_response
 
-from app.api.schemas.bank_account_schema import Bank_accountDeletedSchema, Bank_accountInputSchema, Bank_accountOutputSchema
+from app.api.schemas.bank_account_schema import BankAccountDeletedSchema, BankAccountInputSchema, BankAccountInputSchema
 from app.core.repositories.bank_account.bank_account_create_repository import Bank_accountCreateRepository
 from app.core.repositories.bank_account.bank_account_delete_repository import Bank_accountDeleteRepository
 from app.core.repositories.bank_account.bank_account_get_repository import Bank_accountGetRepository
@@ -20,11 +20,11 @@ class Bank_accountController:
     """
 
     @staticmethod
-    @validate_request(Bank_accountInputSchema)
-    @validate_response(Bank_accountOutputSchema)
+    @validate_request(BankAccountInputSchema)
+    @validate_response(BankAccountInputSchema)
     async def create_bank_account(
-        data: Bank_accountInputSchema
-    ) -> Bank_accountOutputSchema:
+        data: BankAccountInputSchema
+    ) -> BankAccountInputSchema:
         """
         Creates a new bank_account from the incoming JSON data.
 
@@ -38,7 +38,7 @@ class Bank_accountController:
         return bank_account, HTTPStatus.CREATED
 
     @staticmethod
-    @validate_response(Bank_accountOutputSchema)
+    @validate_response(BankAccountInputSchema)
     async def get_bank_account(id: int):
         """
         Retrieves a bank_account by ID.
@@ -55,7 +55,7 @@ class Bank_accountController:
         return bank_account, HTTPStatus.OK
 
     @staticmethod
-    @validate_response(List[Bank_accountOutputSchema])
+    @validate_response(List[BankAccountInputSchema])
     async def get_all_bank_accounts():
         """
         Retrieves all bank_accounts using FetchHelper to standardize
@@ -71,16 +71,16 @@ class Bank_accountController:
         return bank_accounts, HTTPStatus.OK
 
     @staticmethod
-    @validate_request(Bank_accountInputSchema)
-    @validate_response(Bank_accountOutputSchema)
-    async def update_bank_account(id: int, data: Bank_accountInputSchema):
+    @validate_request(BankAccountInputSchema)
+    @validate_response(BankAccountInputSchema)
+    async def update_bank_account(id: int, data: BankAccountInputSchema):
         repository = Bank_accountUpdateRepository()
         service = Bank_accountUpdateService(repository)
         bank_account = service.update(id, data)
         return bank_account, HTTPStatus.OK
 
     @staticmethod
-    @validate_response(Bank_accountDeletedSchema)
+    @validate_response(BankAccountDeletedSchema)
     async def delete_bank_account(id: int):
         repository = Bank_accountDeleteRepository()
         service = Bank_accountDeleteService(repository)

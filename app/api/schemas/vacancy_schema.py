@@ -2,9 +2,9 @@ from pydantic import Field
 from app.api.schemas.base_schema import BaseSchema, InputBaseSchema, OutputBaseSchema
 
 
-class AddressBaseSchema(BaseSchema):
+class VacancyBaseSchema(BaseSchema):
     """
-    Schema for serializing and deserializing the Address model using Pydantic.
+    Schema for serializing and deserializing the Vacancy model using Pydantic.
     """
     street: str = Field(
         max_length=255,
@@ -31,8 +31,8 @@ class AddressBaseSchema(BaseSchema):
         description="Name of state"
     )
 
-class AddressInputSchema(AddressBaseSchema, InputBaseSchema):
+class VacancyInputSchema(VacancyBaseSchema, InputBaseSchema):
    pass
 
-class AddressOutputSchema(AddressBaseSchema, OutputBaseSchema):
+class VacancyOutputSchema(VacancyBaseSchema, OutputBaseSchema):
    pass

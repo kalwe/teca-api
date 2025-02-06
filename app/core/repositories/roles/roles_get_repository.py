@@ -1,6 +1,6 @@
 from typing import Optional
 from app.common.custom_exceptions import RepositoryError
-from app.core.models.roles_model import Roles
+from app.core.models.roles_model import Role
 from app.core.repositories.shared.get_repository import GetRepository
 
 
@@ -13,10 +13,10 @@ class RolesGetRepository(GetRepository):
             model_class ([Roles): The Roles model_class class to be managed by
             the repository.
         """
-        super().__init__(Roles())
+        super().__init__(Role())
 
 
-    async def get_roles_by_name(self, name) -> Optional[Roles]:
+    async def get_roles_by_name(self, name) -> Optional[Role]:
         """
         Retrieve a record by its name if it is active.
 

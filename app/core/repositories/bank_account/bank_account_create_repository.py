@@ -1,8 +1,8 @@
-from app.core.models.bank_account_model import Bank_account
+from app.core.models.bank_account_model import BankAccount
 from app.core.repositories.shared.create_repository import CreateRepository
 
 
-class Bank_accountCreateRepository(CreateRepository):
+class BankAccountCreateRepository(CreateRepository):
     """
     Repository for managing bank_account-related create .
     """
@@ -16,4 +16,4 @@ class Bank_accountCreateRepository(CreateRepository):
             to be managed by
             the repository.
         """
-        super().__init__(Bank_account())
+        super().__init__(BankAccount())

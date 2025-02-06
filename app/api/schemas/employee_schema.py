@@ -1,7 +1,7 @@
 from datetime import date
 from typing import List
 from pydantic import Field
-from app.api.schemas.address_schema import AddressSchema
+from app.api.schemas.address_schema import AddressBaseSchema, AddressSchema
 from app.api.schemas.bank_account_schema import BankAccountSchema
 from app.api.schemas.base_schema import BaseSchema, InputBaseSchema, OutputBaseSchema, SoftDeleteMixin
 from app.api.schemas.clothing_schema import ClothingSchema
@@ -68,7 +68,7 @@ class EmployeeSchema(BaseSchema, PersonSchema):
         description="Date when employee has contracted"
     )
     function: FunctionSchema
-    address: AddressSchema
+    address: AddressBaseSchema
     bank_account: BankAccountSchema
     clothing: ClothingSchema
 

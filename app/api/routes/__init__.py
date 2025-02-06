@@ -31,6 +31,12 @@ user_bp = Blueprint("user", __name__, url_prefix="/user")
 employee_bp = Blueprint("employee", __name__, url_prefix="/employee")
 address_bp = Blueprint("address", __name__, url_prefix="/address")
 bank_account_bp = Blueprint("bank_account", __name__, url_prefix="/bank_account")
+clothing_bp = Blueprint("clothing", __name__, url_prefix="/clothing")
+contact_bp = Blueprint("contact", __name__, url_prefix="/contact")
+vacancy_bp = Blueprint("vacancy", __name__, url_prefix="/vacancy")
+function_bp = Blueprint("function", __name__, url_prefix="/function")
+reminder_bp = Blueprint("reminder", __name__, url_prefix="/reminder")
+roles_bp = Blueprint("roles", __name__, url_prefix="/roles")
 
 
 def init_bp(app: Quart) -> None:
