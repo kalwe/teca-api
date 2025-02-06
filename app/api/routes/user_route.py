@@ -1,7 +1,6 @@
 from app.api.controllers.user_controller import UserController
 from app.api.routes import user_bp
 
-
 # TODO: maybe need use init_routes(bp: Blueprint) -> None:
 # and call on init_bp() or __init__.create_app()
 
