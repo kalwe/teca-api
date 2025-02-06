@@ -30,8 +30,8 @@ class PersonAbs:
         max_length=120,
         description="Indicate issuing body from RG",
     )
-    gender: GenderEnum = GenderEnum.MALE
-    marital_status: MaritalStatusEnum = MaritalStatusEnum.SINGLE,
+    gender: GenderEnum = fields.CharEnumField(GenderEnum)
+    marital_status: MaritalStatusEnum = fields.CharEnumField(MaritalStatusEnum)
 
     class Meta:
         abstract = True

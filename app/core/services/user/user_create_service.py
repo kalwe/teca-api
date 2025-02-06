@@ -1,10 +1,9 @@
-from typing import List, Optional
+from typing import Optional
+
 from app.api.schemas.user_schema import UserInputSchema, UserOutputSchema
-from app.common.hash_utils import hash_password, hash_provider
-from app.common.custom_exceptions import UserAlreadyExistsException
+from app.common.hash_utils import hash_provider
 from app.core.models.user_model import User
-from app.core.repositories.user.user_create_repository import (
-    UserCreateRepository)
+from app.core.repositories.user.user_create_repository import UserCreateRepository
 from app.core.repositories.user.user_get_repository import UserGetRepository
 from app.core.services.shared.create_service import CreateService
 from app.core.services.user.user_get_service import UserGetService

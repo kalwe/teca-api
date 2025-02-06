@@ -1,10 +1,13 @@
 from http import HTTPStatus
 from typing import List
-from quart import request
+
 from quart_schema import validate_request, validate_response
 
-from app.api.schemas.user_schema import UserDeletedSchema, UserInputSchema, UserOutputSchema
-from app.core.models.user_model import User
+from app.api.schemas.user_schema import (
+    UserDeletedSchema,
+    UserInputSchema,
+    UserOutputSchema,
+)
 from app.core.repositories.user.user_create_repository import UserCreateRepository
 from app.core.repositories.user.user_delete_repository import UserDeleteRepository
 from app.core.repositories.user.user_get_repository import UserGetRepository

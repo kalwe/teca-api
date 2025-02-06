@@ -1,18 +1,15 @@
 from datetime import datetime
-from typing import Any, Optional
-from pydantic import BaseModel, ConfigDict, Field, ValidationError, ValidationInfo
+from typing import Any
 
+from pydantic import BaseModel, Field, ValidationError
 
 
 class TimestampsMixin:
     created_at: datetime = Field(
         description="Timestamp when the record was created.",
-        # default_factory=aware_utcnow()
+        default_factory=datetime.now,
     )
-    updated_at: Optional[datetime] = Field(
-        None,
-        description="Timestamp when the record was last updated."
-    )
+    updated_at: datetime = None
 
 
 class SoftDeleteMixin:
@@ -20,10 +17,7 @@ class SoftDeleteMixin:
         default=True,
         description="Indicates whether the record is active or not."
     )
-    deleted_at: Optional[datetime] = Field(
-        None,
-        description="Timestamp when the record was soft-deleted."
-    )
+    deleted_at: datetime = None
 
 
 class BaseSchema(BaseModel, TimestampsMixin, SoftDeleteMixin):
@@ -31,18 +25,14 @@ class BaseSchema(BaseModel, TimestampsMixin, SoftDeleteMixin):
     Base class for defining generic fields for models using Quart-Schema
     and Pydantic.
     """
-    # Allows parsing from ORM instances
-    # model_config = ConfigDict(from_attributes=True)
-    version: int = Field(
-        default=1,
-        description="Version of the record for optimistic concurrency."
-    )
+
+    version: int
 
     def validate(self, model):
         try:
             return self.model_validate(model)
         except ValidationError as e:
-            raise ValidationError(f"model_validate() e: {e}") from e
+            raise ValidationError(f"model_validate() e: {e}")
 
     def validate_json(self, model):
         """
@@ -57,39 +47,45 @@ class BaseSchema(BaseModel, TimestampsMixin, SoftDeleteMixin):
         try:
             return self.model_validate_json(model)
         except ValidationError as e:
-            raise ValidationError(f"model_validate_json() e: {e}") from e
+            raise ValidationError(f"model_validate_json() e: {e}")
 
-    def dump(self, by_alias: bool = False) -> dict[str, Any]:
+    def dump_clean(self, exclude_fields: dict[str, Any]) -> dict[str, Any]:
+        # exclude unnecessary fields for input request
+        default_exclude = {
+            "created_at": True,
+            "updated_at": True,
+            "deleted_at": True,
+            "version": True,
+        }
+
+        if not exclude_fields:
+            exclude_fields = default_exclude
+        self.dump(exclude=exclude_fields)
+
+    def dump(self, **kwargs) -> dict[str, Any]:
         """
         Serializes the model instance into a dictionary.
         """
         try:
-            return self.model_dump(by_alias=by_alias)
+            return self.model_dump(**kwargs)
         except ValidationError as e:
-            raise ValidationError(f"model_dump() e: {e}") from e
+            raise ValidationError(f"model_dump() e: {e}")
 
-    def dump_json(self, by_alias: bool = False) -> str:
+    def dump_json(self, **kwargs) -> str:
         try:
-            return self.model_dump_json(by_alias=by_alias)
+            return self.model_dump_json(**kwargs)
         except ValidationError as e:
-            raise ValidationError(f"model_dump_json() e: {e}") from e
+            raise ValidationError(f"model_dump_json() e: {e}")
 
 
-# TODO: remove TimestampsMixin, SoftDeleteMixin from InputBaseSchema
 class InputBaseSchema(BaseSchema):
-    id: int = Field()
+    id: int = None
 
 
 class OutputBaseSchema(BaseSchema):
-    model_config = ConfigDict(
-        from_attributes=True
-    )
     id: int = Field(
         description="Primary key for the record.",
         gt=0,
-    )
-    id: int = Field(
-        description="Primary key for the record.",
     )
 
 type SchemaT = BaseSchema

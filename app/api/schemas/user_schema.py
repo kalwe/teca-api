@@ -1,6 +1,11 @@
-from pydantic import AliasGenerator, ConfigDict, Field, EmailStr, SecretStr
+from pydantic import AliasGenerator, ConfigDict, EmailStr, Field, SecretStr
+
 from app.api.schemas.base_schema import (
-    InputBaseSchema, OutputBaseSchema, BaseSchema, SoftDeleteMixin)
+    BaseSchema,
+    InputBaseSchema,
+    OutputBaseSchema,
+    SoftDeleteMixin,
+)
 
 
 class UserPasswordMixin:
@@ -43,12 +48,11 @@ class UserInputSchema(
 ):
     model_config = ConfigDict(
         alias_generator=AliasGenerator(
-            validation_alias=lambda field: {
-                'password': 'password_hash'
-            }.get(field, field)
+            validation_alias=lambda field: {"password": "password_hash"}.get(
+                field, field
+            )
         ),
-        populate_by_name=True,
-        by_alias=True
+        by_alias=True,
     )
 
 
@@ -60,5 +64,6 @@ class UserOutputSchema(
     pass
 
 
+# TODO: create generic DeletedSchema
 class UserDeletedSchema(BaseSchema, SoftDeleteMixin):
     pass
