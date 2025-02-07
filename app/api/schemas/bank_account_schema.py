@@ -1,5 +1,6 @@
 from pydantic import Field
-from app.api.schemas.base_schema import BaseSchema
+
+from app.api.schemas.base_schema import BaseSchema, InputSchema, OutputSchema
 
 
 class BankAccountSchema(BaseSchema):
@@ -24,3 +25,11 @@ class BankAccountSchema(BaseSchema):
         max_length=120,
         description="Type of account"
     )
+
+
+
+class BankAccountInputSchema(BankAccountSchema, InputSchema):
+   pass
+
+class BankAccountOutputSchema(BankAccountSchema, OutputSchema):
+   pass

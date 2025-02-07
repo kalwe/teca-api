@@ -8,14 +8,13 @@ class EmailMixin:
         max_length=255,
         unique=True,
         index=True,
-        description="The unique email address of the user."
+        description="The unique email address of the user.",
     )
 
 
 class PasswordMixin:
     password_hash = fields.CharField(
-        max_length=255,
-        description="The hashed password for the user."
+        max_length=255, description="The hashed password for the user."
     )
 
 
@@ -25,10 +24,9 @@ class User(ModelBase, EmailMixin, PasswordMixin):
 
     A user can have one or more roles, each granting different permissions.
     """
+
     name = fields.CharField(
-        max_length=80,
-        unique=True,
-        description="The unique user name for the user."
+        max_length=80, unique=True, description="The unique user name for the user."
     )
     # TODO: create enum
     roles = fields.ManyToManyField(

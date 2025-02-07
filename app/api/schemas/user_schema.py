@@ -2,8 +2,8 @@ from pydantic import AliasGenerator, ConfigDict, EmailStr, Field, SecretStr
 
 from app.api.schemas.base_schema import (
     BaseSchema,
-    InputBaseSchema,
-    OutputBaseSchema,
+    InputSchema,
+    OutputSchema,
     SoftDeleteMixin,
 )
 
@@ -23,10 +23,11 @@ class UserEmailMixin:
     )
 
 
-class UserBaseSchema(UserEmailMixin):
+class UserSchema(UserEmailMixin):
     """
     Schema for serializing and deserializing the User model using Pydantic.
     """
+
     name: str = Field(
         description="The name of the user",
         min_length=5,
@@ -40,7 +41,7 @@ class UserBaseSchema(UserEmailMixin):
     )
 
 
-class UserInputSchema(InputBaseSchema, UserBaseSchema, UserPasswordMixin):
+class UserInputSchema(InputSchema, UserSchema, UserPasswordMixin):
     model_config = ConfigDict(
         alias_generator=AliasGenerator(
             validation_alias=lambda field: {"password": "password_hash"}.get(
@@ -51,7 +52,7 @@ class UserInputSchema(InputBaseSchema, UserBaseSchema, UserPasswordMixin):
     )
 
 
-class UserOutputSchema(UserBaseSchema, OutputBaseSchema):
+class UserOutputSchema(UserSchema, OutputSchema):
     pass
 
 

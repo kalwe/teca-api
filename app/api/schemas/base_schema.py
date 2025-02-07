@@ -14,8 +14,7 @@ class TimestampMixin:
 
 class SoftDeleteMixin:
     is_active: bool = Field(
-        default=True,
-        description="Indicates whether the record is active or not."
+        default=True, description="Indicates whether the record is active or not."
     )
     deleted_at: datetime = None
 
@@ -78,6 +77,7 @@ class OutputSchema(BaseSchema):
         description="Primary key for the record.",
         gt=0,
     )
+
 
 class DeletedSchema(OutputSchema, SoftDeleteMixin):
     pass

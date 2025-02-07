@@ -1,5 +1,6 @@
 from pydantic import Field
-from app.api.schemas.base_schema import BaseSchema
+
+from app.api.schemas.base_schema import BaseSchema, InputSchema, OutputSchema
 
 
 class FunctionSchema(BaseSchema):
@@ -13,3 +14,10 @@ class FunctionSchema(BaseSchema):
         max_length=120,
         description="Name of function",
     )
+
+
+class FunctionInputSchema(FunctionSchema, InputSchema):
+   pass
+
+class FunctionOutputSchema(FunctionSchema, OutputSchema):
+   pass

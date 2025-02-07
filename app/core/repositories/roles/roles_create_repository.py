@@ -1,4 +1,4 @@
-from app.core.models.roles_model import Roles
+from app.core.models.roles_model import Role
 from app.core.repositories.shared.create_repository import CreateRepository
 
 
@@ -16,4 +16,4 @@ class RolesCreateRepository(CreateRepository):
             to be managed by
             the repository.
         """
-        super().__init__(Roles())
+        super().__init__(Role())

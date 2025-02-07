@@ -1,6 +1,6 @@
 from typing import Optional
 from app.common.custom_exceptions import RepositoryError
-from app.core.models.bank_account_model import Bank_account
+from app.core.models.bank_account_model import BankAccount
 from app.core.repositories.shared.get_repository import GetRepository
 
 
@@ -13,10 +13,10 @@ class Bank_accountGetRepository(GetRepository):
             model_class ([Bank_account): The Bank_account model_class class to be managed by
             the repository.
         """
-        super().__init__(Bank_account())
+        super().__init__(BankAccount())
 
 
-    async def get_bank_account_by_name(self, name) -> Optional[Bank_account]:
+    async def get_bank_account_by_name(self, name) -> Optional[BankAccount]:
         """
         Retrieve a record by its name if it is active.
 

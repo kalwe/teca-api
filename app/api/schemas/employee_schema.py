@@ -6,8 +6,8 @@ from app.api.schemas.address_schema import AddressSchema
 from app.api.schemas.bank_account_schema import BankAccountSchema
 from app.api.schemas.base_schema import (
     BaseSchema,
-    InputBaseSchema,
-    OutputBaseSchema,
+    InputSchema,
+    OutputSchema,
 )
 from app.api.schemas.clothing_schema import ClothingSchema
 from app.api.schemas.function_schema import FunctionSchema
@@ -30,9 +30,7 @@ class PersonSchema:
         max_length=20,
         description="National identification number (RG)",
     )
-    date_of_birth: date = Field(
-        description="Timestamp when the record was created."
-    )
+    date_of_birth: date = Field(description="Timestamp when the record was created.")
     issuing_body: str = Field(
         ...,
         max_length=120,
@@ -54,28 +52,22 @@ class EmployeeSchema(BaseSchema, PersonSchema):
         max_length=4, description="Registration number of employee"
     )
     supervisor: bool = Field(
-        default=False,
-        description="Indicates if employee is a supervisor"
+        default=False, description="Indicates if employee is a supervisor"
     )
     manager: bool = Field(
-        default=False,
-        description="Indicates if employee is a manager"
+        default=False, description="Indicates if employee is a manager"
     )
-    salary: int = Field(
-        description="Salary of employee"
-    )
-    contract_date: date = Field(
-        description="Date when employee has contracted"
-    )
+    salary: int = Field(description="Salary of employee")
+    contract_date: date = Field(description="Date when employee has contracted")
     function: FunctionSchema
     address: AddressSchema
     bank_account: BankAccountSchema
     clothing: ClothingSchema
 
 
-class EmployeeInputSchema(InputBaseSchema, EmployeeSchema):
+class EmployeeInputSchema(InputSchema, EmployeeSchema):
     pass
 
 
-class EmployeeOutputSchema(OutputBaseSchema, EmployeeSchema):
+class EmployeeOutputSchema(OutputSchema, EmployeeSchema):
     pass
