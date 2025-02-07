@@ -1,6 +1,5 @@
 from tortoise import fields
 
-from app.common.hash_utils import hash_provider
 from app.core.models.shared.base_model import ModelBase
 
 
@@ -35,8 +34,8 @@ class User(ModelBase, EmailMixin, PasswordMixin):
     roles = fields.ManyToManyField(
         "models.Role",
         related_name="users",
-        through="user_roles",
-        description="The roles assigned to the user."
+        # through="user_roles",
+        description="The roles assigned to the user.",
     )
 
     def __str__(self) -> str:

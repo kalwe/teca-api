@@ -23,7 +23,7 @@ class UserEmailMixin:
     )
 
 
-class UserBaseSchema():
+class UserBaseSchema(UserEmailMixin):
     """
     Schema for serializing and deserializing the User model using Pydantic.
     """
@@ -40,12 +40,7 @@ class UserBaseSchema():
     )
 
 
-class UserInputSchema(
-    InputBaseSchema,
-    UserBaseSchema,
-    UserEmailMixin,
-    UserPasswordMixin
-):
+class UserInputSchema(InputBaseSchema, UserBaseSchema, UserPasswordMixin):
     model_config = ConfigDict(
         alias_generator=AliasGenerator(
             validation_alias=lambda field: {"password": "password_hash"}.get(
@@ -56,11 +51,7 @@ class UserInputSchema(
     )
 
 
-class UserOutputSchema(
-    UserBaseSchema,
-    OutputBaseSchema,
-    UserEmailMixin
-):
+class UserOutputSchema(UserBaseSchema, OutputBaseSchema):
     pass
 
 

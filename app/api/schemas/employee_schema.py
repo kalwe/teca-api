@@ -1,13 +1,16 @@
 from datetime import date
-from typing import List
+
 from pydantic import Field
+
 from app.api.schemas.address_schema import AddressSchema
 from app.api.schemas.bank_account_schema import BankAccountSchema
-from app.api.schemas.base_schema import BaseSchema, InputBaseSchema, OutputBaseSchema, SoftDeleteMixin
+from app.api.schemas.base_schema import (
+    BaseSchema,
+    InputBaseSchema,
+    OutputBaseSchema,
+)
 from app.api.schemas.clothing_schema import ClothingSchema
 from app.api.schemas.function_schema import FunctionSchema
-from app.common.enums.gender_enum import GenderEnum
-from app.common.enums.marital_status_enum import MaritalStatusEnum
 
 
 class PersonSchema:
@@ -43,15 +46,12 @@ class EmployeeSchema(BaseSchema, PersonSchema):
     """
 
     name: str = Field(
-        ...,
         description="The first name of employee ",
         min_length=3,
         max_length=80,
     )
     registration: str = Field(
-        ...,
-        max_length=4,
-        description="Registration number of employee"
+        max_length=4, description="Registration number of employee"
     )
     supervisor: bool = Field(
         default=False,
@@ -78,8 +78,4 @@ class EmployeeInputSchema(InputBaseSchema, EmployeeSchema):
 
 
 class EmployeeOutputSchema(OutputBaseSchema, EmployeeSchema):
-    pass
-
-
-class EmployeeDeletedSchema(BaseSchema, SoftDeleteMixin):
     pass

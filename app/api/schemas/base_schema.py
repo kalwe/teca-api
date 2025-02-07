@@ -4,7 +4,7 @@ from typing import Any
 from pydantic import BaseModel, Field, ValidationError
 
 
-class TimestampsMixin:
+class TimestampMixin:
     created_at: datetime = Field(
         description="Timestamp when the record was created.",
         default_factory=datetime.now,
@@ -20,13 +20,17 @@ class SoftDeleteMixin:
     deleted_at: datetime = None
 
 
-class BaseSchema(BaseModel, TimestampsMixin, SoftDeleteMixin):
+class UnionMixins(TimestampMixin, SoftDeleteMixin):
+    pass
+
+
+class BaseSchema(BaseModel):
     """
     Base class for defining generic fields for models using Quart-Schema
     and Pydantic.
     """
 
-    version: int
+    version: int = None
 
     def validate(self, model):
         try:
@@ -49,19 +53,6 @@ class BaseSchema(BaseModel, TimestampsMixin, SoftDeleteMixin):
         except ValidationError as e:
             raise ValidationError(f"model_validate_json() e: {e}")
 
-    def dump_clean(self, exclude_fields: dict[str, Any]) -> dict[str, Any]:
-        # exclude unnecessary fields for input request
-        default_exclude = {
-            "created_at": True,
-            "updated_at": True,
-            "deleted_at": True,
-            "version": True,
-        }
-
-        if not exclude_fields:
-            exclude_fields = default_exclude
-        self.dump(exclude=exclude_fields)
-
     def dump(self, **kwargs) -> dict[str, Any]:
         """
         Serializes the model instance into a dictionary.
@@ -78,14 +69,18 @@ class BaseSchema(BaseModel, TimestampsMixin, SoftDeleteMixin):
             raise ValidationError(f"model_dump_json() e: {e}")
 
 
-class InputBaseSchema(BaseSchema):
+class InputSchema(BaseSchema):
     id: int = None
 
 
-class OutputBaseSchema(BaseSchema):
+class OutputSchema(BaseSchema):
     id: int = Field(
         description="Primary key for the record.",
         gt=0,
     )
+
+class DeletedSchema(OutputSchema, SoftDeleteMixin):
+    pass
+
 
 type SchemaT = BaseSchema
