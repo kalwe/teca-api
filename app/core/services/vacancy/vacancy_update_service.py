@@ -1,6 +1,9 @@
 from typing import Optional
+
 from app.api.schemas.vacancy_schema import VacancyInputSchema, VacancyOutputSchema
-from app.core.repositories.vacancy.vacancy_update_repository import (VacancyUpdateRepository)
+from app.core.repositories.vacancy.vacancy_update_repository import (
+    VacancyUpdateRepository,
+)
 from app.core.services.shared.update_service import UpdateService
 
 

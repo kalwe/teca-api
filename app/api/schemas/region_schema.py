@@ -7,7 +7,6 @@ class RegionSchema(BaseSchema):
     """
     Schema for serializing and deserializing the Region model using Pydantic.
     """
-
     name: str = Field(
         ...,
         min_length=3,
@@ -18,6 +17,7 @@ class RegionSchema(BaseSchema):
 
 class RegionInputSchema(RegionSchema, InputSchema):
    pass
+
 
 class RegionOutputSchema(RegionSchema, OutputSchema):
    pass

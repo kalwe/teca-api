@@ -32,12 +32,22 @@ class BaseSchema(BaseModel):
     version: int = None
 
     def validate(self, model):
+        """
+        Validate a pydantic model instance.
+        Ex:
+            user_orm = UserOrm(id=123, name="John", password="pass123")
+            user_validated = UserSchema().model_validate(user_orm)
+
+            * user_validated is instance of UserSchema
+
+        Return: The validated model instance.
+        """
         try:
             return self.model_validate(model)
         except ValidationError as e:
             raise ValidationError(f"model_validate() e: {e}")
 
-    def validate_json(self, model):
+    def validate_json(self, json_data):
         """
         Validate the given JSON data against the Pydantic model.
 
@@ -48,13 +58,21 @@ class BaseSchema(BaseModel):
             The validated Pydantic model.
         """
         try:
-            return self.model_validate_json(model)
+            return self.model_validate_json(json_data)
         except ValidationError as e:
             raise ValidationError(f"model_validate_json() e: {e}")
 
     def dump(self, **kwargs) -> dict[str, Any]:
         """
         Serializes the model instance into a dictionary.
+
+        Ex:
+            user_data = UserFromRequest(id=123, name="John", password="pass123")
+            u = UserSchema(user_data)
+            u_dump = u.dump()
+            UserOrm.create(u_dump)
+
+        Return dict[str, Any]
         """
         try:
             return self.model_dump(**kwargs)

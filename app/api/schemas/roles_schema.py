@@ -35,5 +35,6 @@ class RolesSchema(BaseSchema):
 class RolesInputSchema(RolesSchema, InputSchema):
    pass
 
+
 class RolesOutputSchema(RolesSchema, OutputSchema):
    pass

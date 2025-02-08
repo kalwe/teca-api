@@ -27,13 +27,11 @@ class UserSchema(UserEmailMixin):
     """
     Schema for serializing and deserializing the User model using Pydantic.
     """
-
     name: str = Field(
         description="The name of the user",
         min_length=5,
         max_length=80,
     )
-
     # TODO: create List[Roles]
     roles: list[str] | None = Field(
         # default_factory=list,

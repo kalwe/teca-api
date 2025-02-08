@@ -1,5 +1,7 @@
 from typing import Optional
-from app.core.common.custom_types import DeleteRepositoryT, ModelT
+
+from app.core.models.shared.base_model import ModelT
+from app.core.repositories.shared.delete_repository import DeleteRepositoryT
 from app.core.repositories.shared.get_repository import GetRepository
 
 

@@ -10,10 +10,15 @@
 
 ###
 # @name login
-POST http://{{baseUrl}}/{{endpoint}}
+POST http://{{baseUrl}}/{{endpoint}}/login
 Content-Type: {{contentType}}
 
 {
     "name": "John Doe",
     "password": "pass123"
 }
+
+
+###
+# @name logout
+POST http://{{baseUrl}}/{{endpoint}}/logout

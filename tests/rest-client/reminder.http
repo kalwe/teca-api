@@ -43,6 +43,6 @@ Content-Type: {{contentType}}
 }
 
 
-## Reminder delete by id - return id, is_active and deleted_at
+### Reminder delete by id - return id, is_active and deleted_at
 DELETE http://{{baseUrl}}/{{endpoint}}/{{id}}
 Content-Type: {{contentType}}

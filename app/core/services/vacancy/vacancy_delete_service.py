@@ -1,8 +1,10 @@
 from typing import Optional
-from app.api.schemas.vacancy_schema import (
-    VacancyDeletedSchema, VacancyOutputSchema)
+
+from app.api.schemas.base_schema import DeletedSchema
+from app.api.schemas.vacancy_schema import VacancyOutputSchema
 from app.core.repositories.vacancy.vacancy_delete_repository import (
-    VacancyDeleteRepository)
+    VacancyDeleteRepository,
+)
 from app.core.services.shared.delete_service import DeleteService
 
 
@@ -25,4 +27,4 @@ class VacancyDeleteService(DeleteService):
         :return: The deleted vacancy as a schema, or None if not found.
         """
         deleted_vacancy = await self.soft_delete(id)
-        return VacancyDeletedSchema.validate(deleted_vacancy)
+        return DeletedSchema.validate(deleted_vacancy)

@@ -1,9 +1,7 @@
-from typing import Any, Optional
+from typing import Optional
 
-# from app.core.models.shared.base_model import BaseModel
 from app.common.custom_exceptions import RepositoryError
 from app.core.models.shared.base_model import ModelT
-# from app.api.schemas.base_schema import SchemaT
 
 
 class DeleteRepository:
@@ -33,3 +31,6 @@ class DeleteRepository:
         except Exception as e:
             raise RepositoryError(
                 f"Failed DeleteRepository().soft_delete_record(): {e}") from e
+
+
+type DeleteRepositoryT = DeleteRepository

@@ -32,8 +32,10 @@ class ContactSchema(BaseSchema):
         description="Name of state"
     )
 
+
 class ContactInputSchema(ContactSchema, InputSchema):
-   pass
+    pass
+
 
 class ContactOutputSchema(ContactSchema, OutputSchema):
    pass

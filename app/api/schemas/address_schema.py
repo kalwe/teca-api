@@ -7,7 +7,6 @@ class AddressSchema(BaseSchema):
     """
     Schema for serializing and deserializing the Address model using Pydantic.
     """
-
     street: str = Field(max_length=255, description="Name of street")
     number: str = Field(max_length=8, description="Number of street")
     neighborhood: str = Field(max_length=120, description="Name of neighborhood")

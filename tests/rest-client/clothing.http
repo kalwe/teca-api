@@ -13,10 +13,10 @@ POST http://{{baseUrl}}/{{endpoint}}
 Content-Type: {{contentType}}
 
 {
-        "shirt_size": "m",
-        "pants_size": "m",
-        "shoe_size": "40",
-        "employee": {{employee}}
+  "shirt_size": "m",
+  "pants_size": "m",
+  "shoe_size": "40",
+  "employee": {{employee}}
 }
 
 
@@ -26,7 +26,7 @@ Content-Type: {{contentType}}
 
 
 ### Clothing get all - return a list of clothing with all clothings active
-GET http://{{baseUrl}}/{{endpoint}}b
+GET http://{{baseUrl}}/{{endpoint}}
 Content-Type: {{contentType}}
 
 
@@ -35,13 +35,13 @@ PUT http://{{baseUrl}}/{{endpoint}}/{{id}}
 Content-Type: {{contentType}}
 
 {
-        "shirt_size": "m",
-        "pants_size": "m",
-        "shoe_size": "40",
-        "employee": {{employee}}
+  "shirt_size": "g",
+  "pants_size": "g",
+  "shoe_size": "44",
+  "employee": {{employee}}
 }
 
 
-## Clothing delete by id /clothing/<id: int> - return return id, is_active and deleted_at
+### Clothing delete by id /clothing/<id: int> - return return id, is_active and deleted_at
 DELETE http://{{baseUrl}}/{{endpoint}}/{{endpoint}}/{{id}}
 Content-Type: {{contentType}}

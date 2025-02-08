@@ -1,7 +1,7 @@
 from typing import Optional
 
-from app.core.models.shared.base_model import ModelT
 from app.api.schemas.base_schema import SchemaT
+from app.core.models.shared.base_model import ModelT
 
 
 class UpdateRepository:
@@ -20,9 +20,12 @@ class UpdateRepository:
         #     setattr(self.model_class, field_name, value)
         try:
             # record.version += 1
-            self._model_class.update_from_dict(**record_fields.dump())
+            fields = record_fields.dump(exclude_unset=True)
+            self._model_class.update_from_dict(**fields)
             await self._model_class.save()
             return self._model_class
         except Exception as e:
             raise Exception(
                 f"Failed UpdateRepository.update_record(): {e}") from e
+
+type UpdateRepositoryT = UpdateRepository

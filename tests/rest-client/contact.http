@@ -7,6 +7,7 @@
 @id = 1
 @employee = 1
 
+
 ### Contact create
 POST http://{{baseUrl}}/{{endpoint}}
 Content-Type: {{contentType}}
@@ -28,9 +29,11 @@ Content-Type: {{contentType}}
     "employee": {{employee}}
 }
 
+
 ### Contact get all - return a list of Contact
 GET http://{{baseUrl}}/{{endpoint}}
 Content-Type: {{contentType}}
+
 
 ### Contact update - return Contact updated
 PUT http://{{baseUrl}}/{{endpoint}}/{{id}}
@@ -42,6 +45,7 @@ Content-Type: {{contentType}}
     "employee": {{employee}}
 }
 
-## Contact delete by id - return id, is_active and deleted_at
+
+### Contact delete by id - return id, is_active and deleted_at
 DELETE http://{{baseUrl}}/{{endpoint}}/{{id}}
 Content-Type: {{contentType}}

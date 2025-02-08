@@ -22,5 +22,6 @@ class ClothingSchema(BaseSchema):
 class ClothingInputSchema(ClothingSchema, InputSchema):
    pass
 
+
 class ClothingOutputSchema(ClothingSchema, OutputSchema):
    pass

@@ -2,7 +2,6 @@ from typing import List, Optional
 
 from app.common.custom_exceptions import RepositoryError
 from app.core.models.shared.base_model import ModelT
-# from app.api.schemas.base_schema import SchemaT
 
 
 class GetRepository:

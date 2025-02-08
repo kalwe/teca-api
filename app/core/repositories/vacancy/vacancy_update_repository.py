@@ -4,4 +4,4 @@ from app.core.repositories.shared.update_repository import UpdateRepository
 
 class VacancyUpdateRepository(UpdateRepository):
     def __init__(self):
-        super().__init__(Vacancy)
+        super().__init__(Vacancy())

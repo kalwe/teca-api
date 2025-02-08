@@ -4,4 +4,4 @@ from app.core.repositories.shared.update_repository import UpdateRepository
 
 class FunctionUpdateRepository(UpdateRepository):
     def __init__(self):
-        super().__init__(Function)
+        super().__init__(Function())

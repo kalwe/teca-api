@@ -1,13 +1,23 @@
 from http import HTTPStatus
 from typing import List
-from quart import request
+
 from quart_schema import validate_request, validate_response
 
-from app.api.schemas.vacancy_schema import VacancyDeletedSchema, VacancyInputSchema, VacancyOutputSchema
-from app.core.repositories.vacancy.vacancy_create_repository import VacancyCreateRepository
-from app.core.repositories.vacancy.vacancy_delete_repository import VacancyDeleteRepository
+from app.api.schemas.vacancy_schema import (
+    VacancyDeletedSchema,
+    VacancyInputSchema,
+    VacancyOutputSchema,
+)
+from app.core.repositories.vacancy.vacancy_create_repository import (
+    VacancyCreateRepository,
+)
+from app.core.repositories.vacancy.vacancy_delete_repository import (
+    VacancyDeleteRepository,
+)
 from app.core.repositories.vacancy.vacancy_get_repository import VacancyGetRepository
-from app.core.repositories.vacancy.vacancy_update_repository import VacancyUpdateRepository
+from app.core.repositories.vacancy.vacancy_update_repository import (
+    VacancyUpdateRepository,
+)
 from app.core.services.vacancy.vacancy_create_service import VacancyCreateService
 from app.core.services.vacancy.vacancy_delete_service import VacancyDeleteService
 from app.core.services.vacancy.vacancy_get_service import VacancyGetService
@@ -56,19 +66,19 @@ class VacancyController:
 
     @staticmethod
     @validate_response(List[VacancyOutputSchema])
-    async def get_all_vacancys():
+    async def get_all_vacancies():
         """
-        Retrieves all vacancys using FetchHelper to standardize
+        Retrieves all vacancies using FetchHelper to standardize
         error handling.
 
         Returns:
-            Tuple: A tuple containing the list of vacancys
+            Tuple: A tuple containing the list of vacancies
             (or an error message)
             and the HTTP status code.
         """
         service = VacancyGetService(VacancyGetRepository())
-        vacancys = service.get_all()
-        return vacancys, HTTPStatus.OK
+        vacancies = service.get_all()
+        return vacancies, HTTPStatus.OK
 
     @staticmethod
     @validate_request(VacancyInputSchema)

@@ -1,6 +1,7 @@
+from typing import Self
+
 from tortoise import fields
 from tortoise.models import Model
-from typing import Self
 
 from app.common.datetime_utils import aware_utcnow
 
@@ -12,7 +13,6 @@ class ModelBase(Model):
     All models should inherit from this class to share the same
     base functionality.
     """
-
     id = fields.IntField(
         pk=True,
         description="Primary key for the record.",

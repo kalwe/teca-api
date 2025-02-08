@@ -42,6 +42,6 @@ Content-Type: {{contentType}}
     "employee": {{employee}}
 }
 
-## BankAccount delete by id - return id, is_active and deleted_at
+### BankAccount delete by id - return id, is_active and deleted_at
 DELETE http://{{baseUrl}}/{{endpoint}}/{{id}}
 Content-Type: {{contentType}}/

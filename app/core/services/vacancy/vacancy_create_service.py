@@ -1,16 +1,17 @@
 from typing import Optional
+
 from app.api.schemas.vacancy_schema import VacancyInputSchema, VacancyOutputSchema
 from app.core.repositories.vacancy.vacancy_create_repository import (
-    VacancyCreateRepository)
+    VacancyCreateRepository,
+)
 from app.core.services.shared.create_service import CreateService
 
 
 class VacancyCreateService(CreateService):
     """
     Service for managing vacancy-related business logic.
-    Handles creation of new vacancys with role assignment and password hashing.
+    Handles creation of new vacancies with role assignment and password hashing.
     """
-
     def __init__(self, repository: VacancyCreateRepository):
         """
         Initialize the service with a repository for vacancy operations.
@@ -21,7 +22,6 @@ class VacancyCreateService(CreateService):
                 to handle data persistence for the Vacancy model.
         """
         super().__init__(repository)
-        # self._get_service = VacancyGetService(VacancyGetRepository(Vacancy()))
 
     async def create(
         self,

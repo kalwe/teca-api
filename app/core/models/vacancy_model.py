@@ -4,7 +4,6 @@ from app.core.models.shared.base_model import ModelBase
 
 
 class Vacancy(ModelBase):
-    # vacancy: string
     quantity = fields.IntField()
     position = fields.CharField(
         max_length=32,

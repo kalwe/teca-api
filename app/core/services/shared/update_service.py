@@ -1,6 +1,9 @@
 from typing import Optional
+
+from app.api.schemas.base_schema import SchemaT
+from app.core.models.shared.base_model import ModelT
 from app.core.repositories.shared.get_repository import GetRepository
-from app.core.common.custom_types import UpdateRepositoryT, ModelT, SchemaT
+from app.core.repositories.shared.update_repository import UpdateRepositoryT
 from app.core.services.shared.get_service import GetService
 
 
@@ -10,7 +13,7 @@ class UpdateService:
         Initialize the service with the provided repository.
 
         Args:
-            repository (Type[UpdateRepository[T]]): The repository
+            repository (Type[UpdateRepositoryT]): The repository
             class used for data update.
         """
         self._repository = repository
@@ -22,5 +25,7 @@ class UpdateService:
         if not record_exist:
             return None
 
+        # TODO: use fields = record_fields.dump(exclude_unset=True)
+        #       update_record(**data_field)
         updated_record = await self._repository.update_record(data_field)
         return updated_record

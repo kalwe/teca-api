@@ -7,7 +7,6 @@ class PositionSchema(BaseSchema):
     """
     Schema for serializing and deserializing the Position model using Pydantic.
     """
-
     name: str = Field(
         ...,
         min_length=3,
@@ -18,6 +17,7 @@ class PositionSchema(BaseSchema):
 
 class PositionInputSchema(PositionSchema, InputSchema):
    pass
+
 
 class PositionOutputSchema(PositionSchema, OutputSchema):
    pass

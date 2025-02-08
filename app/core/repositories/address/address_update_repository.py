@@ -4,4 +4,4 @@ from app.core.repositories.shared.update_repository import UpdateRepository
 
 class AddressUpdateRepository(UpdateRepository):
     def __init__(self):
-        super().__init__(Address)
+        super().__init__(Address())

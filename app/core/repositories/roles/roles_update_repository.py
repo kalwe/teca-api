@@ -4,4 +4,4 @@ from app.core.repositories.shared.update_repository import UpdateRepository
 
 class RolesUpdateRepository(UpdateRepository):
     def __init__(self):
-        super().__init__(Role)
+        super().__init__(Role())

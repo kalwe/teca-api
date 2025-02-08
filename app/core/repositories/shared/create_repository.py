@@ -1,9 +1,8 @@
 from typing import Optional
 
-# from app.core.models.shared.base_model import TModel
+from app.api.schemas.base_schema import SchemaT
 from app.common.custom_exceptions import RepositoryError
 from app.core.models.shared.base_model import ModelT
-from app.api.schemas.base_schema import SchemaT
 
 
 class CreateRepository:
@@ -72,7 +71,7 @@ class CreateRepository:
         """
         try:
             created_record = await self._model_class.create(
-                **model_fields.dump()
+                **model_fields.dump()  # TODO: prefer dump() on service layer
             )
             return created_record
         except RepositoryError as e:

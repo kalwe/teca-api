@@ -35,5 +35,6 @@ class VacancySchema(BaseSchema):
 class VacancyInputSchema(VacancySchema, InputSchema):
    pass
 
+
 class VacancyOutputSchema(VacancySchema, OutputSchema):
    pass

@@ -7,6 +7,7 @@
 @id = 1
 
 
+
 ### Vacancy create
 POST http://{{baseUrl}}/{{endpoint}}
 Content-Type: {{contentType}}
@@ -35,7 +36,6 @@ Content-Type: {{contentType}}
 PUT http://{{baseUrl}}/{{endpoint}}/{{id}}
 Content-Type: {{contentType}}
 
-
 {
     "quantity": 32,
     "position": "Position vacancy",
@@ -46,6 +46,6 @@ Content-Type: {{contentType}}
 }
 
 
-## Vacancy delete by id - return id, is_active and deleted_at
+### Vacancy delete by id - return id, is_active and deleted_at
 DELETE http://{{baseUrl}}/{{endpoint}}/{{id}}
 Content-Type: {{contentType}}

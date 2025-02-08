@@ -12,5 +12,6 @@ class UseAuthInputSchema(BaseModel, UserPasswordMixin):
 
 class UserAuthOutputLoginSchema(BaseModel):
     current_user_id: int = Field()
-    id_authenticated: bool = Field()
+    name: str
+    is_authenticated: bool = Field()
     token: str = Field()

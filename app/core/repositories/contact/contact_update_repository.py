@@ -4,4 +4,4 @@ from app.core.repositories.shared.update_repository import UpdateRepository
 
 class ContactUpdateRepository(UpdateRepository):
     def __init__(self):
-        super().__init__(Contact)
+        super().__init__(Contact())

@@ -1,6 +1,6 @@
 from typing import List, Optional
+
 from app.api.schemas.user_schema import UserOutputSchema
-from app.core.models.user_model import User
 from app.core.repositories.user.user_get_repository import UserGetRepository
 from app.core.services.shared.get_service import GetService
 
@@ -13,10 +13,6 @@ class UserGetService(GetService):
     This service adds user-specific business logic on top of the generic
     functionality provided by GetService.
     """
-
-    # Override the type for specialization
-    # repository = UserGetRepository
-
     def __init__(self, repository: UserGetRepository):
         """
         Initialize the service with a User-specific repository.

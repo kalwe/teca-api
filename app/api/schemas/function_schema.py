@@ -7,7 +7,6 @@ class FunctionSchema(BaseSchema):
     """
     Schema for serializing and deserializing the Function model using Pydantic.
     """
-
     name: str = Field(
         ...,
         min_length=3,
@@ -18,6 +17,7 @@ class FunctionSchema(BaseSchema):
 
 class FunctionInputSchema(FunctionSchema, InputSchema):
    pass
+
 
 class FunctionOutputSchema(FunctionSchema, OutputSchema):
    pass

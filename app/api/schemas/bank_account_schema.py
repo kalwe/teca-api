@@ -31,5 +31,6 @@ class BankAccountSchema(BaseSchema):
 class BankAccountInputSchema(BankAccountSchema, InputSchema):
    pass
 
+
 class BankAccountOutputSchema(BankAccountSchema, OutputSchema):
    pass
