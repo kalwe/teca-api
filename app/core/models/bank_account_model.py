@@ -4,8 +4,9 @@ from tortoise.validators import Validator, ValidationError
 from app.core.models.shared.base_model import ModelBase
 from app.core.models.shared.foreign_related import ForeignRelated
 
-
-class AccountTypeValidator(Validator): # TODO: Move to an appropriate place
+# TODO: Move to an appropriate place
+# TODO: Evaluate if validation in the schema (bank_account_schema) is better, because it occurs before database processing
+class AccountTypeValidator(Validator):
     def __init__(self, valid_types):
         self.valid_types = [t.lower() for t in valid_types]
 
