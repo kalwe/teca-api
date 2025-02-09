@@ -1,7 +1,8 @@
 from typing import Optional
 from app.api.schemas.address_schema import AddressInputSchema, AddressOutputSchema
 from app.core.repositories.address.address_create_repository import (
-    AddressCreateRepository)
+    AddressCreateRepository,
+)
 from app.core.services.shared.create_service import CreateService
 
 
@@ -27,22 +28,8 @@ class AddressCreateService(CreateService):
         self,
         address_data: AddressInputSchema,
     ) -> Optional[AddressOutputSchema]:
-        """
-        Create a new address with additional business logic.
-
-        Args:
-            name (str): The name of the address.
-            email (str): The email of the address.
-            password (str): The plain-text password to be hashed.
-            roles (Optional[List[str]]): List of roles to assign to the address.
-
-        Returns:
-            AddressOutputSchema: Serialized data of the created address.
-
-        Raises:
-            AddressAlreadyExistsException: If a address with the given email
-            already exists.
-        """        """
+        (
+            """
         Create a new address with additional business logic.
 
         Args:
@@ -58,5 +45,22 @@ class AddressCreateService(CreateService):
             AddressAlreadyExistsException: If a address with the given email
             already exists.
         """
+            """
+        Create a new address with additional business logic.
+
+        Args:
+            name (str): The name of the address.
+            email (str): The email of the address.
+            password (str): The plain-text password to be hashed.
+            roles (Optional[List[str]]): List of roles to assign to the address.
+
+        Returns:
+            AddressOutputSchema: Serialized data of the created address.
+
+        Raises:
+            AddressAlreadyExistsException: If a address with the given email
+            already exists.
+        """
+        )
         created_address = await self.create_record(address_data)
         return AddressOutputSchema().validate(created_address)

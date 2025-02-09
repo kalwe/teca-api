@@ -11,13 +11,12 @@ class VacancyUpdateService(UpdateService):
     """
     Service for managing vacancy-related business logic.
     """
+
     def __init__(self, repository: VacancyUpdateRepository):
         super().__init__(repository)
 
     async def update(
-        self,
-        id: int,
-        vacancy_data: VacancyInputSchema
+        self, id: int, vacancy_data: VacancyInputSchema
     ) -> Optional[VacancyOutputSchema]:
         updated_vacancy = await self.update_data(id, vacancy_data)
         return VacancyOutputSchema.validate(updated_vacancy)

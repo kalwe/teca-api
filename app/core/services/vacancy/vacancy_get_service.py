@@ -13,6 +13,7 @@ class VacancyGetService(GetService):
     This service adds vacancy-specific business logic on top of the generic
     functionality provided by GetService.
     """
+
     def __init__(self, repository: VacancyGetRepository):
         """
         Initialize the service with a Vacancy-specific repository.
@@ -28,9 +29,10 @@ class VacancyGetService(GetService):
         vacancy = self.get_by_id(id)
         return VacancyOutputSchema.validate(vacancy)
 
-    async def get_all(self, filters: Optional[dict] = None
-                      ) -> Optional[List[VacancyOutputSchema]]:
-        vacancies = self.get_all_records(filters)
+    async def get_all(
+        self, filters: Optional[dict] = None
+    ) -> Optional[List[VacancyOutputSchema]]:
+        vacancies = await self.get_all_records(filters)
         return [VacancyOutputSchema.validate(vacancy) for vacancy in vacancies]
 
     async def get_by_name(self, name: str) -> Optional[VacancyOutputSchema]:

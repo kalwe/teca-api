@@ -1,7 +1,6 @@
 from typing import List, Optional
 from app.api.schemas.contact_schema import ContactOutputSchema
-from app.core.repositories.contact.contact_get_repository import (
-    ContactGetRepository)
+from app.core.repositories.contact.contact_get_repository import ContactGetRepository
 from app.core.services.shared.get_service import GetService
 
 
@@ -29,14 +28,15 @@ class ContactGetService(GetService):
         self._get_repository = repository
 
     async def get(self, id: int) -> Optional[ContactOutputSchema]:
-        contact = self.get_by_id(id)
+        contact = await self.get_by_id(id)
         return ContactOutputSchema.validate(contact)
 
-    async def get_all(self, filters: Optional[dict] = None
-                      ) -> Optional[List[ContactOutputSchema]]:
-        contacts = self.get_all_records(filters)
+    async def get_all(
+        self, filters: Optional[dict] = None
+    ) -> Optional[List[ContactOutputSchema]]:
+        contacts = await self.get_all_records(filters)
         return [ContactOutputSchema.validate(contact) for contact in contacts]
 
     async def get_by_name(self, name: str) -> Optional[ContactOutputSchema]:
-        contact = self._get_repository.get_contact_by_name(name)
+        contact = await self._get_repository.get_contact_by_name(name)
         return ContactOutputSchema.validate(contact)

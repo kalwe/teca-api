@@ -1,7 +1,8 @@
 from typing import Optional
 from app.api.schemas.function_schema import FunctionInputSchema, FunctionOutputSchema
 from app.core.repositories.function.function_create_repository import (
-    FunctionCreateRepository)
+    FunctionCreateRepository,
+)
 from app.core.services.shared.create_service import CreateService
 
 
@@ -27,22 +28,8 @@ class FunctionCreateService(CreateService):
         self,
         function_data: FunctionInputSchema,
     ) -> Optional[FunctionOutputSchema]:
-        """
-        Create a new function with additional business logic.
-
-        Args:
-            name (str): The name of the function.
-            email (str): The email of the function.
-            password (str): The plain-text password to be hashed.
-            roles (Optional[List[str]]): List of roles to assign to the function.
-
-        Returns:
-            FunctionOutputSchema: Serialized data of the created function.
-
-        Raises:
-            FunctionAlreadyExistsException: If a function with the given email
-            already exists.
-        """        """
+        (
+            """
         Create a new function with additional business logic.
 
         Args:
@@ -58,5 +45,22 @@ class FunctionCreateService(CreateService):
             FunctionAlreadyExistsException: If a function with the given email
             already exists.
         """
+            """
+        Create a new function with additional business logic.
+
+        Args:
+            name (str): The name of the function.
+            email (str): The email of the function.
+            password (str): The plain-text password to be hashed.
+            roles (Optional[List[str]]): List of roles to assign to the function.
+
+        Returns:
+            FunctionOutputSchema: Serialized data of the created function.
+
+        Raises:
+            FunctionAlreadyExistsException: If a function with the given email
+            already exists.
+        """
+        )
         created_function = await self.create_record(function_data)
         return FunctionOutputSchema().validate(created_function)

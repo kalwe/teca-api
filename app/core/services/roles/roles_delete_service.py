@@ -1,8 +1,6 @@
 from typing import Optional
-from app.api.schemas.roles_schema import (
-    RolesDeletedSchema, RolesOutputSchema)
-from app.core.repositories.roles.roles_delete_repository import (
-    RolesDeleteRepository)
+from app.api.schemas.roles_schema import RolesDeletedSchema, RolesOutputSchema
+from app.core.repositories.roles.roles_delete_repository import RolesDeleteRepository
 from app.core.services.shared.delete_service import DeleteService
 
 

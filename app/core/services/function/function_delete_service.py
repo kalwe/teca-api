@@ -1,8 +1,8 @@
 from typing import Optional
-from app.api.schemas.function_schema import (
-    FunctionDeletedSchema, FunctionOutputSchema)
+from app.api.schemas.function_schema import FunctionDeletedSchema, FunctionOutputSchema
 from app.core.repositories.function.function_delete_repository import (
-    FunctionDeleteRepository)
+    FunctionDeleteRepository,
+)
 from app.core.services.shared.delete_service import DeleteService
 
 

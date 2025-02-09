@@ -1,8 +1,8 @@
 from typing import Optional
-from app.api.schemas.reminder_schema import (
-    ReminderDeletedSchema, ReminderOutputSchema)
+from app.api.schemas.reminder_schema import ReminderDeletedSchema, ReminderOutputSchema
 from app.core.repositories.reminder.reminder_delete_repository import (
-    ReminderDeleteRepository)
+    ReminderDeleteRepository,
+)
 from app.core.services.shared.delete_service import DeleteService
 
 

@@ -29,15 +29,15 @@ class EmployeeGetService(GetService):
         self._get_repository = repository
 
     async def get(self, id: int) -> Optional[EmployeeOutputSchema]:
-        employee = self.get_by_id(id)
+        employee = await self.get_by_id(id)
         return EmployeeOutputSchema.validate(employee)
 
     async def get_all(
         self, filters: Optional[dict] = None
     ) -> Optional[List[EmployeeOutputSchema]]:
-        employees = self.get_all_records(filters)
+        employees = await self.get_all_records(filters)
         return [EmployeeOutputSchema.validate(employee) for employee in employees]
 
     async def get_by_name(self, name: str) -> Optional[EmployeeOutputSchema]:
-        employee = self._get_repository.get_employee_by_name(name)
+        employee = await self._get_repository.get_employee_by_name(name)
         return EmployeeOutputSchema.validate(employee)
