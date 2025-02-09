@@ -3,10 +3,6 @@ from quart import Blueprint
 
 from app.config import Config
 
-# from app.api.auth import auth_bp
-
-# from app.api.auth import auth_routes # TODO: Implement auth routes
-
 # TODO: use app config class
 API_PREFIX = f"/api/{Config.ENGINE_SUFFIX}"
 
@@ -52,6 +48,7 @@ def init_bp(app: Quart) -> None:
         function_route,
         reminder_route,
         roles_route)  # noqa: F401
+    # from app.api.auth import auth_routes  # noqa: F401
 
     app.register_blueprint(user_bp)
     app.register_blueprint(vacancy_bp)
@@ -63,4 +60,5 @@ def init_bp(app: Quart) -> None:
     app.register_blueprint(function_bp)
     app.register_blueprint(reminder_bp)
     app.register_blueprint(roles_bp)
+    # app.register_blueprint(auth_bp) # TODO: implement auth
     app.register_blueprint(api_bp)
