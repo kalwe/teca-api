@@ -41,8 +41,7 @@ class CreateRepository:
         """
         self._model_class = model_class
 
-    # TODO: model_fields: Dict[str, Any], use model_dump() on service layer
-    async def model_create(self, model_fields: SchemaT) -> Optional[ModelT]:
+    async def model_create(self, model_fields: dict) -> Optional[ModelT]:
         """
         Create a new record in the database.
 
@@ -71,7 +70,7 @@ class CreateRepository:
         """
         try:
             created_record = await self._model_class.create(
-                **model_fields.dump()  # TODO: prefer dump() on service layer
+                **model_fields
             )
             return created_record
         except RepositoryError as e:
