@@ -52,9 +52,9 @@ class DatabaseManager:
 def init_db(app: Quart) -> None:
     @app.before_serving
     async def init_orm():
-        is_develop_mode = app.config["DEBUG"]
+        app.config["DEBUG"] # TODO: remove this line after testing
         db = DatabaseManager()
-        await DatabaseManager().init_db(is_develop_mode)
+        await DatabaseManager().init_db()
 
 
 def close_db(app: Quart) -> None:
