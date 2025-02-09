@@ -26,5 +26,5 @@ class CommonSchema(BaseModel):
         """
         return self.model_dump()
 
-    def dum_json(self) -> str:
+    def dump_json(self) -> str:
         return self.model_dump_json()
