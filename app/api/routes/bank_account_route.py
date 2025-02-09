@@ -1,4 +1,4 @@
-from app.api.controllers.bank_account_controller import Bank_accountController
+from app.api.controllers.bank_account_controller import BankAccountController
 from app.api.routes import bank_account_bp
 
 
@@ -7,30 +7,30 @@ from app.api.routes import bank_account_bp
 
 bank_account_bp.add_url_rule(
     '/',
-    view_func=Bank_accountController.create_bank_account,
+    view_func=BankAccountController.create_bank_account,
     methods=["POST"]
 )
 
 bank_account_bp.add_url_rule(
     '/<int:id>',
-    view_func=Bank_accountController.get_bank_account,
+    view_func=BankAccountController.get_bank_account,
     methods=["GET"]
 )
 
 bank_account_bp.add_url_rule(
     '/',
-    view_func=Bank_accountController.get_all_bank_accounts,
+    view_func=BankAccountController.get_all_bank_accounts,
     methods=["GET"]
 )
 
 bank_account_bp.add_url_rule(
     '/<int:id>',
-    view_func=Bank_accountController.update_bank_account,
+    view_func=BankAccountController.update_bank_account,
     methods=["POST"]
 )
 
 bank_account_bp.add_url_rule(
     '/<int:id>',
-    view_func=Bank_accountController.delete_bank_account,
+    view_func=BankAccountController.delete_bank_account,
     methods=["DELETE"]
 )
