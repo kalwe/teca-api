@@ -2,7 +2,6 @@ from typing import List, Optional
 
 from app.api.schemas.bank_account_schema import (
     BankAccountOutputSchema,
-    bank_accountOutputSchema,
 )
 from app.core.repositories.bank_account.bank_account_get_repository import (
     BankAccountGetRepository,
@@ -39,7 +38,7 @@ class BankAccountGetService(GetService):
 
     async def get_all(
         self, filters: Optional[dict] = None
-    ) -> Optional[List[bank_accountOutputSchema]]:
+    ) -> Optional[List[BankAccountOutputSchema]]:
         bank_accounts = self.get_all_records(filters)
         return [
             BankAccountOutputSchema.validate(bank_account)
