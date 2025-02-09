@@ -1,12 +1,29 @@
 from tortoise import fields
+from tortoise.validators import Validator, ValidationError
 
 from app.core.models.shared.base_model import ModelBase
 from app.core.models.shared.foreign_related import ForeignRelated
 
 
+class AccountTypeValidator(Validator): # TODO: Move to an appropriate place
+    def __init__(self, valid_types):
+        self.valid_types = [t.lower() for t in valid_types]
+
+    def __call__(self, value):
+        if not isinstance(value, str):
+            raise ValidationError("Account type must be a string.")
+        if not value:
+            raise ValidationError("Account type cannot be empty.")
+        if value.lower() not in self.valid_types:
+            raise ValidationError(
+                f"Invalid account type: {value}. "
+                f"Valid types are: {', '.join(self.valid_types)}"
+            )
+
+
 class BankAccount(ModelBase):
     """
-    Model representing an bank account with details.
+    Model representing a bank account with details.
     """
 
     bank = fields.CharField(
@@ -21,9 +38,9 @@ class BankAccount(ModelBase):
         max_length=120,
         description="Number of account",
     )
-    # TODO: validate this field
     account_type = fields.CharField(
         max_length=120,
         description="Type of account",
+        validators=[AccountTypeValidator(valid_types=["corrente", "poupança"])]
     )
     employee = ForeignRelated.foreign_related("Employee", "bank")
