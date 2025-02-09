@@ -65,7 +65,7 @@ class AddressController:
 
     @staticmethod
     @validate_response(List[AddressOutputSchema])
-    async def get_all_address() -> List[AddressOutputSchema]:
+    async def get_all_addresses() -> List[AddressOutputSchema]:
         """
         Retrieves all address using FetchHelper to standardize
         error handling.

@@ -1,35 +1,10 @@
 from app.api.controllers.roles_controller import RolesController
 from app.api.routes import roles_bp
+from app.api.routes.base_route import BaseRoute
+from quart.blueprints import Blueprint
 
-# TODO: maybe need use init_routes(bp: Blueprint) -> None:
-# and call on init_bp() or __init__.create_app()
+class RolesRoute(BaseRoute):
+    def __init__(self, bp: Blueprint):
+        super().__init__(bp, RolesController, 'roles', 'roles')
 
-roles_bp.add_url_rule(
-    "/",
-    view_func=RolesController.create_roles,
-    methods=["POST"],
-)
-
-roles_bp.add_url_rule(
-    "/<int:id>",
-    view_func=RolesController.get_roles,
-    methods=["GET"],
-)
-
-roles_bp.add_url_rule(
-    "/",
-    view_func=RolesController.get_all_roles,
-    methods=["GET"],
-)
-
-roles_bp.add_url_rule(
-    "/<int:id>",
-    view_func=RolesController.update_roles,
-    methods=["POST"],
-)
-
-roles_bp.add_url_rule(
-    "/<int:id>",
-    view_func=RolesController.delete_roles,
-    methods=["DELETE"],
-)
+RolesRoute(roles_bp)
