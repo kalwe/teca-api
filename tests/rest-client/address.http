@@ -1,0 +1,53 @@
+@baseUrl = {{host}}:{{port}}/api/{{version}}
+@contentType = application/json
+
+###
+
+@endpoint = address
+@id = 1
+@employee = 1
+
+
+### Address create
+POST http://{{baseUrl}}/{{endpoint}}
+Content-Type: {{contentType}}
+
+{
+    "street": "Rua Nome",
+    "number": "999",
+    "neighborhood": "Centro",
+    "city": "Rio de Janeiro",
+    "zip_code": "48625815",
+    "state": "Rio de Janeiro",
+    "employee": {{employee}}
+}
+
+
+### Address get by id /address/<id: int>
+GET http://{{baseUrl}}/{{endpoint}}/{{id}}
+Content-Type: {{contentType}}
+
+
+### Address get all - return a list of Address
+GET http://{{baseUrl}}/{{endpoint}}
+Content-Type: {{contentType}}
+
+
+### Address update - return Address updated
+PUT http://{{baseUrl}}/{{endpoint}}/{{id}}
+Content-Type: {{contentType}}
+
+{
+    "street": "Rua Nome",
+    "number": "999",
+    "neighborhood": "Centro",
+    "city": "Rio de Janeiro",
+    "zip_code": "48625815",
+    "state": "Rio de Janeiro",
+    "employee": {{employee}}
+}
+
+
+### Address delete by id - return id, is_active and deleted_at
+DELETE http://{{baseUrl}}/{{endpoint}}/{{id}}
+Content-Type: {{contentType}}

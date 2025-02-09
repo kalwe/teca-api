@@ -1,0 +1,48 @@
+@baseUrl = {{host}}:{{port}}/api/{{version}}
+@contentType = application/json
+
+###
+
+@endpoint = reminder
+# @id = 1
+
+
+### Reminder create
+
+# @name createReminder
+POST http://{{baseUrl}}/{{endpoint}}
+Content-Type: {{contentType}}
+
+{
+    "date_time": "01/02/1993 00:00:00",
+    "reason": "Lorem Ipsum",
+    "description": "Loren Ipsum"
+}
+
+
+### Reminder get by id /reminder/<id: int>
+
+@id = {{createReminder.request.body.$.id}}
+GET http://{{baseUrl}}/{{endpoint}}/{{id}}
+Content-Type: {{contentType}}
+
+
+### Reminder get all - return a list of Reminder
+GET http://{{baseUrl}}/{{endpoint}}
+Content-Type: {{contentType}}
+
+
+### Reminder update - return Reminder updated
+PUT http://{{baseUrl}}/{{endpoint}}/{{id}}
+Content-Type: {{contentType}}
+
+{
+    "date_time": "01/02/1993 00:00:00",
+    "reason": "Lorem Ipsum",
+    "description": "Loren Ipsum"
+}
+
+
+### Reminder delete by id - return id, is_active and deleted_at
+DELETE http://{{baseUrl}}/{{endpoint}}/{{id}}
+Content-Type: {{contentType}}

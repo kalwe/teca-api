@@ -1,0 +1,24 @@
+### Login user on system and create credential
+@baseUrl = {{host}}:{{port}}/api/{{version}}
+@contentType = application/json
+
+###
+
+@endpoint = auth
+@id = 1
+
+
+###
+# @name login
+POST http://{{baseUrl}}/{{endpoint}}/login
+Content-Type: {{contentType}}
+
+{
+    "name": "John Doe",
+    "password": "pass123"
+}
+
+
+###
+# @name logout
+POST http://{{baseUrl}}/{{endpoint}}/logout

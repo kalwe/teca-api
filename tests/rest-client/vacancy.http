@@ -1,0 +1,51 @@
+@baseUrl = {{host}}:{{port}}/api/{{version}}
+@contentType = application/json
+
+###
+
+@endpoint = vacancy
+@id = 1
+
+
+
+### Vacancy create
+POST http://{{baseUrl}}/{{endpoint}}
+Content-Type: {{contentType}}
+
+{
+    "quantity": 32,
+    "position": "Position vacancy",
+    "description": "Loren Ipsum",
+    "requirements": "Lorem Ipsum",
+    "benefits": "Lorem",
+    "salary": 1.2888
+}
+
+
+### Vacancy get by id /vacancy/<id: int>
+GET http://{{baseUrl}}/{{endpoint}}/{{id}}
+Content-Type: {{contentType}}
+
+
+### Vacancy get all - return a list of Vacancy
+GET http://{{baseUrl}}/{{endpoint}}
+Content-Type: {{contentType}}
+
+
+### Vacancy update - return Vacancy updated
+PUT http://{{baseUrl}}/{{endpoint}}/{{id}}
+Content-Type: {{contentType}}
+
+{
+    "quantity": 32,
+    "position": "Position vacancy",
+    "description": "Loren Ipsum",
+    "requirements": "Lorem Ipsum",
+    "benefits": "Lorem",
+    "salary": 1.2888
+}
+
+
+### Vacancy delete by id - return id, is_active and deleted_at
+DELETE http://{{baseUrl}}/{{endpoint}}/{{id}}
+Content-Type: {{contentType}}

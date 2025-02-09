@@ -1,0 +1,51 @@
+@baseUrl = {{host}}:{{port}}/api/{{version}}
+@contentType = application/json
+
+###
+
+@endpoint = contact
+@id = 1
+@employee = 1
+
+
+### Contact create
+POST http://{{baseUrl}}/{{endpoint}}
+Content-Type: {{contentType}}
+
+{
+    "phone_number": "64996521512",
+    "email": "johndoe@domain.com",
+    "employee": {{employee}}
+}
+
+
+### Contact get by id /contact/<id: int>
+GET http://{{baseUrl}}/{{endpoint}}/{{id}}
+Content-Type: {{contentType}}
+
+{
+    "phone_number": "64996521512",
+    "email": "johndoe@domain.com",
+    "employee": {{employee}}
+}
+
+
+### Contact get all - return a list of Contact
+GET http://{{baseUrl}}/{{endpoint}}
+Content-Type: {{contentType}}
+
+
+### Contact update - return Contact updated
+PUT http://{{baseUrl}}/{{endpoint}}/{{id}}
+Content-Type: {{contentType}}
+
+{
+    "phone_number": "64996521512",
+    "email": "johndoe@domain.com",
+    "employee": {{employee}}
+}
+
+
+### Contact delete by id - return id, is_active and deleted_at
+DELETE http://{{baseUrl}}/{{endpoint}}/{{id}}
+Content-Type: {{contentType}}
