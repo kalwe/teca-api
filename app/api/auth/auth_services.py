@@ -21,7 +21,7 @@ class AuthService:
             user_service = UserGetService(UserGetRepository())
             user = await user_service.get_by_name(name=user_data.name)
 
-            password_hash = hash_provider(user_data["password_hash"])
+            password_hash = hash_provider(user_data.password_hash)
             if compare_digest(user["password_hash"], password_hash):
                 token_dump = auth_manager.dump_token(user["name"])
                 user_auth = {
@@ -32,4 +32,4 @@ class AuthService:
                 }
                 return UserAuthOutputSchema.model_validate(user_auth)
         except Exception as e:
-            raise ValueError("Invalid credentials: {e}") from e
+            raise ValueError(f"Invalid credentials: {e}") from e
