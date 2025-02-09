@@ -40,7 +40,7 @@ class BaseSchema(BaseModel):
     and Pydantic.
     """
 
-    version: int = None
+    version: int = Field(default=1)
 
     def validate(self, model):
         """
@@ -98,7 +98,7 @@ class BaseSchema(BaseModel):
 
 
 class InputSchema(BaseSchema):
-    id: int = None
+    version: int = Field(default=1, exclude=True)
 
 
 class OutputSchema(BaseSchema, UnionIdMandatoryWithTimesMixin):
@@ -107,5 +107,6 @@ class OutputSchema(BaseSchema, UnionIdMandatoryWithTimesMixin):
 
 class DeletedSchema(BaseSchema, IdMandatoryMixin, SoftDeleteMixin):
     pass
+
 
 type SchemaT = BaseSchema
