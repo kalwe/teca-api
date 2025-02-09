@@ -1,5 +1,5 @@
 from quart import Quart
-from quart.blueprints import Blueprint
+from quart import Blueprint
 
 from app.config import Config
 

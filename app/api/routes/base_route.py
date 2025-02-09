@@ -1,4 +1,4 @@
-from quart.blueprints import Blueprint
+from quart import Blueprint
 
 class BaseRoute:
     def __init__(self, bp: Blueprint, controller, singular_prefix: str, plural_prefix: str):
