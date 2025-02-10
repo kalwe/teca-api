@@ -82,12 +82,12 @@ class UserNotFoundException(Exception):
         message (str): Explanation of the error.
     """
 
-    def __init__(self, message: str = "User already exists."):
+    def __init__(self, message: str = "User not found."):
         """
         Initialize the exception with an optional custom message.
 
         Args:
-            message (str): Custom error message. Defaults to "User already exists."
+            message (str): Custom error message. Defaults to "User not found."
         """
         self.message = message
         super().__init__(self.message)

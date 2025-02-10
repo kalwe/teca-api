@@ -13,6 +13,7 @@ class UserGetService(GetService):
     This service adds user-specific business logic on top of the generic
     functionality provided by GetService.
     """
+
     def __init__(self, repository: UserGetRepository):
         """
         Initialize the service with a User-specific repository.
@@ -25,12 +26,13 @@ class UserGetService(GetService):
         self._get_repository = repository
 
     async def get(self, id: int) -> Optional[UserOutputSchema]:
-        user = self.get_by_id(id)
+        user = await self.get_by_id(id)
         return UserOutputSchema.validate(user)
 
-    async def get_all(self, filters: Optional[dict] = None
-                      ) -> Optional[List[UserOutputSchema]]:
-        users = self.get_all_records(filters)
+    async def get_all(
+        self, filters: Optional[dict] = None
+    ) -> Optional[List[UserOutputSchema]]:
+        users = await self.get_all_records(filters)
         return [UserOutputSchema.validate(user) for user in users]
 
     async def get_by_email(self, email: str) -> Optional[UserOutputSchema]:
@@ -62,5 +64,5 @@ class UserGetService(GetService):
         return [UserOutputSchema.validate(user) for user in users]
 
     async def get_by_name(self, name: str) -> Optional[UserOutputSchema]:
-        user = self._get_repository.get_user_by_name(name)
+        user = await self._get_repository.get_user_by_name(name)
         return UserOutputSchema.validate(user)

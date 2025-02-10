@@ -16,12 +16,10 @@ class UpdateRepository:
         """
         Update fields for an existing record and increment its version.
         """
-        # for field_name, value in fields_data.items():
-        #     setattr(self.model_class, field_name, value)
         try:
-            # record.version += 1
             fields = record_fields.dump(exclude_unset=True)
             self._model_class.update_from_dict(**fields)
+            self._model_class.version += 1
             await self._model_class.save()
             return self._model_class
         except Exception as e:

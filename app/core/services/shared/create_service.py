@@ -30,5 +30,6 @@ class CreateService:
         Returns:
             T: The newly created record.
         """
-        created_record = await self._repository.model_create(data_fields)
+        dumped_fields = data_fields.dump()
+        created_record = await self._repository.model_create(dumped_fields)
         return created_record

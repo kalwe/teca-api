@@ -1,8 +1,7 @@
 from enum import Enum
 
 
-class GenderEnum(str, Enum):
-
-  PRIMARY = 'Ensino Fundamental',
-  SECONDARY = 'Ensino Médio',
-  TERTIARY = 'Ensino Superior',
+class ScholarityEnum(str, Enum):
+    PRIMARY = 'Ensino Fundamental'
+    SECONDARY = 'Ensino Médio'
+    TERTIARY = 'Ensino Superior'

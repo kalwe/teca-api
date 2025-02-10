@@ -1,8 +1,8 @@
 from typing import Optional
-from app.api.schemas.contact_schema import (
-    ContactDeletedSchema, ContactOutputSchema)
+from app.api.schemas.contact_schema import ContactDeletedSchema, ContactOutputSchema
 from app.core.repositories.contact.contact_delete_repository import (
-    ContactDeleteRepository)
+    ContactDeleteRepository,
+)
 from app.core.services.shared.delete_service import DeleteService
 
 

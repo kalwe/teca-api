@@ -24,8 +24,6 @@ class UpdateService:
         record_exist = self._get_service.get_by_id(id)
         if not record_exist:
             return None
-
-        # TODO: use fields = record_fields.dump(exclude_unset=True)
-        #       update_record(**data_field)
-        updated_record = await self._repository.update_record(data_field)
+        fields = data_field.dump(exclude_unset=True)
+        updated_record = await self._repository.update_record(fields)
         return updated_record

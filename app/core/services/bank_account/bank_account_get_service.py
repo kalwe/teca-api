@@ -2,7 +2,6 @@ from typing import List, Optional
 
 from app.api.schemas.bank_account_schema import (
     BankAccountOutputSchema,
-    bank_accountOutputSchema,
 )
 from app.core.repositories.bank_account.bank_account_get_repository import (
     BankAccountGetRepository,
@@ -34,18 +33,18 @@ class BankAccountGetService(GetService):
         self._get_repository = repository
 
     async def get(self, id: int) -> Optional[BankAccountOutputSchema]:
-        bank_account = self.get_by_id(id)
+        bank_account = await self.get_by_id(id)
         return BankAccountOutputSchema.validate(bank_account)
 
     async def get_all(
         self, filters: Optional[dict] = None
-    ) -> Optional[List[bank_accountOutputSchema]]:
-        bank_accounts = self.get_all_records(filters)
+    ) -> Optional[List[BankAccountOutputSchema]]:
+        bank_accounts = await self.get_all_records(filters)
         return [
             BankAccountOutputSchema.validate(bank_account)
             for bank_account in bank_accounts
         ]
 
     async def get_by_name(self, name: str) -> Optional[BankAccountOutputSchema]:
-        bank_account = self._get_repository.get_bank_account_by_name(name)
+        bank_account = await self._get_repository.get_bank_account_by_name(name)
         return BankAccountOutputSchema.validate(bank_account)

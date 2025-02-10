@@ -1,7 +1,6 @@
 from typing import List, Optional
 from app.api.schemas.roles_schema import RolesOutputSchema
-from app.core.repositories.roles.roles_get_repository import (
-    RolesGetRepository)
+from app.core.repositories.roles.roles_get_repository import RolesGetRepository
 from app.core.services.shared.get_service import GetService
 
 
@@ -29,14 +28,15 @@ class RolesGetService(GetService):
         self._get_repository = repository
 
     async def get(self, id: int) -> Optional[RolesOutputSchema]:
-        roles = self.get_by_id(id)
+        roles = await self.get_by_id(id)
         return RolesOutputSchema.validate(roles)
 
-    async def get_all(self, filters: Optional[dict] = None
-                      ) -> Optional[List[RolesOutputSchema]]:
-        roless = self.get_all_records(filters)
+    async def get_all(
+        self, filters: Optional[dict] = None
+    ) -> Optional[List[RolesOutputSchema]]:
+        roless = await self.get_all_records(filters)
         return [RolesOutputSchema.validate(roles) for roles in roless]
 
     async def get_by_name(self, name: str) -> Optional[RolesOutputSchema]:
-        roles = self._get_repository.get_roles_by_name(name)
+        roles = await self._get_repository.get_roles_by_name(name)
         return RolesOutputSchema.validate(roles)

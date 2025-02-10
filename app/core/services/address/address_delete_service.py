@@ -1,8 +1,8 @@
 from typing import Optional
-from app.api.schemas.address_schema import (
-    AddressDeletedSchema, AddressOutputSchema)
+from app.api.schemas.address_schema import AddressDeletedSchema, AddressOutputSchema
 from app.core.repositories.address.address_delete_repository import (
-    AddressDeleteRepository)
+    AddressDeleteRepository,
+)
 from app.core.services.shared.delete_service import DeleteService
 
 

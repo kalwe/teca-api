@@ -84,7 +84,7 @@ Link para estrutura de:
      "local": {
         "version": "v1",
         "host": "localhost",
-        "port": "5001",
+        "port": "5000",
         "token": "{{$shared nonProdToken}}",
         "secretKey": "dev-secret"
      },
