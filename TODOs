@@ -1,0 +1,14 @@
+ok - none BaseSchema
+remover get_by_name() where dont have DB_NAME
+
+routes/__init__.py verify BaseRoute
+
+ajuste api_bp nested bp
+
+remove common/common_schema.py
+
+shared/create_repository
+shared/update_repository
+
+shared/created_service ln 33
+shared/updated_service ln 27

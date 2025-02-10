@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any
+from typing import Any, Optional
 
 from pydantic import BaseModel, Field, ValidationError
 
@@ -40,7 +40,7 @@ class BaseSchema(BaseModel):
     and Pydantic.
     """
 
-    version: int = Field(default=1)
+    version: Optional[int] = None
 
     def validate(self, model):
         """
@@ -98,7 +98,7 @@ class BaseSchema(BaseModel):
 
 
 class InputSchema(BaseSchema):
-    version: int = Field(default=1, exclude=True)
+    id: Optional[int] = None
 
 
 class OutputSchema(BaseSchema, UnionIdMandatoryWithTimesMixin):
