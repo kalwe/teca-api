@@ -44,7 +44,3 @@ class BankAccountGetService(GetService):
             BankAccountOutputSchema.validate(bank_account)
             for bank_account in bank_accounts
         ]
-
-    async def get_by_name(self, name: str) -> Optional[BankAccountOutputSchema]:
-        bank_account = await self._get_repository.get_bank_account_by_name(name)
-        return BankAccountOutputSchema.validate(bank_account)

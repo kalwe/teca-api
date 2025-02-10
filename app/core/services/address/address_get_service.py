@@ -36,7 +36,3 @@ class AddressGetService(GetService):
     ) -> Optional[List[AddressOutputSchema]]:
         addresss = await self.get_all_records(filters)
         return [AddressOutputSchema.validate(address) for address in addresss]
-
-    async def get_by_name(self, name: str) -> Optional[AddressOutputSchema]:
-        address = await self._get_repository.get_address_by_name(name)
-        return AddressOutputSchema.validate(address)

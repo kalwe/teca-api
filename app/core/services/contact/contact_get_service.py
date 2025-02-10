@@ -36,7 +36,3 @@ class ContactGetService(GetService):
     ) -> Optional[List[ContactOutputSchema]]:
         contacts = await self.get_all_records(filters)
         return [ContactOutputSchema.validate(contact) for contact in contacts]
-
-    async def get_by_name(self, name: str) -> Optional[ContactOutputSchema]:
-        contact = await self._get_repository.get_contact_by_name(name)
-        return ContactOutputSchema.validate(contact)
