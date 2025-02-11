@@ -5,7 +5,7 @@ routes/__init__.py verify BaseRoute
 
 ajuste api_bp nested bp
 
-remove common/common_schema.py
+OK - remove common/common_schema.py
 
 shared/create_repository
 shared/update_repository

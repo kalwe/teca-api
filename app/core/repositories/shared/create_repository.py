@@ -1,6 +1,5 @@
-from typing import Optional
+from typing import Any, Optional
 
-from app.api.schemas.base_schema import SchemaT
 from app.common.custom_exceptions import RepositoryError
 from app.core.models.shared.base_model import ModelT
 
@@ -41,7 +40,7 @@ class CreateRepository:
         """
         self._model_class = model_class
 
-    async def model_create(self, model_fields: dict) -> Optional[ModelT]:
+    async def model_create(self, model_fields: dict[str, Any]) -> Optional[ModelT]:
         """
         Create a new record in the database.
 
@@ -74,8 +73,9 @@ class CreateRepository:
             )
             return created_record
         except RepositoryError as e:
-            raise Exception(
-                f"Failed CreateRepository().model_create(): {e}") from e
+            raise RepositoryError(
+                f"Failed CreateRepository().model_create(): {e}"
+            ) from e
 
 
 type CreateRepositoryT = CreateRepository

@@ -2,8 +2,6 @@ from typing import Any, Self
 
 from pydantic import BaseModel
 
-from app.common.responses.response_types import DictType
-
 
 class CommonSchema(BaseModel):
     """
@@ -20,7 +18,7 @@ class CommonSchema(BaseModel):
     def validate(self, model: Any) -> Self:
         return self.model_validate(model)
 
-    def dump(self) -> DictType:
+    def dump(self) -> dict[str, Any]:
         """
         Serializes the model instance into a dictionary.
         """

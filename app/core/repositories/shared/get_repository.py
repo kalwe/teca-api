@@ -31,9 +31,8 @@ class GetRepository:
             record = await self._model_class.get_or_none(id=id,
                                                         is_active=True)
             return record
-        except Exception as e:
-            raise RepositoryError(
-                f"Failed to retrieve record by ID {id}: {e}") from e
+        except RepositoryError as e:
+            raise RepositoryError(f"Failed to retrieve record by ID {id}: {e}") from e
 
     async def get_all_records(
         self,
@@ -49,12 +48,12 @@ class GetRepository:
             List[TModel]: A list of all matching records.
         """
         try:
-
+            # TODO: fix filter with 'OR', 'AND'
             records = await (self._model_class.filter(filters) if filters
                              else await self._model_class.all())
 
             return records
-        except Exception as e:
+        except RepositoryError as e:
             raise RepositoryError(f"Failed GetRepository.GetAll(): {e}") from e
 
 type GetRepositoryT = GetRepository

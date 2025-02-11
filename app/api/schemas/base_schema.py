@@ -77,6 +77,9 @@ class BaseSchema(BaseModel):
         """
         Serializes the model instance into a dictionary.
 
+        Params:
+            kwargs
+
         Ex:
             user_data = UserFromRequest(id=123, name="John", password="pass123")
             u = UserSchema(user_data)
@@ -105,8 +108,13 @@ class OutputSchema(BaseSchema, UnionIdMandatoryWithTimesMixin):
     pass
 
 
-class DeletedSchema(BaseSchema, IdMandatoryMixin, SoftDeleteMixin):
+class UpdateSchema(BaseSchema, IdMandatoryMixin):
     pass
 
 
+class DeletedSchema(BaseSchema, IdMandatoryMixin, SoftDeleteMixin):
+    pass
+
+type InputSchemaT = InputSchema
+type OutputSchemaT = OutputSchema
 type SchemaT = BaseSchema

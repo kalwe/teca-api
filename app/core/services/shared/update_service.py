@@ -24,6 +24,10 @@ class UpdateService:
         record_exist = self._get_service.get_by_id(id)
         if not record_exist:
             return None
-        fields = data_field.dump(exclude_unset=True)
-        updated_record = await self._repository.update_record(fields)
-        return updated_record
+        self._repository._model_class.version += record_exist.ve
+        data_fields = data_field.dump(exclude_unset=True)
+        updated_data = await self._repository.update_record(data_fields)
+        # SchemaT should be OutputSchemaT
+        # validated_schema = data_field.validate(updated_data)
+        # return validated_schema
+        return updated_data
