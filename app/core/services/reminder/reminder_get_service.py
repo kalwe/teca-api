@@ -36,7 +36,3 @@ class ReminderGetService(GetService):
     ) -> Optional[List[ReminderOutputSchema]]:
         reminders = await self.get_all_records(filters)
         return [ReminderOutputSchema.validate(reminder) for reminder in reminders]
-
-    async def get_by_name(self, name: str) -> Optional[ReminderOutputSchema]:
-        reminder = await self._get_repository.get_reminder_by_name(name)
-        return ReminderOutputSchema.validate(reminder)
