@@ -27,7 +27,7 @@ class UserGetService(GetService):
 
     async def get(self, id: int) -> Optional[UserOutputSchema]:
         user = await self.get_by_id(id)
-        return UserOutputSchema.validate(user)
+        return UserOutputSchema().validate(user)
 
     async def get_all(
         self, filters: Optional[dict] = None

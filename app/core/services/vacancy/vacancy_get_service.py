@@ -27,7 +27,7 @@ class VacancyGetService(GetService):
 
     async def get(self, id: int) -> Optional[VacancyOutputSchema]:
         vacancy = self.get_by_id(id)
-        return VacancyOutputSchema.validate(vacancy)
+        return VacancyOutputSchema().validate(vacancy)
 
     async def get_all(
         self, filters: Optional[dict] = None

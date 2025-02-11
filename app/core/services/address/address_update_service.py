@@ -1,4 +1,5 @@
 from typing import Optional
+
 from app.api.schemas.address_schema import AddressInputSchema, AddressOutputSchema
 from app.core.repositories.address.address_update_repository import (
     AddressUpdateRepository,
@@ -19,3 +20,5 @@ class AddressUpdateService(UpdateService):
     ) -> Optional[AddressOutputSchema]:
         updated_address = await self.update_data(id, address_data)
         return AddressOutputSchema.validate(updated_address)
+
+    # FIXME: Testing in swagger(/docs) returned: "POST /address/ HTTP/1.1" 400 Bad Request

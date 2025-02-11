@@ -1,4 +1,5 @@
 from typing import Optional
+
 from app.api.schemas.roles_schema import RolesDeletedSchema, RolesOutputSchema
 from app.core.repositories.roles.roles_delete_repository import RolesDeleteRepository
 from app.core.services.shared.delete_service import DeleteService
@@ -23,4 +24,4 @@ class RolesDeleteService(DeleteService):
         :return: The deleted roles as a schema, or None if not found.
         """
         deleted_roles = await self.soft_delete(id)
-        return RolesDeletedSchema.validate(deleted_roles)
+        return RolesDeletedSchema().validate(deleted_roles)

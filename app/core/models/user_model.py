@@ -51,6 +51,16 @@ class User(ModelBase, EmailMixin, PasswordMixin):
     #     return hash
 
 
+#    @classmethod
+#    async def create_with_roles(cls, **kwargs):  # TODO: Trying to solve the issue:
+#        # "You can't set m2m relations through init, use m2m_manager instead"
+#        roles = kwargs.pop("roles", [])
+#        user = await cls.create(**kwargs)
+#        if roles:
+#            await user.roles.add(*roles)
+#        return user
+
+
 class Node(Model):
     name = fields.CharField(max_length=255)
 

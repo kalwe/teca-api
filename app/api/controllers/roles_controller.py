@@ -80,7 +80,7 @@ class RolesController:
     async def update_roles(id: int, data: RolesInputSchema) -> RolesOutputSchema:
         repository = RolesUpdateRepository()
         service = RolesUpdateService(repository)
-        roles = service.update(id, data)
+        roles = await service.update(id, data)
         return roles, HTTPStatus.OK
 
     @staticmethod

@@ -24,4 +24,4 @@ class UserDeleteService(DeleteService):
         :return: The deleted user as a schema, or None if not found.
         """
         deleted_user = await self.soft_delete(id)
-        return UserDeletedSchema.validate(deleted_user)
+        return UserDeletedSchema().validate(deleted_user)

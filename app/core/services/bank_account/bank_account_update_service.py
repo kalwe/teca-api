@@ -23,3 +23,6 @@ class BankAccountUpdateService(UpdateService):
     ) -> Optional[BankAccountOutputSchema]:
         updated_bank_account = await self.update_data(id, bank_account_data)
         return BankAccountOutputSchema.validate(updated_bank_account)
+
+
+# FIXME: Testing in swagger(/docs) returned: "POST /address/ HTTP/1.1" 400 Bad Request

@@ -1,4 +1,5 @@
 from typing import Optional
+
 from app.api.schemas.contact_schema import ContactInputSchema, ContactOutputSchema
 from app.core.repositories.contact.contact_update_repository import (
     ContactUpdateRepository,
@@ -19,3 +20,6 @@ class ContactUpdateService(UpdateService):
     ) -> Optional[ContactOutputSchema]:
         updated_contact = await self.update_data(id, contact_data)
         return ContactOutputSchema.validate(updated_contact)
+
+
+# FIXME: Testing in swagger(/docs) returned: "POST /address/ HTTP/1.1" 400 Bad Request

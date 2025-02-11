@@ -26,4 +26,8 @@ class EmployeeDeleteService(DeleteService):
         :return: The deleted employee as a schema, or None if not found.
         """
         deleted_employee = await self.soft_delete(id)
-        return EmployeeDeletedSchema.validate(deleted_employee)
+        # TypeError: BaseSchema.validate() missing 1 required positional argument: 'model', (Resolved) with ()
+        return EmployeeDeletedSchema().validate(deleted_employee)
+
+
+# FIXME: pydantic_core._pydantic_core.ValidationError: 1 validation error for EmployeeDeletedSchema

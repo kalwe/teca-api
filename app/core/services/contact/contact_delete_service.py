@@ -1,4 +1,5 @@
 from typing import Optional
+
 from app.api.schemas.contact_schema import ContactDeletedSchema, ContactOutputSchema
 from app.core.repositories.contact.contact_delete_repository import (
     ContactDeleteRepository,
@@ -25,4 +26,8 @@ class ContactDeleteService(DeleteService):
         :return: The deleted contact as a schema, or None if not found.
         """
         deleted_contact = await self.soft_delete(id)
-        return ContactDeletedSchema.validate(deleted_contact)
+        # TypeError: BaseSchema.validate() missing 1 required positional argument: 'model', (Resolved) with ()
+        return ContactDeletedSchema().validate(deleted_contact)
+
+
+# FIXME: pydantic_core._pydantic_core.ValidationError: 1 validation error for ContactDeletedSchema

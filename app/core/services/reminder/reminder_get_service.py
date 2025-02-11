@@ -1,4 +1,5 @@
 from typing import List, Optional
+
 from app.api.schemas.reminder_schema import ReminderOutputSchema
 from app.core.repositories.reminder.reminder_get_repository import ReminderGetRepository
 from app.core.services.shared.get_service import GetService
@@ -29,7 +30,7 @@ class ReminderGetService(GetService):
 
     async def get(self, id: int) -> Optional[ReminderOutputSchema]:
         reminder = await self.get_by_id(id)
-        return ReminderOutputSchema.validate(reminder)
+        return ReminderOutputSchema().validate(reminder)
 
     async def get_all(
         self, filters: Optional[dict] = None

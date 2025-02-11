@@ -1,4 +1,5 @@
 from typing import List, Optional
+
 from app.api.schemas.address_schema import AddressOutputSchema
 from app.core.repositories.address.address_get_repository import AddressGetRepository
 from app.core.services.shared.get_service import GetService
@@ -29,10 +30,13 @@ class AddressGetService(GetService):
 
     async def get(self, id: int) -> Optional[AddressOutputSchema]:
         address = await self.get_by_id(id)
-        return AddressOutputSchema.validate(address)
+        # TypeError: BaseSchema.validate() missing 1 required positional argument: 'model', (Resolved) with ()
+        return AddressOutputSchema().validate(address)
+        # FIXME: With no records, the error is: ValidationError: 7 validation errors for AddressOutputSchema...Field required street...
 
     async def get_all(
         self, filters: Optional[dict] = None
     ) -> Optional[List[AddressOutputSchema]]:
         addresss = await self.get_all_records(filters)
         return [AddressOutputSchema.validate(address) for address in addresss]
+        # With no records, returns an empty list

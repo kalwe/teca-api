@@ -65,3 +65,6 @@ class EmployeeCreateService(CreateService):
         )
         created_employee = await self.create_record(employee_data)
         return EmployeeOutputSchema().validate(created_employee)
+
+
+# FIXME: Testing in swagger(/docs) returned: "POST /address/ HTTP/1.1" 400 Bad Request

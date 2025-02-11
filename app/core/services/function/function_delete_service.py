@@ -1,4 +1,5 @@
 from typing import Optional
+
 from app.api.schemas.function_schema import FunctionDeletedSchema, FunctionOutputSchema
 from app.core.repositories.function.function_delete_repository import (
     FunctionDeleteRepository,
@@ -25,4 +26,8 @@ class FunctionDeleteService(DeleteService):
         :return: The deleted function as a schema, or None if not found.
         """
         deleted_function = await self.soft_delete(id)
-        return FunctionDeletedSchema.validate(deleted_function)
+        # TypeError: BaseSchema.validate() missing 1 required positional argument: 'model', (Resolved) with ()
+        return FunctionDeletedSchema().validate(deleted_function)
+
+
+# FIXME: pydantic_core._pydantic_core.ValidationError: 1 validation error for FunctionDeletedSchema

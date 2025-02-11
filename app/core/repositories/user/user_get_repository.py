@@ -6,7 +6,7 @@ from app.core.repositories.shared.get_repository import GetRepository
 
 
 class UserGetRepository(GetRepository):
-    def __init__(self):
+    def __init__(self, model_class: User):
         """
         Initialize the repository with the User model_class.
 
@@ -14,7 +14,7 @@ class UserGetRepository(GetRepository):
             model_class ([User): The User model_class class to be managed by
             the repository.
         """
-        super().__init__(User())
+        super().__init__(model_class)
 
     async def get_user_by_email(self, email: str) -> Optional[User]:
         """

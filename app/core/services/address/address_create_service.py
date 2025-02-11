@@ -1,4 +1,5 @@
 from typing import Optional
+
 from app.api.schemas.address_schema import AddressInputSchema, AddressOutputSchema
 from app.core.repositories.address.address_create_repository import (
     AddressCreateRepository,
@@ -64,3 +65,5 @@ class AddressCreateService(CreateService):
         )
         created_address = await self.create_record(address_data)
         return AddressOutputSchema().validate(created_address)
+
+    # FIXME: Testing in swagger(/docs) returned: "POST /address/ HTTP/1.1" 400 Bad Request
