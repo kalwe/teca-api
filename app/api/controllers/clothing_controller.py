@@ -22,7 +22,7 @@ from app.core.services.clothing.clothing_create_service import ClothingCreateSer
 from app.core.services.clothing.clothing_delete_service import ClothingDeleteService
 from app.core.services.clothing.clothing_get_service import ClothingGetService
 from app.core.services.clothing.clothing_update_service import ClothingUpdateService
-
+from quart_schema import tag
 
 class ClothingController:
     """
@@ -32,6 +32,7 @@ class ClothingController:
     @staticmethod
     @validate_request(ClothingInputSchema)
     @validate_response(ClothingOutputSchema)
+    @tag(["Clothing"])
     async def create_clothing(data: ClothingInputSchema) -> ClothingOutputSchema:
         """
         Creates a new clothing from the incoming JSON data.
@@ -47,6 +48,7 @@ class ClothingController:
 
     @staticmethod
     @validate_response(ClothingOutputSchema)
+    @tag(["Clothing"])
     async def get_clothing(id: int) -> ClothingOutputSchema:
         """
         Retrieves a clothing by ID.
@@ -65,6 +67,7 @@ class ClothingController:
 
     @staticmethod
     @validate_response(List[ClothingOutputSchema])
+    @tag(["Clothing"])
     async def get_all_clothings() -> List[ClothingOutputSchema]:
         """
         Retrieves all clothings using FetchHelper to standardize
@@ -83,6 +86,7 @@ class ClothingController:
     @staticmethod
     @validate_request(ClothingInputSchema)
     @validate_response(ClothingOutputSchema)
+    @tag(["Clothing"])
     async def update_clothing(
         id: int, data: ClothingInputSchema
     ) -> ClothingOutputSchema:
@@ -93,6 +97,7 @@ class ClothingController:
 
     @staticmethod
     @validate_response(ClothingDeletedSchema)
+    @tag(["Clothing"])
     async def delete_clothing(id: int) -> ClothingDeletedSchema:
         repository = ClothingDeleteRepository()
         service = ClothingDeleteService(repository)

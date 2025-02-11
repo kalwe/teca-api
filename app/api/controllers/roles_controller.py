@@ -16,7 +16,7 @@ from app.core.services.roles.roles_create_service import RolesCreateService
 from app.core.services.roles.roles_delete_service import RolesDeleteService
 from app.core.services.roles.roles_get_service import RolesGetService
 from app.core.services.roles.roles_update_service import RolesUpdateService
-
+from quart_schema import tag
 
 class RolesController:
     """
@@ -26,6 +26,7 @@ class RolesController:
     @staticmethod
     @validate_request(RolesInputSchema)
     @validate_response(RolesOutputSchema)
+    @tag(["Roles"])
     async def create_roles(data: RolesInputSchema) -> RolesOutputSchema:
         """
         Creates a new roles from the incoming JSON data.
@@ -41,6 +42,7 @@ class RolesController:
 
     @staticmethod
     @validate_response(RolesOutputSchema)
+    @tag(["Roles"])
     async def get_roles(id: int) -> RolesOutputSchema:
         """
         Retrieves a roles by ID.
@@ -59,6 +61,7 @@ class RolesController:
 
     @staticmethod
     @validate_response(List[RolesOutputSchema])
+    @tag(["Roles"])
     async def get_all_roles() -> List[RolesOutputSchema]:
         """
         Retrieves all roles using FetchHelper to standardize
@@ -77,6 +80,7 @@ class RolesController:
     @staticmethod
     @validate_request(RolesInputSchema)
     @validate_response(RolesOutputSchema)
+    @tag(["Roles"])
     async def update_roles(id: int, data: RolesInputSchema) -> RolesOutputSchema:
         repository = RolesUpdateRepository()
         service = RolesUpdateService(repository)
@@ -85,6 +89,7 @@ class RolesController:
 
     @staticmethod
     @validate_response(RolesDeletedSchema)
+    @tag(["Roles"])
     async def delete_roles(id: int) -> RolesDeletedSchema:
         repository = RolesDeleteRepository()
         service = RolesDeleteService(repository)

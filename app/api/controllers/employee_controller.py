@@ -22,7 +22,7 @@ from app.core.services.employee.employee_create_service import EmployeeCreateSer
 from app.core.services.employee.employee_delete_service import EmployeeDeleteService
 from app.core.services.employee.employee_get_service import EmployeeGetService
 from app.core.services.employee.employee_update_service import EmployeeUpdateService
-
+from quart_schema import tag
 
 class EmployeeController:
     """
@@ -32,6 +32,7 @@ class EmployeeController:
     @staticmethod
     @validate_request(EmployeeInputSchema)
     @validate_response(EmployeeOutputSchema)
+    @tag(["Employee"])
     async def create_employee(data: EmployeeInputSchema) -> EmployeeOutputSchema:
         """
         Creates a new employee from the incoming JSON data.
@@ -47,6 +48,7 @@ class EmployeeController:
 
     @staticmethod
     @validate_response(EmployeeOutputSchema)
+    @tag(["Employee"])
     async def get_employee(id: int) -> EmployeeOutputSchema:
         """
         Retrieves a employee by ID.
@@ -65,6 +67,7 @@ class EmployeeController:
 
     @staticmethod
     @validate_response(List[EmployeeOutputSchema])
+    @tag(["Employee"])
     async def get_all_employees() -> List[EmployeeOutputSchema]:
         """
         Retrieves all employees using FetchHelper to standardize
@@ -83,6 +86,7 @@ class EmployeeController:
     @staticmethod
     @validate_request(EmployeeInputSchema)
     @validate_response(EmployeeOutputSchema)
+    @tag(["Employee"])
     async def update_employee(
         id: int, data: EmployeeInputSchema
     ) -> EmployeeOutputSchema:
@@ -93,6 +97,7 @@ class EmployeeController:
 
     @staticmethod
     @validate_response(EmployeeDeletedSchema)
+    @tag(["Employee"])
     async def delete_employee(id: int) -> EmployeeDeletedSchema:
         repository = EmployeeDeleteRepository()
         service = EmployeeDeleteService(repository)

@@ -60,6 +60,12 @@ aerich update
 
 ### Documentação
 
+- A documentação da API é gerada automaticamente através do Quart-Schema.
+   - Acesse a documentação em `http://localhost:5000//openapi.json`.
+   - Acesse a documentação em `http://localhost:5000/redocs`.
+   - Acesse a documentação em `http://localhost:5000/scalar`.
+   - Acesse a documentação em `http://localhost:5000/docs`.
+
 Link para estrutura de:
 
 - [Modelos](app\docs\models\README.md)
@@ -98,7 +104,5 @@ Link para estrutura de:
    Em seguida mude para o environment Local
 
 2. Na pasta ./tests/rest-client esta os .http para realizar as chamadas nos endpoints
-
-<!-- Para executar os testes locais, após o início da aplicação, acesse: [SwaggerUI](http://localhost:5000/swaggerui/) -->
 
 ---

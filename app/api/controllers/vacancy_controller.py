@@ -22,7 +22,7 @@ from app.core.services.vacancy.vacancy_create_service import VacancyCreateServic
 from app.core.services.vacancy.vacancy_delete_service import VacancyDeleteService
 from app.core.services.vacancy.vacancy_get_service import VacancyGetService
 from app.core.services.vacancy.vacancy_update_service import VacancyUpdateService
-
+from quart_schema import tag
 
 class VacancyController:
     """
@@ -32,6 +32,7 @@ class VacancyController:
     @staticmethod
     @validate_request(VacancyInputSchema)
     @validate_response(VacancyOutputSchema)
+    @tag(["Vacancy"])
     async def create_vacancy(data: VacancyInputSchema) -> VacancyOutputSchema:
         """
         Creates a new vacancy from the incoming JSON data.
@@ -47,6 +48,7 @@ class VacancyController:
 
     @staticmethod
     @validate_response(VacancyOutputSchema)
+    @tag(["Vacancy"])
     async def get_vacancy(id: int) -> VacancyOutputSchema:
         """
         Retrieves a vacancy by ID.
@@ -65,6 +67,7 @@ class VacancyController:
 
     @staticmethod
     @validate_response(List[VacancyOutputSchema])
+    @tag(["Vacancy"])
     async def get_all_vacancies() -> List[VacancyOutputSchema]:
         """
         Retrieves all vacancies using FetchHelper to standardize
@@ -83,6 +86,7 @@ class VacancyController:
     @staticmethod
     @validate_request(VacancyInputSchema)
     @validate_response(VacancyOutputSchema)
+    @tag(["Vacancy"])
     async def update_vacancy(id: int, data: VacancyInputSchema) -> VacancyOutputSchema:
         repository = VacancyUpdateRepository()
         service = VacancyUpdateService(repository)
@@ -91,6 +95,7 @@ class VacancyController:
 
     @staticmethod
     @validate_response(VacancyDeletedSchema)
+    @tag(["Vacancy"])
     async def delete_vacancy(id: int) -> VacancyDeletedSchema:
         repository = VacancyDeleteRepository()
         service = VacancyDeleteService(repository)

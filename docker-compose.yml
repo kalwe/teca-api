@@ -31,7 +31,7 @@ services:
     environment:
       - QUART_ENV=development
       - QUART_APP=run.py
-      - QUART_RUN_HOST=0.0.0.0
+      - QUART_RUN_HOST=${API_HOST}
       - QUART_RUN_PORT=${API_PORT}
       - DATABASE_URL=${DATABASE_URL}
     depends_on:

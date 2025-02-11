@@ -22,6 +22,7 @@ from app.core.services.address.address_create_service import AddressCreateServic
 from app.core.services.address.address_delete_service import AddressDeleteService
 from app.core.services.address.address_get_service import AddressGetService
 from app.core.services.address.address_update_service import AddressUpdateService
+from quart_schema import tag
 
 
 class AddressController:
@@ -32,6 +33,7 @@ class AddressController:
     @staticmethod
     @validate_request(AddressInputSchema)
     @validate_response(AddressOutputSchema)
+    @tag(["Address"])
     async def create_address(data: AddressInputSchema) -> AddressOutputSchema:
         """
         Creates a new address from the incoming JSON data.
@@ -47,6 +49,7 @@ class AddressController:
 
     @staticmethod
     @validate_response(AddressOutputSchema)
+    @tag(["Address"])
     async def get_address(id: int) -> AddressOutputSchema:
         """
         Retrieves a address by ID.
@@ -65,6 +68,7 @@ class AddressController:
 
     @staticmethod
     @validate_response(List[AddressOutputSchema])
+    @tag(["Address"])
     async def get_all_addresses() -> List[AddressOutputSchema]:
         """
         Retrieves all address using FetchHelper to standardize
@@ -83,6 +87,7 @@ class AddressController:
     @staticmethod
     @validate_request(AddressInputSchema)
     @validate_response(AddressOutputSchema)
+    @tag(["Address"])
     async def update_address(id: int, data: AddressInputSchema) -> AddressOutputSchema:
         repository = AddressUpdateRepository()
         service = AddressUpdateService(repository)
@@ -91,6 +96,7 @@ class AddressController:
 
     @staticmethod
     @validate_response(AddressDeletedSchema)
+    @tag(["Address"])
     async def delete_address(id: int) -> AddressDeletedSchema:
         repository = AddressDeleteRepository()
         service = AddressDeleteService(repository)
