@@ -1,6 +1,5 @@
 from quart import Quart
-from quart_schema import Info, QuartSchema
-
+from app.api.common.config import QuartSchemaConfig
 # from app.database.db_manager import close_db, init_db
 from tortoise.contrib.quart import register_tortoise
 
@@ -14,7 +13,7 @@ def create_app(mode="dev") -> Quart:
     """In production create as app = create_app('Production')"""
     app = Quart(__name__)
     app.config.from_object(config_by_name[mode])
-    QuartSchema(app, info=Info(title="Teca API", version="0.1.0"))
+    QuartSchemaConfig.configure_schema(app)
     # init_db(app)
     # close_db(app)
     register_tortoise(
