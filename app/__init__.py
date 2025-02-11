@@ -19,7 +19,7 @@ def create_app(mode="dev") -> Quart:
     # close_db(app)
     register_tortoise(
         app,
-        db_url="postgres://docker:docker@localhost:5432/teca_coif",
+        db_url="postgres://docker:docker@db:5432/teca_coif",
         modules={"models": ["app.core.models", "aerich.models"]},
         generate_schemas=False,
     )
