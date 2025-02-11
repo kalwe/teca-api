@@ -26,16 +26,17 @@ class DatabaseManager:
             return  # Prevent re-initialization
         self._initialized = False
 
-    async def init_db(self, generate_schemas: bool = False) -> None:
+    @classmethod
+    async def init_db(cls, generate_schemas: bool = False) -> None:
         """Initialize the database connection."""
         _generate_schemas = generate_schemas
-        if not self._initialized:
+        if not cls._initialized:
             try:
                 await Tortoise.init(config=TORTOISE_ORM)
                 # use only in develop
                 if _generate_schemas:
                     await Tortoise.generate_schemas()
-                self._initialized = True
+                cls._initialized = True
             except Exception as e:
                 raise RuntimeError("Failed to init database: {e}") from e
 

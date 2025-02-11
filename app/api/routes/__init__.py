@@ -1,5 +1,4 @@
-from quart import Quart
-from quart import Blueprint
+from quart import Blueprint, Quart
 
 from app.config import Config
 
@@ -28,7 +27,7 @@ auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 user_bp = Blueprint("user", __name__, url_prefix="/user")
 employee_bp = Blueprint("employee", __name__, url_prefix="/employee")
 address_bp = Blueprint("address", __name__, url_prefix="/address")
-bank_account_bp = Blueprint("bank_account", __name__, url_prefix="/bank_account")
+bank_account_bp = Blueprint("bank_account", __name__, url_prefix="/bank-account")
 clothing_bp = Blueprint("clothing", __name__, url_prefix="/clothing")
 contact_bp = Blueprint("contact", __name__, url_prefix="/contact")
 vacancy_bp = Blueprint("vacancy", __name__, url_prefix="/vacancy")
@@ -38,8 +37,6 @@ roles_bp = Blueprint("roles", __name__, url_prefix="/roles")
 
 def init_bp(app: Quart) -> None:
     from app.api.routes import (
-        user_route,
-        vacancy_route,
         address_route,
         bank_account_route,
         clothing_route,
@@ -47,7 +44,10 @@ def init_bp(app: Quart) -> None:
         employee_route,
         function_route,
         reminder_route,
-        roles_route)  # noqa: F401
+        roles_route,  # noqa: F401
+        user_route,
+        vacancy_route,
+    )
     # from app.api.auth import auth_routes  # noqa: F401
 
     app.register_blueprint(user_bp)
@@ -61,4 +61,4 @@ def init_bp(app: Quart) -> None:
     app.register_blueprint(reminder_bp)
     app.register_blueprint(roles_bp)
     # app.register_blueprint(auth_bp) # TODO: implement auth
-    app.register_blueprint(api_bp)
+    # app.register_blueprint(api_bp)

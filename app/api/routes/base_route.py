@@ -1,5 +1,6 @@
 from quart import Blueprint
 
+
 class BaseRoute:
     def __init__(self, bp: Blueprint, controller, singular_prefix: str, plural_prefix: str):
         self.bp = bp
@@ -10,9 +11,9 @@ class BaseRoute:
 
     def init_routes(self):
         self.bp.add_url_rule(
-            '/',
-            view_func=getattr(self.controller, f'create_{self.singular_prefix}'),
-            methods=["POST"]
+            "/",
+            view_func=getattr(self.controller, f"create_{self.singular_prefix}"),
+            methods=["POST"],
         )
 
         self.bp.add_url_rule(

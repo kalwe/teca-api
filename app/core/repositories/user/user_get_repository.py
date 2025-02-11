@@ -6,7 +6,7 @@ from app.core.repositories.shared.get_repository import GetRepository
 
 
 class UserGetRepository(GetRepository):
-    def __init__(self, model_class: User):
+    def __init__(self):
         """
         Initialize the repository with the User model_class.
 
@@ -14,7 +14,7 @@ class UserGetRepository(GetRepository):
             model_class ([User): The User model_class class to be managed by
             the repository.
         """
-        super().__init__(model_class)
+        super().__init__(User())
 
     async def get_user_by_email(self, email: str) -> Optional[User]:
         """
@@ -30,7 +30,7 @@ class UserGetRepository(GetRepository):
             user = await self.get_all_records(email=email)
 
             return user
-        except Exception as e:
+        except RepositoryError as e:
             raise RepositoryError(
                 f"Failed UserGetRepository.get_user_by_email(): {e}"
             ) from e
@@ -51,8 +51,8 @@ class UserGetRepository(GetRepository):
                 return None
 
             return users
-        except Exception as e:
-            raise Exception(f"Failed repository get_users_by_role(): {e}") from e
+        except RepositoryError as e:
+            raise RepositoryError(f"Failed repository get_users_by_role(): {e}") from e
 
     async def get_user_by_name(self, name) -> Optional[User]:
         """
@@ -67,9 +67,8 @@ class UserGetRepository(GetRepository):
         """
         try:
             record = await self._model_class.get_or_none(name, is_active=True)
-
             return record
-        except Exception as e:
+        except RepositoryError as e:
             raise RepositoryError(
                 f"Failed UserGetRepository.get_user_by_name: {e}"
             ) from e

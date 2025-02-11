@@ -1,8 +1,8 @@
 from typing import Optional
 
 from app.api.schemas.user_schema import UserInputSchema, UserOutputSchema
+from app.common.custom_exceptions import UserAlreadyExistsException
 from app.common.hash_utils import hash_provider
-from app.core.models.user_model import User
 from app.core.repositories.user.user_create_repository import UserCreateRepository
 from app.core.repositories.user.user_get_repository import UserGetRepository
 from app.core.services.shared.create_service import CreateService
@@ -24,7 +24,7 @@ class UserCreateService(CreateService):
                 to handle data persistence for the User model.
         """
         super().__init__(repository)
-        self._get_repository = UserGetRepository(User)
+        self._get_repository = UserGetRepository()
         self._get_service = UserGetService(self._get_repository)
 
     async def create(
@@ -68,13 +68,11 @@ class UserCreateService(CreateService):
         # roles = user.roles or ["user"]  # Assign default role if none provided
 
         # Check if a user with the email already exists
-        # existing_user = await self._get_service.get_by_email(
-        #     user.email
-        # )
-        # if existing_user:
-        #     raise UserAlreadyExistsException(
-        #         f"User with email {user.email} already exists."
-        #     )
+        existing_user = await self._get_service.get_by_email(user_data.email)
+        if existing_user:
+            raise UserAlreadyExistsException(
+                f"User with email {user_data.email} already exists."
+            )
 
         password = user_data.password.get_secret_value()
         user_data.password = hash_provider(password)

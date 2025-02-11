@@ -1,20 +1,21 @@
-@baseUrl = {{host}}:{{port}}/api/{{version}}
+@baseUrl = {{host}}:{{port}}
 @contentType = application/json
-
 
 @endpoint = user
 
+
 # name=foo&password=bar
 
-### User create
+###
 
 # @name createUser
-POST http://{{baseUrl}}/{{endpoint}} HTTP/1.1
-content-type: {{contentType}}
+POST http://{{baseUrl}}/user/
+Content-Type: application/json
 
 {
+    "name": "Name Test",
     "email": "john.doe@email.com",
-    "password_hash": "passwd@123"
+    "password": "passwd@123"
 }
 
 
@@ -46,3 +47,7 @@ Content-Type: {{contentType}}
 
 DELETE http://{{baseUrl}}/{{endpoint}}/{{id}}
 Content-Type: {{contentType}}
+
+
+ 441, in load
+teca_api  |     self.loaded_app = self.loaded_app()

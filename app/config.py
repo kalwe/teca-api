@@ -33,3 +33,16 @@ class ProductionConfig(Config):
 config_by_name = dict(dev=DevelopmentConfig, test=TestingConfig, prod=ProductionConfig)
 
 secret_key = Config.SECRET_KEY
+
+
+TORTOISE_ORM = {
+    "connections": {
+        "default": "postgres://docker:docker@localhost:5432/teca_coif",
+    },
+    "apps": {
+        "models": {
+            "models": ["app.core.models", "aerich.models"],
+            "default_connection": "default",
+        },
+    },
+}

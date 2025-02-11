@@ -1,6 +1,5 @@
 from quart_auth import AuthUser
 
-from app.core.models.user_model import User
 from app.core.repositories.user.user_get_repository import UserGetRepository
 from app.core.services.user.user_get_service import UserGetService
 
@@ -10,7 +9,7 @@ class UserAuth(AuthUser):
         super().__init__(auth_id)
         self._resolved = False
         self._email = None
-        self._get_service = UserGetService(UserGetRepository(User))
+        self._get_service = UserGetService(UserGetRepository())
 
     async def _resolve(self):
         if not self._resolved:
