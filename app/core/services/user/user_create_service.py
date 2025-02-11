@@ -2,6 +2,7 @@ from typing import Optional
 
 from app.api.schemas.user_schema import UserInputSchema, UserOutputSchema
 from app.common.hash_utils import hash_provider
+from app.core.models.user_model import User
 from app.core.repositories.user.user_create_repository import UserCreateRepository
 from app.core.repositories.user.user_get_repository import UserGetRepository
 from app.core.services.shared.create_service import CreateService
@@ -23,7 +24,7 @@ class UserCreateService(CreateService):
                 to handle data persistence for the User model.
         """
         super().__init__(repository)
-        self._get_repository = UserGetRepository()
+        self._get_repository = UserGetRepository(User)
         self._get_service = UserGetService(self._get_repository)
 
     async def create(
@@ -80,3 +81,7 @@ class UserCreateService(CreateService):
 
         created_user = await self.create_record(user_data)
         return UserOutputSchema().validate(created_user)
+
+        # FIXME: "Error: You can't set m2m relations through init, use m2m_manager instead"
+        # FIXME: "Error: ValueError: version is non nullable field, but null was passed"
+        # FIXME: "Error: ValueError: id is non nullable field, but null was passed"

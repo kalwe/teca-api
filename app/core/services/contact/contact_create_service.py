@@ -1,4 +1,5 @@
 from typing import Optional
+
 from app.api.schemas.contact_schema import ContactInputSchema, ContactOutputSchema
 from app.core.repositories.contact.contact_create_repository import (
     ContactCreateRepository,
@@ -64,3 +65,6 @@ class ContactCreateService(CreateService):
         )
         created_contact = await self.create_record(contact_data)
         return ContactOutputSchema().validate(created_contact)
+
+
+# FIXME: Testing in swagger(/docs) returned: "POST /address/ HTTP/1.1" 400 Bad Request

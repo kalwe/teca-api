@@ -1,4 +1,5 @@
 from typing import Optional
+
 from app.api.schemas.reminder_schema import ReminderDeletedSchema, ReminderOutputSchema
 from app.core.repositories.reminder.reminder_delete_repository import (
     ReminderDeleteRepository,
@@ -25,4 +26,4 @@ class ReminderDeleteService(DeleteService):
         :return: The deleted reminder as a schema, or None if not found.
         """
         deleted_reminder = await self.soft_delete(id)
-        return ReminderDeletedSchema.validate(deleted_reminder)
+        return ReminderDeletedSchema().validate(deleted_reminder)

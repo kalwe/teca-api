@@ -1,4 +1,5 @@
 from typing import Optional
+
 from app.api.schemas.function_schema import FunctionInputSchema, FunctionOutputSchema
 from app.core.repositories.function.function_create_repository import (
     FunctionCreateRepository,
@@ -64,3 +65,20 @@ class FunctionCreateService(CreateService):
         )
         created_function = await self.create_record(function_data)
         return FunctionOutputSchema().validate(created_function)
+
+
+# FIXME: ValueError: version is non nullable field, but null was passed
+# FIXME: ValueError: id is non nullable field, but null was passed
+# FIXME: Testing in swagger(/docs) returned: "POST /address/ HTTP/1.1" 400 Bad Request
+
+# FIXME: If I pass an id and a version (which I don't think is the appropriate scenario)
+# for example: it creates but returns the error: pydantic_core._pydantic_core.ValidationError: 2 validation errors for FunctionOutputSchema
+"""
+```json
+{
+  "id": 5,
+  "name": "string",
+  "version": 34
+}
+```
+"""

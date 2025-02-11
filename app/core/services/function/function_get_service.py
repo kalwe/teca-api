@@ -1,4 +1,5 @@
 from typing import List, Optional
+
 from app.api.schemas.function_schema import FunctionOutputSchema
 from app.core.repositories.function.function_get_repository import FunctionGetRepository
 from app.core.services.shared.get_service import GetService
@@ -29,7 +30,7 @@ class FunctionGetService(GetService):
 
     async def get(self, id: int) -> Optional[FunctionOutputSchema]:
         function = await self.get_by_id(id)
-        return FunctionOutputSchema.validate(function)
+        return FunctionOutputSchema().validate(function)
 
     async def get_all(
         self, filters: Optional[dict] = None

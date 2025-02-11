@@ -25,5 +25,8 @@ class BankAccountDeleteService(DeleteService):
         :param id: The ID of the bank_account to delete.
         :return: The deleted bank_account as a schema, or None if not found.
         """
+        # TypeError: BaseSchema.validate() missing 1 required positional argument: 'model', (Resolved) with ()
         deleted_bank_account = await self.soft_delete(id)
-        return BankAccountDeletedSchema.validate(deleted_bank_account)
+        return BankAccountDeletedSchema().validate(deleted_bank_account)
+
+    # FIXME: pydantic_core._pydantic_core.ValidationError: 1 validation error for BankAccountDeletedSchema

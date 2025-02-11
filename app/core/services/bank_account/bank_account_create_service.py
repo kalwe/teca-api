@@ -68,3 +68,5 @@ class BankAccountCreateService(CreateService):
         )
         created_bank_account = await self.create_record(bank_account_data)
         return BankAccountOutputSchema().validate(created_bank_account)
+
+    # FIXME: Testing in swagger(/docs) returned: "POST /address/ HTTP/1.1" 400 Bad Request

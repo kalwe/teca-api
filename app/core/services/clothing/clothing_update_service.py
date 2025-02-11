@@ -1,4 +1,5 @@
 from typing import Optional
+
 from app.api.schemas.clothing_schema import ClothingInputSchema, ClothingOutputSchema
 from app.core.repositories.clothing.clothing_update_repository import (
     ClothingUpdateRepository,
@@ -19,3 +20,6 @@ class ClothingUpdateService(UpdateService):
     ) -> Optional[ClothingOutputSchema]:
         updated_clothing = await self.update_data(id, clothing_data)
         return ClothingOutputSchema.validate(updated_clothing)
+
+
+# FIXME: Testing in swagger(/docs) returned: "POST /address/ HTTP/1.1" 400 Bad Request

@@ -27,4 +27,4 @@ class VacancyDeleteService(DeleteService):
         :return: The deleted vacancy as a schema, or None if not found.
         """
         deleted_vacancy = await self.soft_delete(id)
-        return DeletedSchema.validate(deleted_vacancy)
+        return DeletedSchema().validate(deleted_vacancy)

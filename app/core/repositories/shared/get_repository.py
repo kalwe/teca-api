@@ -28,15 +28,13 @@ class GetRepository:
             otherwise None.
         """
         try:
-            record = await self._model_class.get_or_none(id=id,
-                                                        is_active=True)
+            record = await self._model_class.get_or_none(id=id, is_active=True)
             return record
         except RepositoryError as e:
             raise RepositoryError(f"Failed to retrieve record by ID {id}: {e}") from e
 
     async def get_all_records(
-        self,
-        filters: Optional[dict] = None
+        self, filters: Optional[dict] = None
     ) -> Optional[List[ModelT]]:
         """
         Retrieve all records, optionally applying filters.
@@ -47,13 +45,19 @@ class GetRepository:
         Returns:
             List[TModel]: A list of all matching records.
         """
+        #        try:
+        #            # TODO: fix filter with 'OR', 'AND' / TypeError: object list can't be used in 'await' expression
+        #           records = await (self._model_class.filter(filters) if filters
+        #                             else await self._model_class.all())
         try:
-            # TODO: fix filter with 'OR', 'AND'
-            records = await (self._model_class.filter(filters) if filters
-                             else await self._model_class.all())
-
+            if filters:
+                records = await self._model_class.filter(filters)
+            else:
+                records = await self._model_class.all()
             return records
+        # Returning an empty list if no records are found
         except RepositoryError as e:
             raise RepositoryError(f"Failed GetRepository.GetAll(): {e}") from e
+
 
 type GetRepositoryT = GetRepository
