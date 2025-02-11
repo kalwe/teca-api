@@ -1,8 +1,6 @@
 from typing import Optional
 
 from app.api.schemas.user_schema import UserInputSchema, UserOutputSchema
-from app.common.custom_exceptions import UserAlreadyExistsException
-from app.common.hash_utils import hash_provider
 from app.core.repositories.user.user_create_repository import UserCreateRepository
 from app.core.repositories.user.user_get_repository import UserGetRepository
 from app.core.services.shared.create_service import CreateService
@@ -68,15 +66,17 @@ class UserCreateService(CreateService):
         # roles = user.roles or ["user"]  # Assign default role if none provided
 
         # Check if a user with the email already exists
-        existing_user = await self._get_service.get_by_email(user_data.email)
-        if existing_user:
-            raise UserAlreadyExistsException(
-                f"User with email {user_data.email} already exists."
-            )
+        # existing_user = await self._get_service.get_by_email(user_data.email)
+        # if existing_user:
+        #     raise UserAlreadyExistsException(
+        #         f"User with email {user_data.email} already exists."
+        #     )
 
-        password = user_data.password.get_secret_value()
-        user_data.password = hash_provider(password)
+        # userValidated = user_data.validate(user_data)
+        # password = userValidated.password.get_secret_value()
+        # userValidated.password = hash_provider(password)
 
+        # created_user = await self.create_record(userValidated)
         created_user = await self.create_record(user_data)
         return UserOutputSchema().validate(created_user)
 

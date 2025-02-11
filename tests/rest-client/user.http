@@ -9,7 +9,7 @@
 ###
 
 # @name createUser
-POST http://{{baseUrl}}/user/
+POST http://{{baseUrl}}/user
 Content-Type: application/json
 
 {

@@ -10,30 +10,31 @@ class BaseRoute:
         self.init_routes()
 
     def init_routes(self):
+        # crate
         self.bp.add_url_rule(
             "/",
             view_func=getattr(self.controller, f"create_{self.singular_prefix}"),
             methods=["POST"],
         )
-
+        # get_by_id
         self.bp.add_url_rule(
             '/<int:id>',
             view_func=getattr(self.controller, f'get_{self.singular_prefix}'),
             methods=["GET"]
         )
-
+        # get_all
         self.bp.add_url_rule(
             '/',
             view_func=getattr(self.controller, f'get_all_{self.plural_prefix}'),
             methods=["GET"]
         )
-
+        # update
         self.bp.add_url_rule(
             '/<int:id>',
             view_func=getattr(self.controller, f'update_{self.singular_prefix}'),
             methods=["POST"]
         )
-
+        # delete
         self.bp.add_url_rule(
             '/<int:id>',
             view_func=getattr(self.controller, f'delete_{self.singular_prefix}'),
