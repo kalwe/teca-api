@@ -11,7 +11,7 @@ class BaseRoute:
 
     def init_routes(self):
         self.bp.add_url_rule(
-            "/",
+            '',
             view_func=getattr(self.controller, f"create_{self.singular_prefix}"),
             methods=["POST"],
         )
@@ -23,7 +23,7 @@ class BaseRoute:
         )
 
         self.bp.add_url_rule(
-            '/',
+            '',
             view_func=getattr(self.controller, f'get_all_{self.plural_prefix}'),
             methods=["GET"]
         )
