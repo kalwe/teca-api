@@ -36,7 +36,3 @@ class ClothingGetService(GetService):
     ) -> Optional[List[ClothingOutputSchema]]:
         clothings = await self.get_all_records(filters)
         return [ClothingOutputSchema.validate(clothing) for clothing in clothings]
-
-    async def get_by_name(self, name: str) -> Optional[ClothingOutputSchema]:
-        clothing = await self._get_repository.get_clothing_by_name(name)
-        return ClothingOutputSchema.validate(clothing)
