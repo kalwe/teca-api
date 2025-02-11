@@ -96,5 +96,5 @@ class ReminderController:
     async def delete_reminder(id: int) -> ReminderDeletedSchema:
         repository = ReminderDeleteRepository()
         service = ReminderDeleteService(repository)
-        reminder = service.delete(id)
+        reminder = await service.delete(id)
         return reminder, HTTPStatus.NO_CONTENT

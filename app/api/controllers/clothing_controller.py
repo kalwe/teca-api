@@ -32,9 +32,7 @@ class ClothingController:
     @staticmethod
     @validate_request(ClothingInputSchema)
     @validate_response(ClothingOutputSchema)
-    async def create_clothing(
-        data: ClothingInputSchema
-    ) -> ClothingOutputSchema:
+    async def create_clothing(data: ClothingInputSchema) -> ClothingOutputSchema:
         """
         Creates a new clothing from the incoming JSON data.
 
@@ -62,7 +60,7 @@ class ClothingController:
         """
         repository = ClothingGetRepository()
         service = ClothingGetService(repository)
-        clothing = service.get(id)
+        clothing = await service.get(id)
         return clothing, HTTPStatus.OK
 
     @staticmethod
@@ -79,7 +77,7 @@ class ClothingController:
         """
         repository = ClothingGetRepository()
         service = ClothingGetService(repository)
-        clothings = service.get_all()
+        clothings = await service.get_all()
         return clothings, HTTPStatus.OK
 
     @staticmethod
@@ -90,7 +88,7 @@ class ClothingController:
     ) -> ClothingOutputSchema:
         repository = ClothingUpdateRepository()
         service = ClothingUpdateService(repository)
-        clothing = service.update(id, data)
+        clothing = await service.update(id, data)
         return clothing, HTTPStatus.OK
 
     @staticmethod
@@ -98,5 +96,5 @@ class ClothingController:
     async def delete_clothing(id: int) -> ClothingDeletedSchema:
         repository = ClothingDeleteRepository()
         service = ClothingDeleteService(repository)
-        clothing = service.delete(id)
+        clothing = await service.delete(id)
         return clothing, HTTPStatus.NO_CONTENT
