@@ -32,7 +32,7 @@ from app.core.services.bank_account.bank_account_get_service import (
 from app.core.services.bank_account.bank_account_update_service import (
     BankAccountUpdateService,
 )
-
+from quart_schema import tag
 
 class BankAccountController:
     """
@@ -42,6 +42,7 @@ class BankAccountController:
     @staticmethod
     @validate_request(BankAccountInputSchema)
     @validate_response(BankAccountOutputSchema)
+    @tag(["Bank Account"])
     async def create_bank_account(
         data: BankAccountInputSchema,
     ) -> BankAccountOutputSchema:
@@ -59,6 +60,7 @@ class BankAccountController:
 
     @staticmethod
     @validate_response(BankAccountOutputSchema)
+    @tag(["Bank Account"])
     async def get_bank_account(id: int) -> BankAccountOutputSchema:
         """
         Retrieves a bank_account by ID.
@@ -77,6 +79,7 @@ class BankAccountController:
 
     @staticmethod
     @validate_response(List[BankAccountOutputSchema])
+    @tag(["Bank Account"])
     async def get_all_bank_accounts() -> List[BankAccountOutputSchema]:
         """
         Retrieves all bank_accounts using FetchHelper to standardize
@@ -95,6 +98,7 @@ class BankAccountController:
     @staticmethod
     @validate_request(BankAccountInputSchema)
     @validate_response(BankAccountOutputSchema)
+    @tag(["Bank Account"])
     async def update_bank_account(
         id: int, data: BankAccountInputSchema
     ) -> BankAccountOutputSchema:
@@ -105,6 +109,7 @@ class BankAccountController:
 
     @staticmethod
     @validate_response(BankAccountDeletedSchema)
+    @tag(["Bank Account"])
     async def delete_bank_account(id: int) -> BankAccountDeletedSchema:
         repository = BankAccountDeleteRepository()
         service = BankAccountDeleteService(repository)

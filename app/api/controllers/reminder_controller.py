@@ -22,7 +22,7 @@ from app.core.services.reminder.reminder_create_service import ReminderCreateSer
 from app.core.services.reminder.reminder_delete_service import ReminderDeleteService
 from app.core.services.reminder.reminder_get_service import ReminderGetService
 from app.core.services.reminder.reminder_update_service import ReminderUpdateService
-
+from quart_schema import tag
 
 class ReminderController:
     """
@@ -32,6 +32,7 @@ class ReminderController:
     @staticmethod
     @validate_request(ReminderInputSchema)
     @validate_response(ReminderOutputSchema)
+    @tag(["Reminder"])
     async def create_reminder(data: ReminderInputSchema) -> ReminderOutputSchema:
         """
         Creates a new reminder from the incoming JSON data.
@@ -47,6 +48,7 @@ class ReminderController:
 
     @staticmethod
     @validate_response(ReminderOutputSchema)
+    @tag(["Reminder"])
     async def get_reminder(id: int) -> ReminderOutputSchema:
         """
         Retrieves a reminder by ID.
@@ -65,6 +67,7 @@ class ReminderController:
 
     @staticmethod
     @validate_response(List[ReminderOutputSchema])
+    @tag(["Reminder"])
     async def get_all_reminders() -> List[ReminderOutputSchema]:
         """
         Retrieves all reminders using FetchHelper to standardize
@@ -83,6 +86,7 @@ class ReminderController:
     @staticmethod
     @validate_request(ReminderInputSchema)
     @validate_response(ReminderOutputSchema)
+    @tag(["Reminder"])
     async def update_reminder(
         id: int, data: ReminderInputSchema
     ) -> ReminderOutputSchema:
@@ -93,6 +97,7 @@ class ReminderController:
 
     @staticmethod
     @validate_response(ReminderDeletedSchema)
+    @tag(["Reminder"])
     async def delete_reminder(id: int) -> ReminderDeletedSchema:
         repository = ReminderDeleteRepository()
         service = ReminderDeleteService(repository)

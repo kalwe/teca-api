@@ -16,7 +16,7 @@ from app.core.services.user.user_create_service import UserCreateService
 from app.core.services.user.user_delete_service import UserDeleteService
 from app.core.services.user.user_get_service import UserGetService
 from app.core.services.user.user_update_service import UserUpdateService
-
+from quart_schema import tag
 
 class UserController:
     """
@@ -26,6 +26,7 @@ class UserController:
     @staticmethod
     @validate_request(UserInputSchema)
     @validate_response(UserOutputSchema)
+    @tag(["User"])
     async def create_user(data: UserInputSchema) -> UserOutputSchema:
         """
         Creates a new user from the incoming JSON data.
@@ -40,6 +41,7 @@ class UserController:
 
     @staticmethod
     @validate_response(UserOutputSchema)
+    @tag(["User"])
     async def get_user(id: int) -> UserOutputSchema:
         """
         Retrieves a user by ID.
@@ -58,6 +60,7 @@ class UserController:
 
     @staticmethod
     @validate_response(List[UserOutputSchema])
+    @tag(["User"])
     async def get_all_users() -> List[UserOutputSchema]:
         """
         Retrieves all users using FetchHelper to standardize error handling.
@@ -73,6 +76,7 @@ class UserController:
     @staticmethod
     @validate_request(UserInputSchema)
     @validate_response(UserOutputSchema)
+    @tag(["User"])
     async def update_user(id: int, data: UserInputSchema) -> UserOutputSchema:
         repository = UserUpdateRepository()
         service = UserUpdateService(repository)
@@ -81,6 +85,7 @@ class UserController:
 
     @staticmethod
     @validate_response(UserDeletedSchema)
+    @tag(["User"])
     async def delete_user(id: int) -> UserDeletedSchema:
         repository = UserDeleteRepository()
         service = UserDeleteService(repository)

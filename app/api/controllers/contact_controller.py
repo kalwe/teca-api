@@ -22,7 +22,7 @@ from app.core.services.contact.contact_create_service import ContactCreateServic
 from app.core.services.contact.contact_delete_service import ContactDeleteService
 from app.core.services.contact.contact_get_service import ContactGetService
 from app.core.services.contact.contact_update_service import ContactUpdateService
-
+from quart_schema import tag
 
 class ContactController:
     """
@@ -32,6 +32,7 @@ class ContactController:
     @staticmethod
     @validate_request(ContactInputSchema)
     @validate_response(ContactOutputSchema)
+    @tag(["Contact"])
     async def create_contact(
         data: ContactInputSchema
     ) -> ContactOutputSchema:
@@ -49,6 +50,7 @@ class ContactController:
 
     @staticmethod
     @validate_response(ContactOutputSchema)
+    @tag(["Contact"])
     async def get_contact(id: int) -> ContactOutputSchema:
         """
         Retrieves a contact by ID.
@@ -67,6 +69,7 @@ class ContactController:
 
     @staticmethod
     @validate_response(List[ContactOutputSchema])
+    @tag(["Contact"])
     async def get_all_contacts() -> List[ContactOutputSchema]:
         """
         Retrieves all contacts using FetchHelper to standardize
@@ -85,6 +88,7 @@ class ContactController:
     @staticmethod
     @validate_request(ContactInputSchema)
     @validate_response(ContactOutputSchema)
+    @tag(["Contact"])
     async def update_contact(id: int, data: ContactInputSchema) -> ContactOutputSchema:
         repository = ContactUpdateRepository()
         service = ContactUpdateService(repository)
@@ -93,6 +97,7 @@ class ContactController:
 
     @staticmethod
     @validate_response(ContactDeletedSchema)
+    @tag(["Contact"])
     async def delete_contact(id: int) -> ContactDeletedSchema:
         repository = ContactDeleteRepository()
         service = ContactDeleteService(repository)

@@ -22,7 +22,7 @@ from app.core.services.function.function_create_service import FunctionCreateSer
 from app.core.services.function.function_delete_service import FunctionDeleteService
 from app.core.services.function.function_get_service import FunctionGetService
 from app.core.services.function.function_update_service import FunctionUpdateService
-
+from quart_schema import tag
 
 class FunctionController:
     """
@@ -32,6 +32,7 @@ class FunctionController:
     @staticmethod
     @validate_request(FunctionInputSchema)
     @validate_response(FunctionOutputSchema)
+    @tag(["Function"])
     async def create_function(data: FunctionInputSchema) -> FunctionOutputSchema:
         """
         Creates a new function from the incoming JSON data.
@@ -47,6 +48,7 @@ class FunctionController:
 
     @staticmethod
     @validate_response(FunctionOutputSchema)
+    @tag(["Function"])
     async def get_function(id: int) -> FunctionOutputSchema:
         """
         Retrieves a function by ID.
@@ -65,6 +67,7 @@ class FunctionController:
 
     @staticmethod
     @validate_response(List[FunctionOutputSchema])
+    @tag(["Function"])
     async def get_all_functions() -> List[FunctionOutputSchema]:
         """
         Retrieves all functions using FetchHelper to standardize
@@ -83,6 +86,7 @@ class FunctionController:
     @staticmethod
     @validate_request(FunctionInputSchema)
     @validate_response(FunctionOutputSchema)
+    @tag(["Function"])
     async def update_function(
         id: int, data: FunctionInputSchema
     ) -> FunctionOutputSchema:
@@ -93,6 +97,7 @@ class FunctionController:
 
     @staticmethod
     @validate_response(FunctionDeletedSchema)
+    @tag(["Function"])
     async def delete_function(id: int) -> FunctionDeletedSchema:
         repository = FunctionDeleteRepository()
         service = FunctionDeleteService(repository)
