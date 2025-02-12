@@ -25,4 +25,4 @@ class BankAccountUpdateService(UpdateService):
         return BankAccountOutputSchema().validate(updated_bank_account)
 
 
-# FIXME: <p>Failed to decode JSON: Expecting property name enclosed in double quotes: line 7 column 1 (char 114)</p>
+# FIXME: pydantic_core._pydantic_core.ValidationError: 5 validation errors for BankAccountOutputSchema

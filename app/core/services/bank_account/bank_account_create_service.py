@@ -69,4 +69,4 @@ class BankAccountCreateService(CreateService):
         created_bank_account = await self.create_record(bank_account_data)
         return BankAccountOutputSchema().validate(created_bank_account)
 
-    # FIXME: <p>Failed to decode JSON: Expecting property name enclosed in double quotes: line 7 column 1 (char 114)</p>
+    # FIXME: AttributeError: 'int' object has no attribute '_saved_in_db'

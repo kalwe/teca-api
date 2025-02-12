@@ -22,4 +22,4 @@ class EmployeeUpdateService(UpdateService):
         return EmployeeOutputSchema().validate(updated_employee)
 
 
-# FIXME: <p>Failed to decode JSON: Expecting property name enclosed in double quotes: line 17 column 3 (char 331)</p>
+# FIXME: pydantic_core._pydantic_core.ValidationError: 14 validation errors for EmployeeOutputSchema

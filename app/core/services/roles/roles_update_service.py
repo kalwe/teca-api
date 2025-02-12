@@ -20,4 +20,4 @@ class RolesUpdateService(UpdateService):
         return RolesOutputSchema().validate(updated_roles)
 
 
-# FIXME: <p>Failed to decode JSON: Expecting property name enclosed in double quotes: line 4 column 1 (char 47)</p>
+# FIXME: pydantic_core._pydantic_core.ValidationError: 2 validation errors for RolesOutputSchema

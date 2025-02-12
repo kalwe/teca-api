@@ -67,4 +67,4 @@ class EmployeeCreateService(CreateService):
         return EmployeeOutputSchema().validate(created_employee)
 
 
-# FIXME: <p>Failed to decode JSON: Expecting property name enclosed in double quotes: line 17 column 3 (char 335)</p>
+# FIXME: AttributeError: 'dict' object has no attribute '_saved_in_db'

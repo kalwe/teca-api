@@ -67,4 +67,4 @@ class ReminderCreateService(CreateService):
         return ReminderOutputSchema().validate(created_reminder)
 
 
-# FIXME: <p>Failed to decode JSON: Expecting property name enclosed in double quotes: line 5 column 1 (char 74)</p>
+# FIXME: pydantic_core._pydantic_core.ValidationError: 3 validation errors for ReminderOutputSchema
