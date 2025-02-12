@@ -66,4 +66,4 @@ class VacancyCreateService(CreateService):
         return VacancyOutputSchema().validate(created_vacancy)
 
 
-# FIXME:tortoise.exceptions.ValidationError: position: Value must not be None
+# FIXME: pydantic_core._pydantic_core.ValidationError: 7 validation errors for VacancyOutputSchema

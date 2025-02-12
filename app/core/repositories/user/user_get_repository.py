@@ -27,9 +27,8 @@ class UserGetRepository(GetRepository):
             Optional[User]: The serialized user data or None if not found.
         """
         try:
-            user = await self.get_all_records(email=email)
-
-            return user
+            users = await self.get_all_records(filters={"email": email})
+            return users[0] if users else None
         except RepositoryError as e:
             raise RepositoryError(
                 f"Failed UserGetRepository.get_user_by_email(): {e}"

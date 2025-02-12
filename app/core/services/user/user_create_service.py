@@ -81,4 +81,4 @@ class UserCreateService(CreateService):
         return UserOutputSchema().validate(created_user)
 
 
-# FIXME: TypeError: GetRepository.get_all_records() got an unexpected keyword argument 'email'
+# FIXME: Did not created the user, and raised: pydantic_core._pydantic_core.ValidationError: 4 validation error for UserOutputSchema
