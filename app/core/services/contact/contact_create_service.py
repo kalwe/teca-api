@@ -23,48 +23,28 @@ class ContactCreateService(CreateService):
                 to handle data persistence for the Contact model.
         """
         super().__init__(repository)
-        # self._get_service = ContactGetService(ContactGetRepository(Contact()))
 
     async def create(
         self,
         contact_data: ContactInputSchema,
     ) -> Optional[ContactOutputSchema]:
-        (
-            """
+        """
         Create a new contact with additional business logic.
 
         Args:
-            name (str): The name of the contact.
-            email (str): The email of the contact.
-            password (str): The plain-text password to be hashed.
-            roles (Optional[List[str]]): List of roles to assign to the contact.
+            contact_data (ContactInputSchema): The data for the new contact.
 
         Returns:
             ContactOutputSchema: Serialized data of the created contact.
 
         Raises:
-            ContactAlreadyExistsException: If a contact with the given email
-            already exists.
+            ValueError: If the employee with the given ID does not exist.
         """
-            """
-        Create a new contact with additional business logic.
+        employee = await self._validate_employee(contact_data.employee)
+        contact_data.employee = employee
 
-        Args:
-            name (str): The name of the contact.
-            email (str): The email of the contact.
-            password (str): The plain-text password to be hashed.
-            roles (Optional[List[str]]): List of roles to assign to the contact.
-
-        Returns:
-            ContactOutputSchema: Serialized data of the created contact.
-
-        Raises:
-            ContactAlreadyExistsException: If a contact with the given email
-            already exists.
-        """
-        )
         created_contact = await self.create_record(contact_data)
         return ContactOutputSchema().validate(created_contact)
 
 
-# FIXME: AttributeError: 'int' object has no attribute '_saved_in_db'
+# FIXME: pydantic_core._pydantic_core.ValidationError: validation errors for EmployeeOutputSchema
