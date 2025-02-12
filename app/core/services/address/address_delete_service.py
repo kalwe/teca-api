@@ -26,7 +26,6 @@ class AddressDeleteService(DeleteService):
         :return: The deleted address as a schema, or None if not found.
         """
         deleted_address = await self.soft_delete(id)
-        # TypeError: BaseSchema.validate() missing 1 required positional argument: 'model' (Resolved) with ()
         return AddressDeletedSchema().validate(deleted_address)
 
     # FIXME: Error: pydantic_core._pydantic_core.ValidationError: 1 validation error for AddressDeletedSchema

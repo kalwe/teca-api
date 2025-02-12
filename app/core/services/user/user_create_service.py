@@ -80,6 +80,5 @@ class UserCreateService(CreateService):
         created_user = await self.create_record(user_data)
         return UserOutputSchema().validate(created_user)
 
-        # FIXME: "Error: You can't set m2m relations through init, use m2m_manager instead"
-        # FIXME: "Error: ValueError: version is non nullable field, but null was passed"
-        # FIXME: "Error: ValueError: id is non nullable field, but null was passed"
+
+# FIXME: TypeError: GetRepository.get_all_records() got an unexpected keyword argument 'email'

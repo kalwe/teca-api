@@ -25,4 +25,4 @@ class BankAccountUpdateService(UpdateService):
         return BankAccountOutputSchema().validate(updated_bank_account)
 
 
-# FIXME: Testing in swagger(/docs) returned: "POST /address/ HTTP/1.1" 400 Bad Request
+# FIXME: <p>Failed to decode JSON: Expecting property name enclosed in double quotes: line 7 column 1 (char 114)</p>

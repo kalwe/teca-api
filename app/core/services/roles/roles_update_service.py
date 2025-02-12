@@ -18,3 +18,6 @@ class RolesUpdateService(UpdateService):
     ) -> Optional[RolesOutputSchema]:
         updated_roles = await self.update_data(id, roles_data)
         return RolesOutputSchema().validate(updated_roles)
+
+
+# FIXME: <p>Failed to decode JSON: Expecting property name enclosed in double quotes: line 4 column 1 (char 47)</p>

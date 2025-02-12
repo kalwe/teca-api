@@ -30,8 +30,9 @@ class EmployeeGetService(GetService):
 
     async def get(self, id: int) -> Optional[EmployeeOutputSchema]:
         employee = await self.get_by_id(id)
-        # TypeError: BaseSchema.validate() missing 1 required positional argument: 'model', (Resolved) with ()
         return EmployeeOutputSchema().validate(employee)
+
+    # FIXME: pydantic_core._pydantic_core.ValidationError: 14 validation errors for EmployeeOutputSchema
 
     async def get_all(
         self, filters: Optional[dict] = None
@@ -44,6 +45,3 @@ class EmployeeGetService(GetService):
     async def get_by_name(self, name: str) -> Optional[EmployeeOutputSchema]:
         employee = await self._get_repository.get_employee_by_name(name)
         return EmployeeOutputSchema().validate(employee)
-
-
-# FIXME: pydantic_core._pydantic_core.ValidationError: 14 validation errors for EmployeeOutputSchema

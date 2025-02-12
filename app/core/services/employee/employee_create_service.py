@@ -67,4 +67,4 @@ class EmployeeCreateService(CreateService):
         return EmployeeOutputSchema().validate(created_employee)
 
 
-# FIXME: Testing in swagger(/docs) returned: "POST /address/ HTTP/1.1" 400 Bad Request
+# FIXME: <p>Failed to decode JSON: Expecting property name enclosed in double quotes: line 17 column 3 (char 335)</p>

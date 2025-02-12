@@ -22,4 +22,4 @@ class ContactUpdateService(UpdateService):
         return ContactOutputSchema().validate(updated_contact)
 
 
-# FIXME: Testing in swagger(/docs) returned: "POST /address/ HTTP/1.1" 400 Bad Request
+# FIXME: AttributeError: 'coroutine' object has no attribute 've'

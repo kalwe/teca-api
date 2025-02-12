@@ -66,4 +66,4 @@ class ClothingCreateService(CreateService):
         created_clothing = await self.create_record(clothing_data)
         return ClothingOutputSchema().validate(created_clothing)
 
-    # FIXME: Testing in swagger(/docs) returned: "POST /address/ HTTP/1.1" 400 Bad Request
+    # FIXME: AttributeError: 'int' object has no attribute '_saved_in_db'

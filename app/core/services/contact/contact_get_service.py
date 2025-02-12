@@ -30,8 +30,9 @@ class ContactGetService(GetService):
 
     async def get(self, id: int) -> Optional[ContactOutputSchema]:
         contact = await self.get_by_id(id)
-        # TypeError: BaseSchema.validate() missing 1 required positional argument: 'model', (Resolved) with ()
         return ContactOutputSchema().validate(contact)
+
+    # FIXME: pydantic_core._pydantic_core.ValidationError: 4 validation errors for ContactOutputSchema
 
     async def get_all(
         self, filters: Optional[dict] = None
@@ -40,6 +41,3 @@ class ContactGetService(GetService):
         return [ContactOutputSchema().validate(contact) for contact in contacts]
 
     # With no records returns an empty list
-
-
-# FIXME: pydantic_core._pydantic_core.ValidationError: 4 validation errors for ContactOutputSchema

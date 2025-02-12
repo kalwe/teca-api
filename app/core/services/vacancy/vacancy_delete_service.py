@@ -28,3 +28,6 @@ class VacancyDeleteService(DeleteService):
         """
         deleted_vacancy = await self.soft_delete(id)
         return DeletedSchema().validate(deleted_vacancy)
+
+
+# FIXME: pydantic_core._pydantic_core.ValidationError: 1 validation error for DeletedSchema

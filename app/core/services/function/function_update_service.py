@@ -20,3 +20,6 @@ class FunctionUpdateService(UpdateService):
     ) -> Optional[FunctionOutputSchema]:
         updated_function = await self.update_data(id, function_data)
         return FunctionOutputSchema().validate(updated_function)
+
+
+# FIXME: Did not update, and raised an error: AttributeError: 'coroutine' object has no attribute 've'

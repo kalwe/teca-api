@@ -20,3 +20,6 @@ class ReminderUpdateService(UpdateService):
     ) -> Optional[ReminderOutputSchema]:
         updated_reminder = await self.update_data(id, reminder_data)
         return ReminderOutputSchema().validate(updated_reminder)
+
+
+# FIXME: AttributeError: 'coroutine' object has no attribute 've'

@@ -18,3 +18,6 @@ class UserUpdateService(UpdateService):
     ) -> Optional[UserOutputSchema]:
         updated_user = await self.update_data(id, user_data)
         return UserOutputSchema().validate(updated_user)
+
+
+# FIXME: AttributeError: 'coroutine' object has no attribute 've'

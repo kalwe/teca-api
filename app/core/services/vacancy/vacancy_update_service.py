@@ -20,3 +20,6 @@ class VacancyUpdateService(UpdateService):
     ) -> Optional[VacancyOutputSchema]:
         updated_vacancy = await self.update_data(id, vacancy_data)
         return VacancyOutputSchema().validate(updated_vacancy)
+
+
+# FIXME: AttributeError: 'coroutine' object has no attribute 've'

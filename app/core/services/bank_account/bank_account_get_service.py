@@ -34,7 +34,6 @@ class BankAccountGetService(GetService):
 
     async def get(self, id: int) -> Optional[BankAccountOutputSchema]:
         bank_account = await self.get_by_id(id)
-        # TypeError: BaseSchema.validate() missing 1 required positional argument: 'model', (Resolved) with ()
         return BankAccountOutputSchema().validate(bank_account)
 
     # FIXME: pydantic_core._pydantic_core.ValidationError: 5 validation errors for BankAccountOutputSchema

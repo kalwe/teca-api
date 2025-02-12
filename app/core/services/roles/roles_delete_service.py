@@ -25,3 +25,6 @@ class RolesDeleteService(DeleteService):
         """
         deleted_roles = await self.soft_delete(id)
         return RolesDeletedSchema().validate(deleted_roles)
+
+
+# FIXME: With and without records returns the same response: pydantic_core._pydantic_core.ValidationError: 1 validation error for RolesDeletedSchema

@@ -67,4 +67,4 @@ class ContactCreateService(CreateService):
         return ContactOutputSchema().validate(created_contact)
 
 
-# FIXME: Testing in swagger(/docs) returned: "POST /address/ HTTP/1.1" 400 Bad Request
+# FIXME: AttributeError: 'int' object has no attribute '_saved_in_db'

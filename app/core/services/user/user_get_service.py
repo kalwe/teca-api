@@ -29,11 +29,15 @@ class UserGetService(GetService):
         user = await self.get_by_id(id)
         return UserOutputSchema().validate(user)
 
+    # FIXME: pydantic_core._pydantic_core.ValidationError: 4 validation errors for UserOutputSchema
+
     async def get_all(
         self, filters: Optional[dict] = None
     ) -> Optional[List[UserOutputSchema]]:
         users = await self.get_all_records(filters)
         return [UserOutputSchema().validate(user) for user in users]
+
+    # With no records returns an empty list
 
     async def get_by_email(self, email: str) -> Optional[UserOutputSchema]:
         """

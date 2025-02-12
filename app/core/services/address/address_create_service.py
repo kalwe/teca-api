@@ -66,4 +66,6 @@ class AddressCreateService(CreateService):
         created_address = await self.create_record(address_data)
         return AddressOutputSchema().validate(created_address)
 
-    # FIXME: Testing in swagger(/docs) returned: "POST /address/ HTTP/1.1" 400 Bad Request
+
+# FIXME: AttributeError: 'int' object has no attribute '_saved_in_db'
+# Indicates that the employee field in the Address model is being assigned an integer value directly

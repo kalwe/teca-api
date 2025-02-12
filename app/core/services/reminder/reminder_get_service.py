@@ -32,8 +32,12 @@ class ReminderGetService(GetService):
         reminder = await self.get_by_id(id)
         return ReminderOutputSchema().validate(reminder)
 
+    # FIXME: pydantic_core._pydantic_core.ValidationError: 3 validation errors for ReminderOutputSchema
+
     async def get_all(
         self, filters: Optional[dict] = None
     ) -> Optional[List[ReminderOutputSchema]]:
         reminders = await self.get_all_records(filters)
         return [ReminderOutputSchema().validate(reminder) for reminder in reminders]
+
+    # With no records returns an empty list

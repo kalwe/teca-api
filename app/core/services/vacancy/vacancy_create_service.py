@@ -64,3 +64,6 @@ class VacancyCreateService(CreateService):
         )
         created_vacancy = await self.create_record(vacancy_data)
         return VacancyOutputSchema().validate(created_vacancy)
+
+
+# FIXME:tortoise.exceptions.ValidationError: position: Value must not be None

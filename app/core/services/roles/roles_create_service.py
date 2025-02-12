@@ -1,4 +1,5 @@
 from typing import Optional
+
 from app.api.schemas.roles_schema import RolesInputSchema, RolesOutputSchema
 from app.core.repositories.roles.roles_create_repository import RolesCreateRepository
 from app.core.services.shared.create_service import CreateService
@@ -62,3 +63,7 @@ class RolesCreateService(CreateService):
         )
         created_roles = await self.create_record(roles_data)
         return RolesOutputSchema().validate(created_roles)
+
+
+# Sending request with only description and name fields, the record was created but returned the following error:
+# FIXME: pydantic_core._pydantic_core.ValidationError: 2 validation errors for RolesOutputSchema

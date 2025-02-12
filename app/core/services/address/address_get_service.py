@@ -30,7 +30,6 @@ class AddressGetService(GetService):
 
     async def get(self, id: int) -> Optional[AddressOutputSchema]:
         address = await self.get_by_id(id)
-        # TypeError: BaseSchema.validate() missing 1 required positional argument: 'model', (Resolved) with ()
         return AddressOutputSchema().validate(address)
         # FIXME: With no records, the error is: ValidationError: 7 validation errors for AddressOutputSchema...Field required street...
 

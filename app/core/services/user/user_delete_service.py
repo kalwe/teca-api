@@ -25,3 +25,6 @@ class UserDeleteService(DeleteService):
         """
         deleted_user = await self.soft_delete(id)
         return UserDeletedSchema().validate(deleted_user)
+
+
+# FIXME: pydantic_core._pydantic_core.ValidationError: 1 validation error for UserDeletedSchema

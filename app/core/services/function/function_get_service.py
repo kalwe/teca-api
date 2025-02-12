@@ -32,11 +32,16 @@ class FunctionGetService(GetService):
         function = await self.get_by_id(id)
         return FunctionOutputSchema().validate(function)
 
+    # FIXME: In both cases return: pydantic_core._pydantic_core.ValidationError: 2 validation errors for FunctionOutputSchema
+
     async def get_all(
         self, filters: Optional[dict] = None
     ) -> Optional[List[FunctionOutputSchema]]:
         functions = await self.get_all_records(filters)
         return [FunctionOutputSchema().validate(function) for function in functions]
+
+    # With no records return an empty list
+    # FIXME: With records return an error: pydantic_core._pydantic_core.ValidationError: 2 validation errors for FunctionOutputSchema
 
     async def get_by_name(self, name: str) -> Optional[FunctionOutputSchema]:
         function = await self._get_repository.get_function_by_name(name)
