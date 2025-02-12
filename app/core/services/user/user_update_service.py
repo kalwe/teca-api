@@ -17,4 +17,4 @@ class UserUpdateService(UpdateService):
         self, id: int, user_data: UserInputSchema
     ) -> Optional[UserOutputSchema]:
         updated_user = await self.update_data(id, user_data)
-        return UserOutputSchema.validate(updated_user)
+        return UserOutputSchema().validate(updated_user)

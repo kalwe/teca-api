@@ -36,8 +36,8 @@ class FunctionGetService(GetService):
         self, filters: Optional[dict] = None
     ) -> Optional[List[FunctionOutputSchema]]:
         functions = await self.get_all_records(filters)
-        return [FunctionOutputSchema.validate(function) for function in functions]
+        return [FunctionOutputSchema().validate(function) for function in functions]
 
     async def get_by_name(self, name: str) -> Optional[FunctionOutputSchema]:
         function = await self._get_repository.get_function_by_name(name)
-        return FunctionOutputSchema.validate(function)
+        return FunctionOutputSchema().validate(function)

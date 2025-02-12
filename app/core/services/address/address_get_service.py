@@ -38,5 +38,5 @@ class AddressGetService(GetService):
         self, filters: Optional[dict] = None
     ) -> Optional[List[AddressOutputSchema]]:
         addresss = await self.get_all_records(filters)
-        return [AddressOutputSchema.validate(address) for address in addresss]
+        return [AddressOutputSchema().validate(address) for address in addresss]
         # With no records, returns an empty list

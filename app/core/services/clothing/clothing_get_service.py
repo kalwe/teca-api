@@ -39,6 +39,6 @@ class ClothingGetService(GetService):
         self, filters: Optional[dict] = None
     ) -> Optional[List[ClothingOutputSchema]]:
         clothings = await self.get_all_records(filters)
-        return [ClothingOutputSchema.validate(clothing) for clothing in clothings]
+        return [ClothingOutputSchema().validate(clothing) for clothing in clothings]
 
     # With no records returns an empty list

@@ -19,7 +19,7 @@ class ContactUpdateService(UpdateService):
         self, id: int, contact_data: ContactInputSchema
     ) -> Optional[ContactOutputSchema]:
         updated_contact = await self.update_data(id, contact_data)
-        return ContactOutputSchema.validate(updated_contact)
+        return ContactOutputSchema().validate(updated_contact)
 
 
 # FIXME: Testing in swagger(/docs) returned: "POST /address/ HTTP/1.1" 400 Bad Request

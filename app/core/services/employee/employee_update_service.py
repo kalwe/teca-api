@@ -19,7 +19,7 @@ class EmployeeUpdateService(UpdateService):
         self, id: int, employee_data: EmployeeInputSchema
     ) -> Optional[EmployeeOutputSchema]:
         updated_employee = await self.update_data(id, employee_data)
-        return EmployeeOutputSchema.validate(updated_employee)
+        return EmployeeOutputSchema().validate(updated_employee)
 
 
 # FIXME: Testing in swagger(/docs) returned: "POST /address/ HTTP/1.1" 400 Bad Request

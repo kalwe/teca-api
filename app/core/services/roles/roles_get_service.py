@@ -36,8 +36,8 @@ class RolesGetService(GetService):
         self, filters: Optional[dict] = None
     ) -> Optional[List[RolesOutputSchema]]:
         roless = await self.get_all_records(filters)
-        return [RolesOutputSchema.validate(roles) for roles in roless]
+        return [RolesOutputSchema().validate(roles) for roles in roless]
 
     async def get_by_name(self, name: str) -> Optional[RolesOutputSchema]:
         roles = await self._get_repository.get_roles_by_name(name)
-        return RolesOutputSchema.validate(roles)
+        return RolesOutputSchema().validate(roles)

@@ -44,7 +44,7 @@ class BankAccountGetService(GetService):
     ) -> Optional[List[BankAccountOutputSchema]]:
         bank_accounts = await self.get_all_records(filters)
         return [
-            BankAccountOutputSchema.validate(bank_account)
+            BankAccountOutputSchema().validate(bank_account)
             for bank_account in bank_accounts
         ]
         # With no records, returns an empty list

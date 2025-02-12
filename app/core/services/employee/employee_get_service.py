@@ -37,13 +37,13 @@ class EmployeeGetService(GetService):
         self, filters: Optional[dict] = None
     ) -> Optional[List[EmployeeOutputSchema]]:
         employees = await self.get_all_records(filters)
-        return [EmployeeOutputSchema.validate(employee) for employee in employees]
+        return [EmployeeOutputSchema().validate(employee) for employee in employees]
 
     # With no records returns an empty list
 
     async def get_by_name(self, name: str) -> Optional[EmployeeOutputSchema]:
         employee = await self._get_repository.get_employee_by_name(name)
-        return EmployeeOutputSchema.validate(employee)
+        return EmployeeOutputSchema().validate(employee)
 
 
 # FIXME: pydantic_core._pydantic_core.ValidationError: 14 validation errors for EmployeeOutputSchema

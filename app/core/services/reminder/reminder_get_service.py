@@ -36,4 +36,4 @@ class ReminderGetService(GetService):
         self, filters: Optional[dict] = None
     ) -> Optional[List[ReminderOutputSchema]]:
         reminders = await self.get_all_records(filters)
-        return [ReminderOutputSchema.validate(reminder) for reminder in reminders]
+        return [ReminderOutputSchema().validate(reminder) for reminder in reminders]

@@ -33,7 +33,7 @@ class UserGetService(GetService):
         self, filters: Optional[dict] = None
     ) -> Optional[List[UserOutputSchema]]:
         users = await self.get_all_records(filters)
-        return [UserOutputSchema.validate(user) for user in users]
+        return [UserOutputSchema().validate(user) for user in users]
 
     async def get_by_email(self, email: str) -> Optional[UserOutputSchema]:
         """
@@ -47,7 +47,7 @@ class UserGetService(GetService):
             if not found.
         """
         user = await self._get_repository.get_user_by_email(email)
-        return UserOutputSchema.validate(user)
+        return UserOutputSchema().validate(user)
 
     async def get_by_role(self, role: str) -> List[UserOutputSchema]:
         """
@@ -61,8 +61,8 @@ class UserGetService(GetService):
             specified role.
         """
         users = await self._get_repository.get_users_by_role(role)
-        return [UserOutputSchema.validate(user) for user in users]
+        return [UserOutputSchema().validate(user) for user in users]
 
     async def get_by_name(self, name: str) -> Optional[UserOutputSchema]:
         user = await self._get_repository.get_user_by_name(name)
-        return UserOutputSchema.validate(user)
+        return UserOutputSchema().validate(user)

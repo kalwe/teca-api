@@ -19,4 +19,4 @@ class VacancyUpdateService(UpdateService):
         self, id: int, vacancy_data: VacancyInputSchema
     ) -> Optional[VacancyOutputSchema]:
         updated_vacancy = await self.update_data(id, vacancy_data)
-        return VacancyOutputSchema.validate(updated_vacancy)
+        return VacancyOutputSchema().validate(updated_vacancy)

@@ -19,6 +19,6 @@ class AddressUpdateService(UpdateService):
         self, id: int, address_data: AddressInputSchema
     ) -> Optional[AddressOutputSchema]:
         updated_address = await self.update_data(id, address_data)
-        return AddressOutputSchema.validate(updated_address)
+        return AddressOutputSchema().validate(updated_address)
 
     # FIXME: Testing in swagger(/docs) returned: "POST /address/ HTTP/1.1" 400 Bad Request

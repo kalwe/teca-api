@@ -37,7 +37,7 @@ class ContactGetService(GetService):
         self, filters: Optional[dict] = None
     ) -> Optional[List[ContactOutputSchema]]:
         contacts = await self.get_all_records(filters)
-        return [ContactOutputSchema.validate(contact) for contact in contacts]
+        return [ContactOutputSchema().validate(contact) for contact in contacts]
 
     # With no records returns an empty list
 
