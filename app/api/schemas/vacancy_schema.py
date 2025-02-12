@@ -8,19 +8,17 @@ from app.api.schemas.base_schema import (
 )
 
 
-class VacancySchema(
-    BaseSchema
-):  # FIXME: VacancySchema should be based on vacancy_model, not address_model
+class VacancySchema(BaseSchema):
     """
     Schema for serializing and deserializing the Vacancy model using Pydantic.
     """
 
-    street: str = Field(max_length=255, description="Name of street")
-    number: str = Field(max_length=8, description="Number of street")
-    neighborhood: str = Field(max_length=120, description="Name of neighborhood")
-    city: str = Field(max_length=255, description="Name of the city")
-    zip_code: str = Field(max_length=12, description="CEP of street")
-    state: str = Field(max_length=60, description="Name of state")
+    quantity: int = Field(description="Quantity of vacancies")
+    position: str = Field(max_length=32, description="Position of vacancy")
+    description: str = Field(max_length=32, description="Description of vacancy")
+    requirements: str = Field(max_length=255, description="Requirements of vacancy")
+    benefits: str = Field(max_length=255, description="Benefits of vacancy")
+    salary: int = Field(description="Salary of vacancy")
 
 
 class VacancyInputSchema(VacancySchema, InputSchema):
