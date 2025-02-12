@@ -22,4 +22,4 @@ class FunctionUpdateService(UpdateService):
         return FunctionOutputSchema().validate(updated_function)
 
 
-# FIXME: validation errors
+# FIXME: pydantic_core._pydantic_core.ValidationError: 2 validation errors for FunctionOutputSchema
