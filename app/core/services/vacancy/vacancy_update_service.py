@@ -22,4 +22,4 @@ class VacancyUpdateService(UpdateService):
         return VacancyOutputSchema().validate(updated_vacancy)
 
 
-# FIXME: AttributeError: 'coroutine' object has no attribute 've'
+# FIXME: validation errors

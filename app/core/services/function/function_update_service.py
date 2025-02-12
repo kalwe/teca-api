@@ -22,4 +22,4 @@ class FunctionUpdateService(UpdateService):
         return FunctionOutputSchema().validate(updated_function)
 
 
-# FIXME: Did not update, and raised an error: AttributeError: 'coroutine' object has no attribute 've'
+# FIXME: validation errors

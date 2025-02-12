@@ -22,4 +22,4 @@ class ClothingUpdateService(UpdateService):
         return ClothingOutputSchema().validate(updated_clothing)
 
 
-# FIXME: AttributeError: 'coroutine' object has no attribute 've'
+# FIXME: validation errors

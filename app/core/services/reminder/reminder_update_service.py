@@ -22,4 +22,4 @@ class ReminderUpdateService(UpdateService):
         return ReminderOutputSchema().validate(updated_reminder)
 
 
-# FIXME: AttributeError: 'coroutine' object has no attribute 've'
+# FIXME: validation errors

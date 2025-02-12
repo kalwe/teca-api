@@ -20,4 +20,4 @@ class UserUpdateService(UpdateService):
         return UserOutputSchema().validate(updated_user)
 
 
-# FIXME: AttributeError: 'coroutine' object has no attribute 've'
+# FIXME: validation errors

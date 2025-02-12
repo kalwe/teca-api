@@ -21,4 +21,4 @@ class AddressUpdateService(UpdateService):
         updated_address = await self.update_data(id, address_data)
         return AddressOutputSchema().validate(updated_address)
 
-    # FIXME: AttributeError: 'coroutine' object has no attribute 've'
+    # FIXME: validation errors

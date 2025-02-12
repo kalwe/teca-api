@@ -22,4 +22,4 @@ class ContactUpdateService(UpdateService):
         return ContactOutputSchema().validate(updated_contact)
 
 
-# FIXME: AttributeError: 'coroutine' object has no attribute 've'
+# FIXME: validation errors
