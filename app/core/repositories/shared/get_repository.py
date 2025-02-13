@@ -1,5 +1,7 @@
 from typing import List, Optional
 
+from tortoise.expressions import Q
+
 from app.common.custom_exceptions import RepositoryError
 from app.core.models.shared.base_model import ModelT
 
@@ -51,13 +53,13 @@ class GetRepository:
         #                             else await self._model_class.all())
         try:
             if filters:
-                records = await self._model_class.filter(filters)
+                q_objects = [Q(**{key: value}) for key, value in filters.items()]
+                records = await self._model_class.filter(*q_objects)
             else:
                 records = await self._model_class.all()
             return records
-        # Returning an empty list if no records are found
         except RepositoryError as e:
-            raise RepositoryError(f"Failed GetRepository.GetAll(): {e}") from e
+            raise RepositoryError(f"Failed GetRepository.get_all_records(): {e}") from e
 
 
 type GetRepositoryT = GetRepository

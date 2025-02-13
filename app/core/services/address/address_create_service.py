@@ -23,47 +23,28 @@ class AddressCreateService(CreateService):
                 to handle data persistence for the Address model.
         """
         super().__init__(repository)
-        # self._get_service = AddressGetService(AddressGetRepository(Address()))
 
     async def create(
         self,
         address_data: AddressInputSchema,
     ) -> Optional[AddressOutputSchema]:
-        (
-            """
+        """
         Create a new address with additional business logic.
 
         Args:
-            name (str): The name of the address.
-            email (str): The email of the address.
-            password (str): The plain-text password to be hashed.
-            roles (Optional[List[str]]): List of roles to assign to the address.
+            address_data (AddressInputSchema): The data for the new address.
 
         Returns:
             AddressOutputSchema: Serialized data of the created address.
 
         Raises:
-            AddressAlreadyExistsException: If a address with the given email
-            already exists.
+            ValueError: If the employee with the given ID does not exist.
         """
-            """
-        Create a new address with additional business logic.
+        employee = await self._validate_employee(address_data.employee)
+        address_data.employee = employee
 
-        Args:
-            name (str): The name of the address.
-            email (str): The email of the address.
-            password (str): The plain-text password to be hashed.
-            roles (Optional[List[str]]): List of roles to assign to the address.
-
-        Returns:
-            AddressOutputSchema: Serialized data of the created address.
-
-        Raises:
-            AddressAlreadyExistsException: If a address with the given email
-            already exists.
-        """
-        )
         created_address = await self.create_record(address_data)
         return AddressOutputSchema().validate(created_address)
 
-    # FIXME: Testing in swagger(/docs) returned: "POST /address/ HTTP/1.1" 400 Bad Request
+
+# FIXME: pydantic_core._pydantic_core.ValidationError: 14 validation errors for EmployeeOutputSchema

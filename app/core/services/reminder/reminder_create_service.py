@@ -1,4 +1,5 @@
 from typing import Optional
+
 from app.api.schemas.reminder_schema import ReminderInputSchema, ReminderOutputSchema
 from app.core.repositories.reminder.reminder_create_repository import (
     ReminderCreateRepository,
@@ -64,3 +65,6 @@ class ReminderCreateService(CreateService):
         )
         created_reminder = await self.create_record(reminder_data)
         return ReminderOutputSchema().validate(created_reminder)
+
+
+# FIXME: pydantic_core._pydantic_core.ValidationError: 3 validation errors for ReminderOutputSchema

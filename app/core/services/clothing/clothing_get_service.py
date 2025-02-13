@@ -30,7 +30,6 @@ class ClothingGetService(GetService):
 
     async def get(self, id: int) -> Optional[ClothingOutputSchema]:
         clothing = await self.get_by_id(id)
-        # TypeError: BaseSchema.validate() missing 1 required positional argument: 'model', (Resolved) with ()
         return ClothingOutputSchema().validate(clothing)
 
     # FIXME: pydantic_core._pydantic_core.ValidationError: 4 validation errors for ClothingOutputSchema
@@ -39,6 +38,6 @@ class ClothingGetService(GetService):
         self, filters: Optional[dict] = None
     ) -> Optional[List[ClothingOutputSchema]]:
         clothings = await self.get_all_records(filters)
-        return [ClothingOutputSchema.validate(clothing) for clothing in clothings]
+        return [ClothingOutputSchema().validate(clothing) for clothing in clothings]
 
     # With no records returns an empty list

@@ -26,7 +26,6 @@ class ContactDeleteService(DeleteService):
         :return: The deleted contact as a schema, or None if not found.
         """
         deleted_contact = await self.soft_delete(id)
-        # TypeError: BaseSchema.validate() missing 1 required positional argument: 'model', (Resolved) with ()
         return ContactDeletedSchema().validate(deleted_contact)
 
 

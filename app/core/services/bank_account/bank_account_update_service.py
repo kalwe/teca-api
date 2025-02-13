@@ -22,7 +22,7 @@ class BankAccountUpdateService(UpdateService):
         self, id: int, bank_account_data: BankAccountInputSchema
     ) -> Optional[BankAccountOutputSchema]:
         updated_bank_account = await self.update_data(id, bank_account_data)
-        return BankAccountOutputSchema.validate(updated_bank_account)
+        return BankAccountOutputSchema().validate(updated_bank_account)
 
 
-# FIXME: Testing in swagger(/docs) returned: "POST /address/ HTTP/1.1" 400 Bad Request
+# FIXME: pydantic_core._pydantic_core.ValidationError: 5 validation errors for BankAccountOutputSchema

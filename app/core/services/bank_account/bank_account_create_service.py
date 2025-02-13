@@ -26,47 +26,28 @@ class BankAccountCreateService(CreateService):
                 to handle data persistence for the Bank_account model.
         """
         super().__init__(repository)
-        # self._get_service = BankAccountGetService(BankAccountGetRepository(Bank_account()))
 
     async def create(
         self,
         bank_account_data: BankAccountInputSchema,
     ) -> Optional[BankAccountOutputSchema]:
-        (
-            """
+        """
         Create a new bank_account with additional business logic.
 
         Args:
-            name (str): The name of the bank_account.
-            email (str): The email of the bank_account.
-            password (str): The plain-text password to be hashed.
-            roles (Optional[List[str]]): List of roles to assign to the bank_account.
+            bank_account_data (BankAccountInputSchema): The data for the new bank_account.
 
         Returns:
             BankAccountOutputSchema: Serialized data of the created bank_account.
 
         Raises:
-            BankAccountAlreadyExistsException: If a bank_account with the given email
-            already exists.
+            ValueError: If the employee with the given ID does not exist.
         """
-            """
-        Create a new bank_account with additional business logic.
+        employee = await self._validate_employee(bank_account_data.employee)
+        bank_account_data.employee = employee
 
-        Args:
-            name (str): The name of the bank_account.
-            email (str): The email of the bank_account.
-            password (str): The plain-text password to be hashed.
-            roles (Optional[List[str]]): List of roles to assign to the bank_account.
-
-        Returns:
-            BankAccountOutputSchema: Serialized data of the created bank_account.
-
-        Raises:
-            BankAccountAlreadyExistsException: If a bank_account with the given email
-            already exists.
-        """
-        )
         created_bank_account = await self.create_record(bank_account_data)
         return BankAccountOutputSchema().validate(created_bank_account)
 
-    # FIXME: Testing in swagger(/docs) returned: "POST /address/ HTTP/1.1" 400 Bad Request
+
+# FIXME: pydantic_core._pydantic_core.ValidationError: validation errors for EmployeeOutputSchema

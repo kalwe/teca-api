@@ -27,3 +27,6 @@ class ReminderDeleteService(DeleteService):
         """
         deleted_reminder = await self.soft_delete(id)
         return ReminderDeletedSchema().validate(deleted_reminder)
+
+
+# FIXME: pydantic_core._pydantic_core.ValidationError: 1 validation error for ReminderDeletedSchema

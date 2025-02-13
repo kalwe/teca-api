@@ -64,3 +64,6 @@ class VacancyCreateService(CreateService):
         )
         created_vacancy = await self.create_record(vacancy_data)
         return VacancyOutputSchema().validate(created_vacancy)
+
+
+# FIXME: pydantic_core._pydantic_core.ValidationError: 7 validation errors for VacancyOutputSchema

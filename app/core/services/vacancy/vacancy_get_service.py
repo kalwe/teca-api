@@ -33,4 +33,6 @@ class VacancyGetService(GetService):
         self, filters: Optional[dict] = None
     ) -> Optional[List[VacancyOutputSchema]]:
         vacancies = await self.get_all_records(filters)
-        return [VacancyOutputSchema.validate(vacancy) for vacancy in vacancies]
+        return [VacancyOutputSchema().validate(vacancy) for vacancy in vacancies]
+
+    # With no records returns an empty list

@@ -21,11 +21,12 @@ class UpdateService:
         self._get_service = GetService(self._get_repository)
 
     async def update_data(self, id: int, data_field: SchemaT) -> Optional[ModelT]:
-        record_exist = self._get_service.get_by_id(id)
+        record_exist = await self._get_service.get_by_id(id)
         if not record_exist:
             return None
-        self._repository._model_class.version += record_exist.ve
+        self._repository._model_class.version += record_exist.version
         data_fields = data_field.dump(exclude_unset=True)
+        data_fields["id"] = id
         updated_data = await self._repository.update_record(data_fields)
         # SchemaT should be OutputSchemaT
         # validated_schema = data_field.validate(updated_data)

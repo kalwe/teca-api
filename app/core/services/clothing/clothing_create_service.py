@@ -23,47 +23,28 @@ class ClothingCreateService(CreateService):
                 to handle data persistence for the Clothing model.
         """
         super().__init__(repository)
-        # self._get_service = ClothingGetService(ClothingGetRepository(Clothing()))
 
     async def create(
         self,
         clothing_data: ClothingInputSchema,
     ) -> Optional[ClothingOutputSchema]:
-        (
-            """
+        """
         Create a new clothing with additional business logic.
 
         Args:
-            name (str): The name of the clothing.
-            email (str): The email of the clothing.
-            password (str): The plain-text password to be hashed.
-            roles (Optional[List[str]]): List of roles to assign to the clothing.
+            clothing_data (ClothingInputSchema): The data for the new clothing.
 
         Returns:
             ClothingOutputSchema: Serialized data of the created clothing.
 
         Raises:
-            ClothingAlreadyExistsException: If a clothing with the given email
-            already exists.
+            ValueError: If the employee with the given ID does not exist.
         """
-            """
-        Create a new clothing with additional business logic.
+        employee = await self._validate_employee(clothing_data.employee)
+        clothing_data.employee = employee
 
-        Args:
-            name (str): The name of the clothing.
-            email (str): The email of the clothing.
-            password (str): The plain-text password to be hashed.
-            roles (Optional[List[str]]): List of roles to assign to the clothing.
-
-        Returns:
-            ClothingOutputSchema: Serialized data of the created clothing.
-
-        Raises:
-            ClothingAlreadyExistsException: If a clothing with the given email
-            already exists.
-        """
-        )
         created_clothing = await self.create_record(clothing_data)
         return ClothingOutputSchema().validate(created_clothing)
 
-    # FIXME: Testing in swagger(/docs) returned: "POST /address/ HTTP/1.1" 400 Bad Request
+
+# FIXME: pydantic_core._pydantic_core.ValidationError: validation errors for EmployeeOutputSchema

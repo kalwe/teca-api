@@ -1,4 +1,5 @@
 from typing import Optional
+
 from app.api.schemas.function_schema import FunctionInputSchema, FunctionOutputSchema
 from app.core.repositories.function.function_update_repository import (
     FunctionUpdateRepository,
@@ -18,4 +19,7 @@ class FunctionUpdateService(UpdateService):
         self, id: int, function_data: FunctionInputSchema
     ) -> Optional[FunctionOutputSchema]:
         updated_function = await self.update_data(id, function_data)
-        return FunctionOutputSchema.validate(updated_function)
+        return FunctionOutputSchema().validate(updated_function)
+
+
+# FIXME: pydantic_core._pydantic_core.ValidationError: 2 validation errors for FunctionOutputSchema

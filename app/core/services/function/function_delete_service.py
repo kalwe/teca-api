@@ -26,8 +26,7 @@ class FunctionDeleteService(DeleteService):
         :return: The deleted function as a schema, or None if not found.
         """
         deleted_function = await self.soft_delete(id)
-        # TypeError: BaseSchema.validate() missing 1 required positional argument: 'model', (Resolved) with ()
         return FunctionDeletedSchema().validate(deleted_function)
 
 
-# FIXME: pydantic_core._pydantic_core.ValidationError: 1 validation error for FunctionDeletedSchema
+# FIXME: Without records: pydantic_core._pydantic_core.ValidationError: 1 validation error for FunctionDeletedSchema, with records: the same error, and do not delete the record

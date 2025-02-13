@@ -26,7 +26,6 @@ class ClothingDeleteService(DeleteService):
         :return: The deleted clothing as a schema, or None if not found.
         """
         deleted_clothing = await self.soft_delete(id)
-        # TypeError: BaseSchema.validate() missing 1 required positional argument: 'model', (Resolved) with ()
         return ClothingDeletedSchema().validate(deleted_clothing)
 
 

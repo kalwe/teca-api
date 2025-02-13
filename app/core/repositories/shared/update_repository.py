@@ -20,14 +20,16 @@ class UpdateRepository:
         Update fields for an existing record and increment its version.
         """
         try:
-            # model_class = self._model_class(**record_fields)
-            self._model_class.update_from_dict(**record_fields)
-            self._model_class.version += 1
-            await self._model_class.save()
-            return self._model_class
+            record = await self._model_class.get(id=record_fields["id"])
+            for key, value in record_fields.items():
+                setattr(record, key, value)
+            record.version += 1
+            await record.save()
+            return record
         except RepositoryError as e:
             raise RepositoryError(
                 f"Failed UpdateRepository.update_record(): {e}"
             ) from e
+
 
 type UpdateRepositoryT = UpdateRepository
