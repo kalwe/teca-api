@@ -1,6 +1,7 @@
 from typing import Optional
 
 from app.api.schemas.user_schema import UserInputSchema, UserOutputSchema
+from app.common.hash_utils import hash_provider
 from app.core.repositories.user.user_create_repository import UserCreateRepository
 from app.core.repositories.user.user_get_repository import UserGetRepository
 from app.core.services.shared.create_service import CreateService
@@ -72,12 +73,14 @@ class UserCreateService(CreateService):
         #         f"User with email {user_data.email} already exists."
         #     )
 
-        # userValidated = user_data.validate(user_data)
-        # password = userValidated.password.get_secret_value()
-        # userValidated.password = hash_provider(password)
+        print(user_data)
+        userValidated = user_data.validate(user_data)
+        print(userValidated)
+        password = userValidated.password.get_secret_value()
+        userValidated.password_hash = hash_provider(password)
 
-        # created_user = await self.create_record(userValidated)
-        created_user = await self.create_record(user_data)
+        created_user = await self.create_record(userValidated)
+        # created_user = await self.create_record(user_data)
         return UserOutputSchema().validate(created_user)
 
         # FIXME: "Error: You can't set m2m relations through init, use m2m_manager instead"

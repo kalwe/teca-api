@@ -8,7 +8,7 @@ from app.api.schemas.base_schema import (
 
 
 class UserPasswordMixin:
-    password: SecretStr = Field(
+    password_hash: SecretStr = Field(
         description="The hashed password of the user",
         min_length=6,
         max_length=255,
@@ -32,16 +32,13 @@ class UserSchema(UserEmailMixin):
         max_length=80,
     )
     # TODO: create List[Roles]
-    roles: list[str] | None = Field(
-        # default_factory=list,
-        description="List of roles assigned to the user",
-    )
+    roles: list[str] = None
 
 
 class UserInputSchema(InputSchema, UserSchema, UserPasswordMixin):
     model_config = ConfigDict(
         alias_generator=AliasGenerator(
-            validation_alias=lambda field: {"password": "password_hash"}.get(
+            validation_alias=lambda field: {"password_hash": "password"}.get(
                 field, field
             )
         ),

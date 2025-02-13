@@ -1,7 +1,7 @@
 from http import HTTPStatus
 from typing import List
 
-from quart_schema import validate_request, validate_response
+from quart_schema import tag, validate_request, validate_response
 
 from app.api.schemas.user_schema import (
     UserDeletedSchema,
@@ -16,18 +16,18 @@ from app.core.services.user.user_create_service import UserCreateService
 from app.core.services.user.user_delete_service import UserDeleteService
 from app.core.services.user.user_get_service import UserGetService
 from app.core.services.user.user_update_service import UserUpdateService
-from quart_schema import tag
+
 
 class UserController:
     """
     Controller that handles user-related HTTP requests.
     """
 
-    @staticmethod
+    # @staticmethod
     @validate_request(UserInputSchema)
-    @validate_response(UserOutputSchema)
+    @validate_response(UserOutputSchema, 201)
     @tag(["User"])
-    async def create_user(data: UserInputSchema) -> UserOutputSchema:
+    async def create_user(data: UserInputSchema) -> tuple[UserOutputSchema, int]:
         """
         Creates a new user from the incoming JSON data.
 
@@ -40,9 +40,9 @@ class UserController:
         return user, HTTPStatus.CREATED
 
     @staticmethod
-    @validate_response(UserOutputSchema)
+    @validate_response(UserOutputSchema, 200)
     @tag(["User"])
-    async def get_user(id: int) -> UserOutputSchema:
+    async def get_user(id: int) -> tuple[UserOutputSchema, int]:
         """
         Retrieves a user by ID.
 
@@ -59,9 +59,9 @@ class UserController:
         return user, HTTPStatus.OK
 
     @staticmethod
-    @validate_response(List[UserOutputSchema])
+    @validate_response(List[UserOutputSchema], 200)
     @tag(["User"])
-    async def get_all_users() -> List[UserOutputSchema]:
+    async def get_all_users() -> tuple[List[UserOutputSchema], int]:
         """
         Retrieves all users using FetchHelper to standardize error handling.
 
@@ -73,20 +73,22 @@ class UserController:
         users = await service.get_all()
         return users, HTTPStatus.OK
 
-    @staticmethod
+    # @staticmethod
     @validate_request(UserInputSchema)
-    @validate_response(UserOutputSchema)
+    @validate_response(UserOutputSchema, 200)
     @tag(["User"])
-    async def update_user(id: int, data: UserInputSchema) -> UserOutputSchema:
+    async def update_user(
+        id: int, data: UserInputSchema
+    ) -> tuple[UserOutputSchema, int]:
         repository = UserUpdateRepository()
         service = UserUpdateService(repository)
         user = await service.update(id, data)
         return user, HTTPStatus.OK
 
-    @staticmethod
-    @validate_response(UserDeletedSchema)
+    # @staticmethod
+    @validate_response(UserDeletedSchema, 204)
     @tag(["User"])
-    async def delete_user(id: int) -> UserDeletedSchema:
+    async def delete_user(id: int) -> tuple[UserDeletedSchema, int]:
         repository = UserDeleteRepository()
         service = UserDeleteService(repository)
         user = await service.delete(id)
